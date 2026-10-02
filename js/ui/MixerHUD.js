@@ -99,6 +99,8 @@ export class MixerHUD {
             <div id="vu-bar-effects" class="vu-meter-bar"></div>
           </div>
           <span id="lbl-effects-vol" class="vol-readout">85%</span>
+          <!-- Stage Triggers Quick Buttons -->
+          <div id="mixer-triggers-row" class="mixer-triggers-row"></div>
         </div>
       </div>
 
@@ -215,22 +217,32 @@ export class MixerHUD {
       }
     });
 
-    // Layer Faders
+    // Layer Faders: Adjust active engine volume directly and persist to current stage
     this.faders.music?.addEventListener('input', (e) => {
       const val = parseFloat(e.target.value);
-      this.audio.buses.music?.setVolume(val);
+      this.audio.getActiveMusicEngine()?.setGain(val);
+      if (this.audio.currentStage?.layers?.music) {
+        this.audio.currentStage.layers.music.volume = val;
+      }
       document.getElementById('lbl-music-vol').textContent = `${Math.round(val * 100)}%`;
     });
 
     this.faders.ambience?.addEventListener('input', (e) => {
       const val = parseFloat(e.target.value);
-      this.audio.buses.ambience?.setVolume(val);
+      this.audio.getActiveAmbienceEngine()?.setGain(val);
+      if (this.audio.currentStage?.layers?.ambience) {
+        this.audio.currentStage.layers.ambience.volume = val;
+      }
       document.getElementById('lbl-ambience-vol').textContent = `${Math.round(val * 100)}%`;
     });
 
     this.faders.effects?.addEventListener('input', (e) => {
       const val = parseFloat(e.target.value);
+      this.audio.getActiveEffectsEngine()?.setGain(val);
       this.audio.buses.effects?.setVolume(val);
+      if (this.audio.currentStage?.layers?.effects) {
+        this.audio.currentStage.layers.effects.volume = val;
+      }
       document.getElementById('lbl-effects-vol').textContent = `${Math.round(val * 100)}%`;
     });
   }
@@ -258,10 +270,36 @@ export class MixerHUD {
   setLCDText(el, text) {
     if (!el) return;
     el.textContent = text;
-    // Normalize speed: roughly 3 to 4 characters per second so longer titles take longer instead of speeding up!
-    const charCount = text.length;
-    const durSec = Math.max(9, Math.round(charCount * 0.28));
-    el.style.animationDuration = `${durSec}s`;
+    
+    // Defer to next frame so element has rendered and scrollWidth is exact
+    requestAnimationFrame(() => {
+      const wrapper = el.parentElement;
+      const cWidth = wrapper ? wrapper.clientWidth : 110;
+      const tWidth = el.scrollWidth;
+
+      if (tWidth <= cWidth) {
+        // Fits entirely inside display: keep stationary and centered/readable
+        el.style.setProperty('--lcd-start', '0px');
+        el.style.setProperty('--lcd-end', '0px');
+        el.style.setProperty('--lcd-dur', '0s');
+        el.style.setProperty('--lcd-state', 'paused');
+        el.style.transform = 'translateX(0)';
+      } else {
+        // Text is wider than screen:
+        // Starts exactly at right edge of container (+cWidth)
+        // Ends exactly when last letter leaves left edge (-tWidth)
+        // The blank non-visible gap between loops is EXACTLY one container width slice!
+        const totalDistance = cWidth + tWidth;
+        const speed = 30; // 30 pixels per second constant reading speed
+        const durSec = totalDistance / speed;
+
+        el.style.setProperty('--lcd-start', `${cWidth}px`);
+        el.style.setProperty('--lcd-end', `-${tWidth}px`);
+        el.style.setProperty('--lcd-dur', `${durSec.toFixed(2)}s`);
+        el.style.setProperty('--lcd-state', 'running');
+        el.style.transform = '';
+      }
+    });
   }
 
   updateStageInfo(stage) {
@@ -269,12 +307,15 @@ export class MixerHUD {
       if (this.lcdTexts.music) this.setLCDText(this.lcdTexts.music, '🎵 Silence');
       if (this.lcdTexts.ambience) this.setLCDText(this.lcdTexts.ambience, '🌲 Silence');
       if (this.lcdTexts.effects) this.setLCDText(this.lcdTexts.effects, '⚡ Silence');
+      const trigRow = document.getElementById('mixer-triggers-row');
+      if (trigRow) trigRow.innerHTML = '';
       return;
     }
 
     const musicTrack = stage.layers?.music?.tracks?.[0];
     const ambTrack = stage.layers?.ambience?.tracks?.[0];
     const fxTrack = stage.layers?.effects?.tracks?.[0];
+    const triggers = stage.layers?.effects?.triggers || [];
 
     const musicTitle = musicTrack?.title || stage.layers?.music?.name || 'No Soundtrack';
     const musicCredit = musicTrack?.credit ? ` · 👤 ${musicTrack.credit}` : '';
@@ -288,10 +329,47 @@ export class MixerHUD {
       this.setLCDText(this.lcdTexts.ambience, `🌲 ${ambTitle}${ambCredit}`);
     }
 
-    const fxTitle = fxTrack?.title || (stage.layers?.effects?.triggers?.length ? `${stage.layers.effects.triggers.length} Stage Triggers` : 'No SFX');
-    const fxCredit = fxTrack?.credit ? ` · 👤 ${fxTrack.credit}` : '';
-    if (this.lcdTexts.effects) {
-      this.setLCDText(this.lcdTexts.effects, `⚡ ${fxTitle}${fxCredit}`);
+    // Effects Channel LCD:
+    // If background continuous loop exists (like Stage 1 Hearthfire): display track title
+    // If no background loop but triggers exist (Stages 2-6): display tactical triggers & hotkeys
+    if (fxTrack?.title) {
+      const fxCredit = fxTrack?.credit ? ` · 👤 ${fxTrack.credit}` : '';
+      if (this.lcdTexts.effects) {
+        this.setLCDText(this.lcdTexts.effects, `⚡ ${fxTrack.title}${fxCredit}`);
+      }
+    } else if (triggers.length > 0) {
+      const trigStr = triggers.map(t => `[${t.hotkey}] ${t.icon || ''} ${t.label}`).join(' · ');
+      if (this.lcdTexts.effects) {
+        this.setLCDText(this.lcdTexts.effects, `⚡ One-Shot SFX: ${trigStr}`);
+      }
+    } else {
+      if (this.lcdTexts.effects) {
+        this.setLCDText(this.lcdTexts.effects, '⚡ No Effects Loaded');
+      }
+    }
+
+    // Populate interactive quick-fire trigger buttons in Effects channel
+    const trigRow = document.getElementById('mixer-triggers-row');
+    if (trigRow) {
+      if (triggers.length > 0) {
+        trigRow.innerHTML = triggers.map(t => `
+          <button class="btn-mixer-trig" data-id="${t.id}" title="${t.label} [${t.hotkey}]">
+            <span class="trig-icon">${t.icon || '⚡'}</span>
+            <kbd class="trig-hotkey">${t.hotkey}</kbd>
+          </button>
+        `).join('');
+
+        trigRow.querySelectorAll('.btn-mixer-trig').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            btn.classList.add('fired');
+            setTimeout(() => btn.classList.remove('fired'), 200);
+            this.audio.playSFX(id);
+          });
+        });
+      } else {
+        trigRow.innerHTML = '';
+      }
     }
 
     // Update Fader initial values

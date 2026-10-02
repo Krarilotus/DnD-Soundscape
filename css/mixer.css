@@ -382,6 +382,9 @@
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .lcd-marquee-text {
@@ -392,16 +395,72 @@
   color: #4ade80;
   letter-spacing: 0.5px;
   text-shadow: 0 0 5px rgba(74, 222, 128, 0.7);
-  animation: lcd-scroll 10s linear infinite;
+  white-space: nowrap;
+  animation: lcd-scroll var(--lcd-dur, 10s) linear infinite;
+  animation-play-state: var(--lcd-state, running);
 }
 
 .lcd-marquee-wrapper:hover .lcd-marquee-text {
-  animation-play-state: paused;
+  animation-play-state: paused !important;
 }
 
+/* Scroll starts at right edge (1 container width away) and exits left edge (1 text width away)
+   The empty non-visible gap between loops is EXACTLY one container width slice! */
 @keyframes lcd-scroll {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% { transform: translateX(var(--lcd-start, 110px)); }
+  100% { transform: translateX(var(--lcd-end, -200px)); }
+}
+
+/* Quick-Fire SFX Trigger Buttons inside Effects Channel */
+.mixer-triggers-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 6px;
+  min-height: 28px;
+}
+
+.btn-mixer-trig {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-gold);
+  border-radius: 5px;
+  color: #fff;
+  padding: 3px 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  transition: all 0.15s ease;
+}
+
+.btn-mixer-trig:hover {
+  background: rgba(212, 175, 55, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.btn-mixer-trig:active, .btn-mixer-trig.fired {
+  background: var(--gold-primary);
+  color: #000;
+  transform: scale(0.94);
+  box-shadow: 0 0 14px var(--gold-glow);
+}
+
+.trig-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.trig-hotkey {
+  background: #000;
+  color: var(--gold-light);
+  border-radius: 3px;
+  padding: 0 3px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 12px;
 }
 
 @media (max-width: 600px) {

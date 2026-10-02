@@ -19,7 +19,8 @@ export class LayerBus {
     this.gainNode.connect(this.analyserNode);
     this.analyserNode.connect(destinationNode);
 
-    this.volume = 0.8;
+    this.volume = 1.0;
+    this.gainNode.gain.setValueAtTime(1.0, this.ctx.currentTime);
     this.isMuted = false;
     this.isSolo = false;
   }

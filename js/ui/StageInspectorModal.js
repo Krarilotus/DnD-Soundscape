@@ -44,28 +44,28 @@ export const PRESET_TRACKS = {
       sourceUrl: 'https://www.youtube.com/watch?v=trlkGTNuwbM'
     },
     {
-      title: 'D&D Cave Exploration (YourTreasureRpg)',
-      file: 'audio/music/cragmaw_caverns.mp3',
-      credit: 'YourTreasureRpg - Cave Exploration',
-      sourceUrl: 'https://www.youtube.com/watch?v=a0PvlNn7B-0'
+      title: '02 - Cragmaw Hideout (Goblin Lair Combat)',
+      file: 'audio/music/cragmaw_hideout_battle.mp3',
+      credit: 'Lyre RPG Music - Lost Mine of Phandelver Soundtrack',
+      sourceUrl: 'https://www.youtube.com/watch?v=uUMZwZlKP4s'
     },
     {
-      title: 'Stealth Mission Dungeon Tension (Enchanted Hive)',
-      file: 'audio/music/tresendar_manor.mp3',
-      credit: 'Enchanted Hive - Stealth Mission',
-      sourceUrl: 'https://www.youtube.com/watch?v=8yD2FXl-8f0'
+      title: 'Tresendar Manor - Redbrand Hideout Exploration',
+      file: 'audio/music/tresendar_manor_soundscape.mp3',
+      credit: 'Dungeon Crawler Audio - Lost Mines of Phandelver',
+      sourceUrl: 'https://www.youtube.com/watch?v=R4sSxgQizYY'
     },
     {
-      title: 'Dragon Encounter Battle Theme (Travis Savoie)',
-      file: 'audio/music/thundertree_ruins.mp3',
-      credit: 'RPG Music Maker - Travis Savoie',
-      sourceUrl: 'https://www.youtube.com/watch?v=t3B802PIuB0'
+      title: 'Venomfang Attacks (Green Dragon Battle Theme)',
+      file: 'audio/music/venomfang_dragon_battle.mp3',
+      credit: 'Lyre RPG Music - Lost Mine of Phandelver Soundtrack',
+      sourceUrl: 'https://www.youtube.com/watch?v=vfpOPpPHcpM'
     },
     {
-      title: 'Deadly Combat - Climax Battle (RPG Soundtracks)',
-      file: 'audio/music/wave_echo_climax.mp3',
-      credit: 'RPG Soundtracks - Deadly Combat',
-      sourceUrl: 'https://www.youtube.com/watch?v=m-1S1V1PZHA'
+      title: 'In the Spider\'s Web (Nezznar Black Spider Combat)',
+      file: 'audio/music/nezznar_boss_battle.mp3',
+      credit: 'Connor Ragas (CR Productions) - Lost Mine of Phandelver',
+      sourceUrl: 'https://www.youtube.com/watch?v=xvOg88-EGQU'
     }
   ],
   ambience: [
@@ -76,34 +76,34 @@ export const PRESET_TRACKS = {
       sourceUrl: 'https://www.youtube.com/watch?v=ylj4IS7WP1o'
     },
     {
-      title: 'Triboar Trail Howling Wind (Nature Soundscapes)',
-      file: 'audio/ambience/pure_trail_wind.mp3',
-      credit: 'Nature Soundscapes - Pure Wind',
-      sourceUrl: 'https://www.youtube.com'
+      title: 'Triboar Trail - Peaceful Woodland & Summer Birds',
+      file: 'audio/ambience/triboar_forest_birds.mp3',
+      credit: 'TheSilentWatcher - Way of the Singing Forest',
+      sourceUrl: 'https://www.youtube.com/watch?v=EHklxmBvzwc'
     },
     {
-      title: 'Subterranean Stream & Cavern Echo (Cave Sound Lab)',
-      file: 'audio/ambience/pure_cave_stream.mp3',
-      credit: 'Cave Ambience Sound Lab - Pure River',
-      sourceUrl: 'https://www.youtube.com'
+      title: 'Damp Cave Underground River & Cavern Echo',
+      file: 'audio/ambience/cragmaw_damp_cave_stream.mp3',
+      credit: 'Sword Coast Soundscapes - Damp Cave',
+      sourceUrl: 'https://www.youtube.com/watch?v=3Hwr_BaekgM'
     },
     {
-      title: 'Tresendar Crypt Room Tone Draught (Horror Ambience)',
+      title: 'Tresendar Crypt Room Tone Draught',
       file: 'audio/ambience/pure_dungeon_cellar.mp3',
       credit: 'Horror Ambience FX - Cellar Room Tone',
       sourceUrl: 'https://www.youtube.com'
     },
     {
-      title: 'Howling Ash Wind in Ruins (White Noise Jack)',
-      file: 'audio/ambience/thundertree_ashen_winds.mp3',
-      credit: 'White Noise Jack - Howling Wind in Ruins',
-      sourceUrl: 'https://www.youtube.com/watch?v=829s22QZmgI'
+      title: 'Ruins of Thundertree - Abandoned Town Atmosphere',
+      file: 'audio/ambience/thundertree_ruins_ambience.mp3',
+      credit: 'Artificial Ambience - Abandoned Ruins Wind',
+      sourceUrl: 'https://www.youtube.com/watch?v=XyRjtAaETFI'
     },
     {
-      title: 'Wave Echo Cave Subterranean Surge (Epic Soundscapes)',
-      file: 'audio/ambience/pure_wave_echo.mp3',
-      credit: 'Epic Soundscapes - Sea Cave Surge',
-      sourceUrl: 'https://www.youtube.com'
+      title: 'Wave Echo Cave Subterranean Forge & Deep Cavern',
+      file: 'audio/ambience/wave_echo_subterranean_forge.mp3',
+      credit: 'MusicByTerperial - Wave Echo Cave FX',
+      sourceUrl: 'https://www.youtube.com/watch?v=chBv4M1ICTo'
     }
   ],
   effects: [

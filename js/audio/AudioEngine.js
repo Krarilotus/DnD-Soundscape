@@ -255,6 +255,38 @@ export class AudioEngine {
     this.sfxPad.playTrigger(triggerId, this.basePath);
   }
 
+  playOneShot(filePathOrId, volume = 0.85) {
+    if (!this.unlocked) return;
+    // Check if it's a known trigger id
+    const trig = this.sfxPad?.currentTriggers?.find(t => t.id === filePathOrId);
+    if (trig) {
+      this.sfxPad.playTrigger(filePathOrId, this.basePath);
+      return;
+    }
+    // Check if filePathOrId matches a trigger by file
+    const trigByFile = this.sfxPad?.currentTriggers?.find(t => filePathOrId.endsWith(t.file || ''));
+    if (trigByFile) {
+      this.sfxPad.playTrigger(trigByFile.id, this.basePath);
+      return;
+    }
+    // Otherwise play directly through effects bus with requested volume
+    let filePath = filePathOrId;
+    if (this.basePath && !filePath.startsWith('http') && !filePath.startsWith('/') && !filePath.startsWith('adventures/')) {
+      filePath = `${this.basePath}/${filePath}`.replace(/\/\//g, '/');
+    }
+    try {
+      const audio = new Audio(filePath);
+      const src = this.ctx.createMediaElementSource(audio);
+      const gainNode = this.ctx.createGain();
+      gainNode.gain.value = volume;
+      src.connect(gainNode);
+      gainNode.connect(this.buses.effects.inputNode);
+      audio.play().catch(() => {});
+    } catch (e) {
+      console.warn('playOneShot error:', e);
+    }
+  }
+
   getLiveLevels() {
     if (!this.unlocked) return { music: 0, ambience: 0, effects: 0 };
     return {

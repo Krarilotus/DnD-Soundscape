@@ -207,14 +207,14 @@
       "layers": {
         "music": {
           "name": "D&D Cave Exploration",
-          "volume": 0.65,
+          "volume": 0.7,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "D&D Cave Exploration Theme",
-              "file": "audio/music/cragmaw_caverns.mp3",
-              "credit": "YourTreasureRpg - Cave Exploration",
-              "sourceUrl": "https://www.youtube.com/watch?v=a0PvlNn7B-0",
+              "title": "02 - Cragmaw Hideout (Goblin Lair Combat)",
+              "file": "audio/music/cragmaw_hideout_battle.mp3",
+              "credit": "Lyre RPG Music - Lost Mine of Phandelver Soundtrack",
+              "sourceUrl": "https://www.youtube.com/watch?v=uUMZwZlKP4s",
               "startSec": 0,
               "endSec": null
             }
@@ -226,10 +226,10 @@
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Subterranean Stream & Cavern Echo",
-              "file": "audio/ambience/cragmaw_stream_cavern.mp3",
-              "credit": "Cave Ambience Sound Lab - Pure River",
-              "sourceUrl": "https://www.youtube.com",
+              "title": "Damp Cave Underground River & Cavern Echo",
+              "file": "audio/ambience/cragmaw_damp_cave_stream.mp3",
+              "credit": "Sword Coast Soundscapes - Damp Cave",
+              "sourceUrl": "https://www.youtube.com/watch?v=3Hwr_BaekgM",
               "startSec": 0,
               "endSec": null
             }
@@ -296,10 +296,10 @@
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Stealth Mission Music Loop",
-              "file": "audio/music/tresendar_manor.mp3",
-              "credit": "Enchanted Hive - Stealth Mission",
-              "sourceUrl": "https://www.youtube.com/watch?v=8yD2FXl-8f0",
+              "title": "Tresendar Manor - Redbrand Hideout Exploration",
+              "file": "audio/music/tresendar_manor_soundscape.mp3",
+              "credit": "Dungeon Crawler Audio - Lost Mines of Phandelver",
+              "sourceUrl": "https://www.youtube.com/watch?v=R4sSxgQizYY",
               "startSec": 0,
               "endSec": null
             }
@@ -481,10 +481,10 @@
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Forge of Spells Arcane Resonance Hum",
-              "file": "audio/ambience/arcane_forge_hum.mp3",
-              "credit": "Soundtale RPG - Arcane Forge Hum",
-              "sourceUrl": "https://www.youtube.com/watch?v=4AyfLQ3i3V4",
+              "title": "Wave Echo Cave Subterranean Forge & Deep Cavern",
+              "file": "audio/ambience/wave_echo_subterranean_forge.mp3",
+              "credit": "MusicByTerperial - Wave Echo Cave FX",
+              "sourceUrl": "https://www.youtube.com/watch?v=chBv4M1ICTo",
               "startSec": 0,
               "endSec": null
             }

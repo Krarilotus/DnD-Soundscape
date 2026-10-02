@@ -106,12 +106,8 @@ export class SoundboardModal {
     }
 
     const trig = this.triggers.find(t => t.id === id);
-    if (trig && trig.file) {
-      let fileUrl = trig.file;
-      if (!fileUrl.startsWith('http') && !fileUrl.startsWith('/')) {
-        fileUrl = `adventures/phandelver/${fileUrl}`;
-      }
-      this.audio.playOneShot(fileUrl, 0.85);
+    if (trig) {
+      this.audio.playSFX(id);
     }
   }
 

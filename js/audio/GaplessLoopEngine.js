@@ -24,6 +24,7 @@ export class GaplessLoopEngine {
     this.playbackStartTime = 0;
     this.pausedAt = 0;
     this.basePath = '';
+    this.currentGain = 0.7;
   }
 
   async setPlaylist(playlist = [], mode = 'loopAll', basePath = '') {
@@ -63,14 +64,19 @@ export class GaplessLoopEngine {
     return { success: true, mode: 'stream', duration: 0 };
   }
 
-  play(fadeDuration = 0.05, targetGain = 1.0) {
+  play(fadeDuration = 0.05, targetGain = 1.0, startSilent = false) {
     if (!this.currentTrack) return;
     this.cleanupNodes();
 
+    this.currentGain = targetGain;
     const now = this.ctx.currentTime;
     this.gainNode.gain.cancelScheduledValues(now);
-    this.gainNode.gain.setValueAtTime(0.001, now);
-    this.gainNode.gain.linearRampToValueAtTime(targetGain, now + Math.max(0.01, fadeDuration));
+    if (startSilent) {
+      this.gainNode.gain.setValueAtTime(0.0001, now);
+    } else {
+      this.gainNode.gain.setValueAtTime(0.0001, now);
+      this.gainNode.gain.linearRampToValueAtTime(targetGain, now + Math.max(0.01, fadeDuration));
+    }
 
     let filePath = this.currentTrack.file || '';
     if (this.basePath && !filePath.startsWith('http') && !filePath.startsWith('/') && !filePath.startsWith('../../')) {
@@ -179,6 +185,12 @@ export class GaplessLoopEngine {
     this.isPlaying = false;
   }
 
+  stopImmediate() {
+    this.cleanupNodes();
+    this.isPlaying = false;
+    this.currentGain = 0;
+  }
+
   cleanupNodes() {
     if (this.activeSource) {
       try {
@@ -195,9 +207,11 @@ export class GaplessLoopEngine {
   }
 
   setGain(val, rampSec = 0.05) {
+    this.currentGain = Math.max(0, Math.min(1, val));
     const now = this.ctx.currentTime;
     this.gainNode.gain.cancelScheduledValues(now);
-    this.gainNode.gain.linearRampToValueAtTime(val, now + rampSec);
+    this.gainNode.gain.setValueAtTime(this.gainNode.gain.value, now);
+    this.gainNode.gain.linearRampToValueAtTime(this.currentGain, now + rampSec);
   }
 
   getCurrentTime() {
