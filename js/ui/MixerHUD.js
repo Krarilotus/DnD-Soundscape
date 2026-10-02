@@ -90,8 +90,14 @@ export class MixerHUD {
             <span id="hud-stage-title" class="hud-stage-title">No Stage Selected</span>
           </div>
           <div class="hud-track-meta">
-            <span id="hud-music-name" class="hud-music-name">–</span>
-            <span id="hud-ambience-name" class="hud-ambience-name">–</span>
+            <div class="hud-track-line">
+              <span id="hud-music-name" class="hud-music-name">–</span>
+              <span id="hud-music-credit" class="hud-credit-tag hidden"></span>
+            </div>
+            <div class="hud-track-line">
+              <span id="hud-ambience-name" class="hud-ambience-name">–</span>
+              <span id="hud-ambience-credit" class="hud-credit-tag hidden"></span>
+            </div>
           </div>
         </div>
 
@@ -286,6 +292,30 @@ export class MixerHUD {
 
     if (this.musicTrackEl) this.musicTrackEl.textContent = `🎵 ${musicName}`;
     if (this.ambienceTrackEl) this.ambienceTrackEl.textContent = `🌲 ${ambName}`;
+
+    const musicTrack = stage.layers?.music?.tracks?.[0];
+    const ambTrack = stage.layers?.ambience?.tracks?.[0];
+
+    const musicCreditEl = document.getElementById('hud-music-credit');
+    const ambCreditEl = document.getElementById('hud-ambience-credit');
+
+    if (musicTrack?.credit) {
+      if (musicCreditEl) {
+        musicCreditEl.innerHTML = `👤 ${musicTrack.credit} ${musicTrack.sourceUrl ? `<a href="${musicTrack.sourceUrl}" target="_blank" rel="noopener" class="hud-credit-link" title="Open source attribution">🔗</a>` : ''}`;
+        musicCreditEl.classList.remove('hidden');
+      }
+    } else if (musicCreditEl) {
+      musicCreditEl.classList.add('hidden');
+    }
+
+    if (ambTrack?.credit) {
+      if (ambCreditEl) {
+        ambCreditEl.innerHTML = `👤 ${ambTrack.credit} ${ambTrack.sourceUrl ? `<a href="${ambTrack.sourceUrl}" target="_blank" rel="noopener" class="hud-credit-link" title="Open source attribution">🔗</a>` : ''}`;
+        ambCreditEl.classList.remove('hidden');
+      }
+    } else if (ambCreditEl) {
+      ambCreditEl.classList.add('hidden');
+    }
 
     // Update Fader initial values
     if (stage.layers?.music?.volume !== undefined && this.faders.music) {

@@ -16,7 +16,7 @@
       "id": "stonehill_inn",
       "label": "1. The Stonehill Inn (Phandalin)",
       "type": "roleplay",
-      "icon": "🍺",
+      "icon": "\ud83c\udf7a",
       "hotkey": "1",
       "crossfadeSec": 4,
       "hotspot": {
@@ -27,38 +27,30 @@
       "description": "A roaring hearth, warm spiced ale, and lively lute music welcome travelers after a perilous journey.",
       "layers": {
         "music": {
-          "name": "Tavern Bard Music",
+          "name": "Cozy Tavern Strings",
           "volume": 0.7,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Cozy Tavern Strings",
+              "title": "Cozy Tavern Strings (Adrian von Ziegler)",
               "file": "audio/music/tavern_strings.mp3",
+              "credit": "Adrian von Ziegler - The Gilded Tavern",
+              "sourceUrl": "https://www.youtube.com/watch?v=orgikrTCKTc",
               "startSec": 0,
               "endSec": null
-            },
-            {
-              "title": "Faerûn Bardic Lute (YouTube Stream)",
-              "file": "https://www.youtube.com/watch?v=kXYiU_JCYtU",
-              "startSec": 15,
-              "endSec": 300
             }
           ]
         },
         "ambience": {
-          "name": "Hearthfire & Mountain Wind",
+          "name": "Crowded Stonehill Tavern",
           "volume": 0.55,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Crackling Hearthfire Ambience",
-              "file": "audio/ambience/hearthfire_ambience.mp3",
-              "startSec": 0,
-              "endSec": null
-            },
-            {
-              "title": "Rain & Cozy Hearth (Spotify Stream)",
-              "file": "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT",
+              "title": "Crowded Stonehill Tavern (Michael Ghelfi)",
+              "file": "audio/ambience/stonehill_crowd.mp3",
+              "credit": "Michael Ghelfi Studios - Crowded Tavern",
+              "sourceUrl": "https://www.youtube.com/watch?v=ylj4IS7WP1o",
               "startSec": 0,
               "endSec": null
             }
@@ -69,18 +61,34 @@
           "volume": 0.85,
           "triggers": [
             {
-              "id": "sword",
-              "label": "Tankard Clink",
-              "icon": "⚔️",
+              "id": "tankard_clink",
+              "label": "Tankard Cheers",
+              "icon": "\ud83c\udf7b",
               "hotkey": "Q",
-              "file": "audio/effects/sword_clash.wav"
+              "file": "audio/effects/tankard_clink.wav",
+              "credit": "Herbert Nicolas",
+              "sourceUrl": "https://www.youtube.com/watch?v=Waljosxqz0Y",
+              "license": "Attributed Creator / CC"
             },
             {
-              "id": "magic",
-              "label": "Bardic Charm",
-              "icon": "✨",
+              "id": "coin_purse",
+              "label": "Coin Purse",
+              "icon": "\ud83e\ude99",
               "hotkey": "W",
-              "file": "audio/effects/spell_surge.wav"
+              "file": "audio/effects/coin_purse.wav",
+              "credit": "Sound Around",
+              "sourceUrl": "https://www.youtube.com/watch?v=gsO7_fTbm3g",
+              "license": "Attributed Creator / CC"
+            },
+            {
+              "id": "tavern_door",
+              "label": "Tavern Door",
+              "icon": "\ud83d\udeaa",
+              "hotkey": "E",
+              "file": "audio/effects/tavern_door.wav",
+              "credit": "Free Audio Zone",
+              "sourceUrl": "https://www.youtube.com/watch?v=D3ZuJ-I78yI",
+              "license": "Attributed Creator / CC"
             }
           ]
         }
@@ -90,7 +98,7 @@
       "id": "triboar_trail",
       "label": "2. Goblin Ambush (Triboar Trail)",
       "type": "combat",
-      "icon": "⚔️",
+      "icon": "\u2694\ufe0f",
       "hotkey": "2",
       "crossfadeSec": 2,
       "hotspot": {
@@ -101,61 +109,68 @@
       "description": "Two dead horses block the sunken path. Goblins loose arrows from the thickets on high ground!",
       "layers": {
         "music": {
-          "name": "Goblin Ambush Battle",
-          "volume": 0.8,
+          "name": "Triboar Skirmish",
+          "volume": 0.75,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Goblin Skirmish Battle",
+              "title": "Triboar Skirmish (Soundtale RPG)",
               "file": "audio/music/ambush_combat.mp3",
+              "credit": "Soundtale RPG - A Snowy Skirmish",
+              "sourceUrl": "https://www.youtube.com/watch?v=gfKUmcAjk0k",
               "startSec": 0,
               "endSec": null
-            },
-            {
-              "title": "Tabletop Combat Drums (YouTube)",
-              "file": "https://www.youtube.com/watch?v=21X5lGlDOfg",
-              "startSec": 0,
-              "endSec": 240
             }
           ]
         },
         "ambience": {
-          "name": "Triboar Trail Mountain Wind",
+          "name": "Triboar Trail Wind",
           "volume": 0.5,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Wilderness Mountain Wind",
-              "file": "audio/ambience/wilderness_wind.mp3",
+              "title": "Triboar Trail Mountain Wind (Soundtale RPG)",
+              "file": "audio/ambience/triboar_wind.mp3",
+              "credit": "Soundtale RPG - Nordland Mountain Winds",
+              "sourceUrl": "https://www.youtube.com/watch?v=lkHiqZQilYA",
               "startSec": 0,
               "endSec": null
             }
           ]
         },
         "effects": {
-          "name": "Combat SFX",
-          "volume": 0.9,
+          "name": "Ambush SFX",
+          "volume": 0.85,
           "triggers": [
             {
-              "id": "sword",
-              "label": "Sword Clash",
-              "icon": "⚔️",
+              "id": "arrow_thunk",
+              "label": "Goblin Arrow",
+              "icon": "\ud83c\udff9",
               "hotkey": "Q",
-              "file": "audio/effects/sword_clash.wav"
+              "file": "audio/effects/arrow_thunk.wav",
+              "credit": "Mario Sanchez",
+              "sourceUrl": "https://www.youtube.com/watch?v=LhILCoFuy3Y",
+              "license": "Attributed Creator / CC"
             },
             {
-              "id": "screech",
-              "label": "Goblin Shriek",
-              "icon": "👺",
+              "id": "goblin_shriek",
+              "label": "Ambush Shriek",
+              "icon": "\ud83d\udc7a",
               "hotkey": "W",
-              "file": "audio/effects/monster_roar.wav"
+              "file": "audio/effects/goblin_shriek.wav",
+              "credit": "Hexagon",
+              "sourceUrl": "https://www.youtube.com/watch?v=2L0F0jlu_N8",
+              "license": "Attributed Creator / CC"
             },
             {
-              "id": "thunder",
-              "label": "Thunder",
-              "icon": "⚡",
+              "id": "scimitar_clash",
+              "label": "Scimitar Clash",
+              "icon": "\u2694\ufe0f",
               "hotkey": "E",
-              "file": "audio/effects/thunderclap.wav"
+              "file": "audio/effects/scimitar_clash.wav",
+              "credit": "Joseph",
+              "sourceUrl": "https://www.youtube.com/watch?v=qtNDctR2iMM",
+              "license": "Attributed Creator / CC"
             }
           ]
         }
@@ -165,7 +180,7 @@
       "id": "cragmaw_hideout",
       "label": "3. Cragmaw Hideout",
       "type": "exploration",
-      "icon": "🕯️",
+      "icon": "\ud83d\udd6f\ufe0f",
       "hotkey": "3",
       "crossfadeSec": 3.5,
       "hotspot": {
@@ -176,26 +191,30 @@
       "description": "A shallow stream flows out of a dark cave mouth. Cold water drips from moss-covered limestone stalactites.",
       "layers": {
         "music": {
-          "name": "Cavern Exploration",
+          "name": "Cragmaw Cavern Depths",
           "volume": 0.65,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Cragmaw Cavern Depths",
+              "title": "Cragmaw Cavern Depths (Soundtale RPG)",
               "file": "audio/music/cragmaw_caverns.mp3",
+              "credit": "Soundtale RPG - Mora the Spider (Cavern Depths)",
+              "sourceUrl": "https://www.youtube.com/watch?v=iVQSL9Mqlpo",
               "startSec": 0,
               "endSec": null
             }
           ]
         },
         "ambience": {
-          "name": "Dripping Cave Stream",
+          "name": "Subterranean Cavern Stream",
           "volume": 0.6,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Subterranean Cavern Drips",
-              "file": "audio/ambience/cavern_ambience.mp3",
+              "title": "Subterranean Cavern Stream (Soundtale RPG)",
+              "file": "audio/ambience/cragmaw_stream_cavern.mp3",
+              "credit": "Soundtale RPG - In Wonderment of Winter (Cavern Stream)",
+              "sourceUrl": "https://www.youtube.com/watch?v=8z0FC8A3Djk",
               "startSec": 0,
               "endSec": null
             }
@@ -206,18 +225,34 @@
           "volume": 0.85,
           "triggers": [
             {
-              "id": "blade",
-              "label": "Blade Draw",
-              "icon": "🗡️",
+              "id": "wolf_snarl",
+              "label": "Kennel Wolves",
+              "icon": "\ud83d\udc3a",
               "hotkey": "Q",
-              "file": "audio/effects/sword_clash.wav"
+              "file": "audio/effects/wolf_snarl.wav",
+              "credit": "Sound effects",
+              "sourceUrl": "https://www.youtube.com/watch?v=5Bb2DQ2H_5I",
+              "license": "Creative Commons / Royalty-Free"
             },
             {
-              "id": "growl",
-              "label": "Wolf Growl",
-              "icon": "🐺",
+              "id": "flood_surge",
+              "label": "Flash Flood",
+              "icon": "\ud83c\udf0a",
               "hotkey": "W",
-              "file": "audio/effects/monster_roar.wav"
+              "file": "audio/effects/flood_surge.wav",
+              "credit": "SOUND Effects Public Domain (No Copyrights)",
+              "sourceUrl": "https://www.youtube.com/watch?v=2vrwbNWrmMs",
+              "license": "Attributed Creator / CC"
+            },
+            {
+              "id": "stealth_dagger",
+              "label": "Sneak Attack",
+              "icon": "\ud83d\udde1\ufe0f",
+              "hotkey": "E",
+              "file": "audio/effects/stealth_dagger.wav",
+              "credit": "SOUND Effects Public Domain (No Copyrights)",
+              "sourceUrl": "https://www.youtube.com/watch?v=His6s9eZEFQ",
+              "license": "Attributed Creator / CC"
             }
           ]
         }
@@ -227,7 +262,7 @@
       "id": "tresendar_manor",
       "label": "4. Tresendar Manor (Redbrands)",
       "type": "exploration",
-      "icon": "🏰",
+      "icon": "\ud83c\udff0",
       "hotkey": "4",
       "crossfadeSec": 4,
       "hotspot": {
@@ -238,48 +273,68 @@
       "description": "Ruined stone walls above, cellar dungeons and illicit gambling dens below.",
       "layers": {
         "music": {
-          "name": "Sinister Cellar",
-          "volume": 0.6,
+          "name": "Tresendar Manor Cellars",
+          "volume": 0.65,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Tresendar Manor Cellars",
+              "title": "Tresendar Manor Cellars (Soundtale RPG)",
               "file": "audio/music/tresendar_manor.mp3",
+              "credit": "Soundtale RPG - Haunted Castle Cellars",
+              "sourceUrl": "https://www.youtube.com/watch?v=4ZelokMWpCk",
               "startSec": 0,
               "endSec": null
             }
           ]
         },
         "ambience": {
-          "name": "Cold Wind & Cellar Draught",
-          "volume": 0.5,
+          "name": "Crypt Draught & Void",
+          "volume": 0.55,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Cold Cellar Wind",
-              "file": "audio/ambience/wilderness_wind.mp3",
+              "title": "Tresendar Crypt Draught & Void (Soundtale RPG)",
+              "file": "audio/ambience/tresendar_crypt_void.mp3",
+              "credit": "Soundtale RPG - The Void (Subterranean Crypt Ambience)",
+              "sourceUrl": "https://www.youtube.com/watch?v=d3kAxuQSSdA",
               "startSec": 0,
               "endSec": null
             }
           ]
         },
         "effects": {
-          "name": "Manor SFX",
+          "name": "Cellar SFX",
           "volume": 0.85,
           "triggers": [
             {
-              "id": "brawl",
-              "label": "Brawl",
-              "icon": "⚔️",
+              "id": "nothic_whisper",
+              "label": "Nothic Whispers",
+              "icon": "\ud83d\udc41\ufe0f",
               "hotkey": "Q",
-              "file": "audio/effects/sword_clash.wav"
+              "file": "audio/effects/nothic_whisper.wav",
+              "credit": "Vatislavovych",
+              "sourceUrl": "https://www.youtube.com/watch?v=DQS8Jsy7VSc",
+              "license": "Attributed Creator / CC"
             },
             {
-              "id": "magic",
-              "label": "Necrotic Magic",
-              "icon": "🔮",
+              "id": "dice_roll",
+              "label": "Knucklebones",
+              "icon": "\ud83c\udfb2",
               "hotkey": "W",
-              "file": "audio/effects/spell_surge.wav"
+              "file": "audio/effects/dice_roll.wav",
+              "credit": "SOUND Effects Public Domain (No Copyrights)",
+              "sourceUrl": "https://www.youtube.com/watch?v=UiP_6cUxRGU",
+              "license": "Attributed Creator / CC"
+            },
+            {
+              "id": "iron_gate",
+              "label": "Cell Iron Gate",
+              "icon": "\u26d3\ufe0f",
+              "hotkey": "E",
+              "file": "audio/effects/iron_gate.wav",
+              "credit": "Sound Effects Library - Topic",
+              "sourceUrl": "https://www.youtube.com/watch?v=MynlPzFRoxo",
+              "license": "Attributed Creator / CC"
             }
           ]
         }
@@ -289,7 +344,7 @@
       "id": "thundertree",
       "label": "5. Ruins of Thundertree",
       "type": "atmosphere",
-      "icon": "🌲",
+      "icon": "\ud83c\udf32",
       "hotkey": "5",
       "crossfadeSec": 4,
       "hotspot": {
@@ -300,48 +355,68 @@
       "description": "Overgrown ruins shrouded in gray ash and mist, claimed by cultists and the green dragon Venomfang.",
       "layers": {
         "music": {
-          "name": "Ashen Desolation",
-          "volume": 0.6,
+          "name": "Ruins of Thundertree Dread",
+          "volume": 0.7,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Ruins of Thundertree",
+              "title": "Ruins of Thundertree Dread (Soundtale RPG)",
               "file": "audio/music/thundertree_ruins.mp3",
+              "credit": "Soundtale RPG - Aberration Dread",
+              "sourceUrl": "https://www.youtube.com/watch?v=WahaiTaVw2k",
               "startSec": 0,
               "endSec": null
             }
           ]
         },
         "ambience": {
-          "name": "Wind & Ominous Echoes",
-          "volume": 0.5,
+          "name": "Howling Ash Wind in Ruins",
+          "volume": 0.55,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Ashen Forest Winds",
-              "file": "audio/ambience/wilderness_wind.mp3",
+              "title": "Thundertree Ashen Howling Winds (White Noise Jack)",
+              "file": "audio/ambience/thundertree_ashen_winds.mp3",
+              "credit": "White Noise Jack - Howling Wind in Ruins",
+              "sourceUrl": "https://www.youtube.com/watch?v=829s22QZmgI",
               "startSec": 0,
               "endSec": null
             }
           ]
         },
         "effects": {
-          "name": "Dragon SFX",
-          "volume": 0.9,
+          "name": "Thundertree SFX",
+          "volume": 0.85,
           "triggers": [
             {
-              "id": "roar",
-              "label": "Dragon Roar",
-              "icon": "🐉",
+              "id": "dragon_roar",
+              "label": "Venomfang Roar",
+              "icon": "\ud83d\udc09",
               "hotkey": "Q",
-              "file": "audio/effects/monster_roar.wav"
+              "file": "audio/effects/dragon_roar.wav",
+              "credit": "Free Video Sound Effects HD ",
+              "sourceUrl": "https://www.youtube.com/watch?v=3WJHzXGo1M8",
+              "license": "Attributed Creator / CC"
             },
             {
-              "id": "lightning",
-              "label": "Ash Storm",
-              "icon": "⚡",
+              "id": "poison_breath",
+              "label": "Poison Breath",
+              "icon": "\ud83d\udca8",
               "hotkey": "W",
-              "file": "audio/effects/thunderclap.wav"
+              "file": "audio/effects/poison_breath.wav",
+              "credit": "Free SFX",
+              "sourceUrl": "https://www.youtube.com/watch?v=gYexx2vGc_k",
+              "license": "Attributed Creator / CC"
+            },
+            {
+              "id": "twig_blight",
+              "label": "Twig Blight",
+              "icon": "\ud83e\udd40",
+              "hotkey": "E",
+              "file": "audio/effects/twig_blight.wav",
+              "credit": "MJL AV",
+              "sourceUrl": "https://www.youtube.com/watch?v=AVxJQSM8jxs",
+              "license": "Attributed Creator / CC"
             }
           ]
         }
@@ -351,7 +426,7 @@
       "id": "wave_echo_cave",
       "label": "6. Wave Echo Cave (Forge of Spells)",
       "type": "climax",
-      "icon": "💀",
+      "icon": "\ud83d\udc80",
       "hotkey": "6",
       "crossfadeSec": 2.5,
       "hotspot": {
@@ -362,61 +437,68 @@
       "description": "Rhythmic subterranean surges like distant thunder, echoing through mineral halls toward the mythical Forge of Spells.",
       "layers": {
         "music": {
-          "name": "Climax Battle & Arcane Surge",
-          "volume": 0.85,
+          "name": "Wave Echo Cave Climax",
+          "volume": 0.75,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Wave Echo Climax Battle",
+              "title": "Wave Echo Cave Climax (Soundtale RPG)",
               "file": "audio/music/wave_echo_climax.mp3",
+              "credit": "Soundtale RPG - Shriek Final Climax",
+              "sourceUrl": "https://www.youtube.com/watch?v=an-PRFDsxUA",
               "startSec": 0,
               "endSec": null
             }
           ]
         },
         "ambience": {
-          "name": "Forge Arcane Hum & Cavern Waves",
-          "volume": 0.65,
+          "name": "Forge of Spells Arcane Resonance",
+          "volume": 0.6,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Arcane Forge Hum",
-              "file": "audio/ambience/arcane_shrine.mp3",
-              "startSec": 0,
-              "endSec": null
-            },
-            {
-              "title": "Subterranean Cavern Echoes",
-              "file": "audio/ambience/cavern_ambience.mp3",
+              "title": "Forge of Spells Arcane Resonance (Soundtale RPG)",
+              "file": "audio/ambience/arcane_forge_hum.mp3",
+              "credit": "Soundtale RPG - Arcane Forge Shrine Resonance",
+              "sourceUrl": "https://www.youtube.com/watch?v=4AyfLQ3i3V4",
               "startSec": 0,
               "endSec": null
             }
           ]
         },
         "effects": {
-          "name": "Climax SFX",
-          "volume": 0.9,
+          "name": "Forge of Spells SFX",
+          "volume": 0.85,
           "triggers": [
             {
-              "id": "surge",
-              "label": "Forge Surge",
-              "icon": "🔮",
+              "id": "wave_boom",
+              "label": "Wave Echo Boom",
+              "icon": "\ud83c\udf0a",
               "hotkey": "Q",
-              "file": "audio/effects/spell_surge.wav"
+              "file": "audio/effects/wave_boom.wav",
+              "credit": "as production",
+              "sourceUrl": "https://www.youtube.com/watch?v=Yzq8c2Xv5IY",
+              "license": "Creative Commons / Royalty-Free"
             },
             {
-              "id": "thunder",
-              "label": "Wave Boom",
-              "icon": "⚡",
+              "id": "forge_magic_burst",
+              "label": "Forge Spellburst",
+              "icon": "\u2728",
               "hotkey": "W",
-              "file": "audio/effects/thunderclap.wav"
+              "file": "audio/effects/forge_magic_burst.wav",
+              "credit": "Rayne Beckman",
+              "sourceUrl": "https://www.youtube.com/watch?v=RZtMFFudEw8",
+              "license": "Attributed Creator / CC"
             },
             {
-              "id": "blade",
-              "label": "Spell Sword",
-              "icon": "⚔️",
+              "id": "spider_web",
+              "label": "Web Projectile",
+              "icon": "\ud83d\udd78\ufe0f",
               "hotkey": "E",
-              "file": "audio/effects/sword_clash.wav"
+              "file": "audio/effects/spider_web.wav",
+              "credit": "Awesome Sounds",
+              "sourceUrl": "https://www.youtube.com/watch?v=Me6hNbTOgp0",
+              "license": "Attributed Creator / CC"
             }
           ]
         }

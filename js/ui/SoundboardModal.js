@@ -1,5 +1,6 @@
 /**
  * DnD-Soundscape: Soundboard SFX Trigger Modal Component
+ * Renders stage-specific sound effects with keyboard hotkeys and full attribution.
  */
 
 export class SoundboardModal {
@@ -23,19 +24,15 @@ export class SoundboardModal {
   }
 
   setTriggers(stageTriggers = []) {
-    // Default standard fantasy SFX bank + current stage triggers
-    const globalBank = [
-      { id: 'sword', label: 'Sword Clash', icon: '⚔️', hotkey: 'Q', file: 'audio/effects/sword_clash.wav' },
-      { id: 'roar', label: 'Monster Roar', icon: '🐉', hotkey: 'W', file: 'audio/effects/monster_roar.wav' },
-      { id: 'spell', label: 'Magic Surge', icon: '🔮', hotkey: 'E', file: 'audio/effects/spell_surge.wav' },
-      { id: 'thunder', label: 'Thunderclap', icon: '⚡', hotkey: 'R', file: 'audio/effects/thunderclap.wav' }
-    ];
-
-    const map = new Map();
-    globalBank.forEach(t => map.set(t.id, t));
-    stageTriggers.forEach(t => map.set(t.id, t));
-
-    this.triggers = Array.from(map.values());
+    if (stageTriggers && stageTriggers.length > 0) {
+      this.triggers = stageTriggers;
+    } else {
+      this.triggers = [
+        { id: 'cheer', label: 'Tankard Cheer', icon: '🍻', hotkey: 'Q', file: 'audio/effects/tankard_clink.wav', credit: 'Herbert Nicolas' },
+        { id: 'coins', label: 'Coin Purse', icon: '🪙', hotkey: 'W', file: 'audio/effects/coin_purse.wav', credit: 'Sound Around' },
+        { id: 'door', label: 'Tavern Door', icon: '🚪', hotkey: 'E', file: 'audio/effects/tavern_door.wav', credit: 'Free Audio Zone' }
+      ];
+    }
     this.render();
   }
 
@@ -43,7 +40,7 @@ export class SoundboardModal {
     if (!this.modalEl) return;
 
     this.modalEl.innerHTML = `
-      <div class="modal-window" style="max-width: 640px;">
+      <div class="modal-window" style="max-width: 680px;">
         <header class="modal-header">
           <h2>
             <span>⚡</span>
@@ -54,20 +51,26 @@ export class SoundboardModal {
 
         <div class="modal-body" style="flex-direction: column;">
           <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 16px;">
-            Trigger instantaneous sound effects for your tabletop session. Use keyboard hotkeys or click pads.
+            Stage-specific sound effects tailored to this encounter. Press hotkeys <kbd>Q</kbd>, <kbd>W</kbd>, <kbd>E</kbd> or click to trigger.
           </p>
           <div class="sfx-grid">
             ${this.triggers.map(t => `
-              <button class="sfx-pad-btn" data-id="${t.id}">
+              <button class="sfx-pad-btn" data-id="${t.id}" title="${t.label} (Credit: ${t.credit || 'Tabletop SFX'} ${t.sourceUrl ? `— ${t.sourceUrl}` : ''})">
                 ${t.hotkey ? `<kbd class="sfx-pad-hotkey">${t.hotkey}</kbd>` : ''}
                 <span class="sfx-pad-icon">${t.icon || '⚡'}</span>
                 <span class="sfx-pad-label">${t.label}</span>
+                <span style="font-size: 10px; color: var(--gold-light); opacity: 0.85; margin-top: 2px;">
+                  👤 ${t.credit || 'SFX'}
+                </span>
               </button>
             `).join('')}
           </div>
         </div>
 
-        <footer class="modal-footer">
+        <footer class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 11.5px; color: var(--text-muted);">
+            Attributed & tailored per stage.
+          </span>
           <button id="btn-soundboard-done" class="btn-primary">Done</button>
         </footer>
       </div>
@@ -98,26 +101,29 @@ export class SoundboardModal {
     }
 
     if (btnEl) {
-      btnEl.classList.add('triggered');
-      setTimeout(() => btnEl.classList.remove('triggered'), 200);
+      btnEl.classList.add('active');
+      setTimeout(() => btnEl.classList.remove('active'), 250);
     }
 
-    this.audio.playSFX(id);
+    const trig = this.triggers.find(t => t.id === id);
+    if (trig && trig.file) {
+      let fileUrl = trig.file;
+      if (!fileUrl.startsWith('http') && !fileUrl.startsWith('/')) {
+        fileUrl = `adventures/phandelver/${fileUrl}`;
+      }
+      this.audio.playOneShot(fileUrl, 0.85);
+    }
   }
 
   open() {
     if (!this.modalEl) this.init();
-    this.modalEl.classList.remove('hidden');
     this.isOpen = true;
+    this.render();
+    this.modalEl.classList.remove('hidden');
   }
 
   close() {
-    if (this.modalEl) this.modalEl.classList.add('hidden');
     this.isOpen = false;
-  }
-
-  toggle() {
-    if (this.isOpen) this.close();
-    else this.open();
+    if (this.modalEl) this.modalEl.classList.add('hidden');
   }
 }

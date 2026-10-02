@@ -1,7 +1,7 @@
 /**
  * DnD-Soundscape: Stage Context Menu (Minimal, Non-blocking Floating Card)
  * High-density, intuitive tabletop audio manager anchored beside the map.
- * Replaces bulky fullscreen modal with a clean, responsive context card.
+ * Includes complete, obvious Credit & Attribution controls for every track and sound.
  */
 
 import { generateId, showToast } from '../utils/helpers.js';
@@ -31,18 +31,80 @@ export const RPG_EMOJIS = [
 
 export const PRESET_TRACKS = {
   music: [
-    { title: 'Tavern Strings & Lute', file: 'audio/music/tavern_strings.mp3' },
-    { title: 'Goblin Skirmish Battle', file: 'audio/music/ambush_combat.mp3' },
-    { title: 'Cragmaw Cavern Depths', file: 'audio/music/cragmaw_caverns.mp3' },
-    { title: 'Tresendar Manor Cellars', file: 'audio/music/tresendar_manor.mp3' },
-    { title: 'Ruins of Thundertree', file: 'audio/music/thundertree_ruins.mp3' },
-    { title: 'Forge of Spells Climax Battle', file: 'audio/music/wave_echo_climax.mp3' }
+    {
+      title: 'Cozy Tavern Strings (Adrian von Ziegler)',
+      file: 'audio/music/tavern_strings.mp3',
+      credit: 'Adrian von Ziegler - The Gilded Tavern',
+      sourceUrl: 'https://www.youtube.com/watch?v=orgikrTCKTc'
+    },
+    {
+      title: 'Triboar Skirmish (Soundtale RPG)',
+      file: 'audio/music/ambush_combat.mp3',
+      credit: 'Soundtale RPG - A Snowy Skirmish',
+      sourceUrl: 'https://www.youtube.com/watch?v=gfKUmcAjk0k'
+    },
+    {
+      title: 'Cragmaw Cavern Depths (Soundtale RPG)',
+      file: 'audio/music/cragmaw_caverns.mp3',
+      credit: 'Soundtale RPG - Mora the Spider (Caverns)',
+      sourceUrl: 'https://www.youtube.com/watch?v=iVQSL9Mqlpo'
+    },
+    {
+      title: 'Tresendar Manor Cellars (Soundtale RPG)',
+      file: 'audio/music/tresendar_manor.mp3',
+      credit: 'Soundtale RPG - Haunted Castle Cellars',
+      sourceUrl: 'https://www.youtube.com/watch?v=4ZelokMWpCk'
+    },
+    {
+      title: 'Ruins of Thundertree Dread (Soundtale RPG)',
+      file: 'audio/music/thundertree_ruins.mp3',
+      credit: 'Soundtale RPG - Aberration Fight',
+      sourceUrl: 'https://www.youtube.com/watch?v=WahaiTaVw2k'
+    },
+    {
+      title: 'Wave Echo Cave Climax (Soundtale RPG)',
+      file: 'audio/music/wave_echo_climax.mp3',
+      credit: 'Soundtale RPG - Shriek Final Phase',
+      sourceUrl: 'https://www.youtube.com/watch?v=an-PRFDsxUA'
+    }
   ],
   ambience: [
-    { title: 'Crackling Hearthfire', file: 'audio/ambience/hearthfire_ambience.mp3' },
-    { title: 'Wilderness Mountain Wind', file: 'audio/ambience/wilderness_wind.mp3' },
-    { title: 'Subterranean Cavern Drips', file: 'audio/ambience/cavern_ambience.mp3' },
-    { title: 'Arcane Forge Hum', file: 'audio/ambience/arcane_shrine.mp3' }
+    {
+      title: 'Crowded Stonehill Tavern (Michael Ghelfi)',
+      file: 'audio/ambience/stonehill_crowd.mp3',
+      credit: 'Michael Ghelfi Studios - Crowded Tavern',
+      sourceUrl: 'https://www.youtube.com/watch?v=ylj4IS7WP1o'
+    },
+    {
+      title: 'Triboar Trail Mountain Wind (Soundtale RPG)',
+      file: 'audio/ambience/triboar_wind.mp3',
+      credit: 'Soundtale RPG - Nordland Mountain Winds',
+      sourceUrl: 'https://www.youtube.com/watch?v=lkHiqZQilYA'
+    },
+    {
+      title: 'Subterranean Cavern Stream (Soundtale RPG)',
+      file: 'audio/ambience/cragmaw_stream_cavern.mp3',
+      credit: 'Soundtale RPG - In Wonderment of Winter (Cavern Stream)',
+      sourceUrl: 'https://www.youtube.com/watch?v=8z0FC8A3Djk'
+    },
+    {
+      title: 'Tresendar Crypt Draught & Void (Soundtale RPG)',
+      file: 'audio/ambience/tresendar_crypt_void.mp3',
+      credit: 'Soundtale RPG - The Void (Subterranean Crypt)',
+      sourceUrl: 'https://www.youtube.com/watch?v=d3kAxuQSSdA'
+    },
+    {
+      title: 'Thundertree Ashen Howling Winds (White Noise Jack)',
+      file: 'audio/ambience/thundertree_ashen_winds.mp3',
+      credit: 'White Noise Jack - Howling Wind in Ruins',
+      sourceUrl: 'https://www.youtube.com/watch?v=829s22QZmgI'
+    },
+    {
+      title: 'Forge of Spells Arcane Resonance (Soundtale RPG)',
+      file: 'audio/ambience/arcane_forge_hum.mp3',
+      credit: 'Soundtale RPG - Arcane Forge Shrine Resonance',
+      sourceUrl: 'https://www.youtube.com/watch?v=4AyfLQ3i3V4'
+    }
   ]
 };
 
@@ -152,8 +214,8 @@ export class StageInspectorModal {
     const ambVol = ambLayer.volume !== undefined ? ambLayer.volume : 0.55;
     const fxVol = fxLayer.volume !== undefined ? fxLayer.volume : 0.85;
 
-    const curMusicTrack = musicLayer.tracks?.[0] || { title: 'None', file: '' };
-    const curAmbTrack = ambLayer.tracks?.[0] || { title: 'None', file: '' };
+    const curMusicTrack = musicLayer.tracks?.[0] || { title: 'None', file: '', credit: '', sourceUrl: '' };
+    const curAmbTrack = ambLayer.tracks?.[0] || { title: 'None', file: '', credit: '', sourceUrl: '' };
 
     const isMusicCustom = curMusicTrack.file && !PRESET_TRACKS.music.some(p => p.file === curMusicTrack.file);
     const isAmbCustom = curAmbTrack.file && !PRESET_TRACKS.ambience.some(p => p.file === curAmbTrack.file);
@@ -188,7 +250,7 @@ export class StageInspectorModal {
       <!-- 1. MUSIC LAYER -->
       <div class="ctx-section">
         <div class="ctx-section-header">
-          <span class="ctx-section-title">🎵 Music</span>
+          <span class="ctx-section-title">🎵 Music Soundtrack</span>
           <div class="ctx-vol-wrapper">
             <input type="range" id="ctx-vol-music" class="ctx-slider" min="0" max="1" step="0.05" value="${musicVol}">
             <span id="ctx-vol-music-val" class="ctx-vol-label">${Math.round(musicVol * 100)}%</span>
@@ -208,12 +270,34 @@ export class StageInspectorModal {
         <div id="ctx-music-custom-box" class="ctx-custom-box ${isMusicCustom ? '' : 'hidden'}">
           <input type="text" id="ctx-music-url" class="ctx-input-sm" placeholder="Paste YouTube, Spotify, or audio URL..." value="${curMusicTrack.file || ''}">
         </div>
+
+        <!-- Obvious Music Credit & Attribution Field -->
+        <div class="ctx-attribution-card">
+          <div class="ctx-attr-header">
+            <span class="ctx-attr-badge">📜 Music Attribution</span>
+            ${curMusicTrack.sourceUrl ? `
+              <a href="${curMusicTrack.sourceUrl}" target="_blank" rel="noopener" class="ctx-attr-link" title="Open source URL">
+                🔗 View Source ↗
+              </a>
+            ` : ''}
+          </div>
+          <div class="ctx-attr-grid">
+            <div class="ctx-attr-item">
+              <span class="ctx-attr-lbl">Artist:</span>
+              <input type="text" id="ctx-music-credit" class="ctx-attr-input" placeholder="e.g. Adrian von Ziegler" value="${curMusicTrack.credit || ''}">
+            </div>
+            <div class="ctx-attr-item">
+              <span class="ctx-attr-lbl">Source URL:</span>
+              <input type="text" id="ctx-music-source" class="ctx-attr-input" placeholder="https://..." value="${curMusicTrack.sourceUrl || ''}">
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 2. AMBIENCE LAYER -->
       <div class="ctx-section">
         <div class="ctx-section-header">
-          <span class="ctx-section-title">🌲 Ambience</span>
+          <span class="ctx-section-title">🌲 Ambient Atmosphere</span>
           <div class="ctx-vol-wrapper">
             <input type="range" id="ctx-vol-amb" class="ctx-slider" min="0" max="1" step="0.05" value="${ambVol}">
             <span id="ctx-vol-amb-val" class="ctx-vol-label">${Math.round(ambVol * 100)}%</span>
@@ -233,12 +317,34 @@ export class StageInspectorModal {
         <div id="ctx-amb-custom-box" class="ctx-custom-box ${isAmbCustom ? '' : 'hidden'}">
           <input type="text" id="ctx-amb-url" class="ctx-input-sm" placeholder="Paste YouTube, Spotify, or audio URL..." value="${curAmbTrack.file || ''}">
         </div>
+
+        <!-- Obvious Ambience Credit & Attribution Field -->
+        <div class="ctx-attribution-card">
+          <div class="ctx-attr-header">
+            <span class="ctx-attr-badge">📜 Ambience Attribution</span>
+            ${curAmbTrack.sourceUrl ? `
+              <a href="${curAmbTrack.sourceUrl}" target="_blank" rel="noopener" class="ctx-attr-link" title="Open source URL">
+                🔗 View Source ↗
+              </a>
+            ` : ''}
+          </div>
+          <div class="ctx-attr-grid">
+            <div class="ctx-attr-item">
+              <span class="ctx-attr-lbl">Artist:</span>
+              <input type="text" id="ctx-amb-credit" class="ctx-attr-input" placeholder="e.g. Michael Ghelfi" value="${curAmbTrack.credit || ''}">
+            </div>
+            <div class="ctx-attr-item">
+              <span class="ctx-attr-lbl">Source URL:</span>
+              <input type="text" id="ctx-amb-source" class="ctx-attr-input" placeholder="https://..." value="${curAmbTrack.sourceUrl || ''}">
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 3. INSTANT EFFECTS (SFX) -->
       <div class="ctx-section">
         <div class="ctx-section-header">
-          <span class="ctx-section-title">⚡ Soundboard SFX</span>
+          <span class="ctx-section-title">⚡ Stage SFX Triggers</span>
           <div class="ctx-vol-wrapper">
             <input type="range" id="ctx-vol-fx" class="ctx-slider" min="0" max="1" step="0.05" value="${fxVol}">
             <span id="ctx-vol-fx-val" class="ctx-vol-label">${Math.round(fxVol * 100)}%</span>
@@ -246,7 +352,7 @@ export class StageInspectorModal {
         </div>
         <div class="ctx-triggers-row">
           ${(fxLayer.triggers || []).map((trig, idx) => `
-            <button type="button" class="ctx-sfx-chip" data-idx="${idx}" title="Click to test sound">
+            <button type="button" class="ctx-sfx-chip" data-idx="${idx}" title="${trig.label} (Credit: ${trig.credit || 'RPG SFX'})">
               <span>${trig.icon || '⚡'}</span>
               <span class="ctx-sfx-label">${trig.label}</span>
               ${trig.hotkey ? `<kbd class="ctx-sfx-key">${trig.hotkey}</kbd>` : ''}
@@ -335,12 +441,16 @@ export class StageInspectorModal {
       } else {
         customBox?.classList.add('hidden');
         const match = PRESET_TRACKS.music.find(p => p.file === val);
+        const cur = this.stage.layers.music.tracks?.[0] || {};
         this.stage.layers.music.tracks = [{
           title: match ? match.title : 'Soundtrack',
           file: val,
+          credit: match?.credit || cur.credit || 'Tabletop Music',
+          sourceUrl: match?.sourceUrl || cur.sourceUrl || '',
           startSec: 0,
           endSec: null
         }];
+        this.render();
         if (this.onSave) this.onSave(this.stage);
       }
     });
@@ -349,14 +459,36 @@ export class StageInspectorModal {
     this.panelEl.querySelector('#ctx-music-url')?.addEventListener('change', (e) => {
       const url = e.target.value.trim();
       if (url) {
+        const cur = this.stage.layers.music.tracks?.[0] || {};
         this.stage.layers.music.tracks = [{
           title: 'Custom Stream Track',
           file: url,
+          credit: cur.credit || 'Stream Source',
+          sourceUrl: url,
           startSec: 0,
           endSec: null
         }];
+        this.render();
         if (this.onSave) this.onSave(this.stage);
       }
+    });
+
+    // Music Credit Edit
+    this.panelEl.querySelector('#ctx-music-credit')?.addEventListener('input', (e) => {
+      if (!this.stage.layers.music.tracks?.[0]) {
+        this.stage.layers.music.tracks = [{ title: 'Soundtrack', file: '', startSec: 0, endSec: null }];
+      }
+      this.stage.layers.music.tracks[0].credit = e.target.value;
+      if (this.onSave) this.onSave(this.stage);
+    });
+
+    // Music Source URL Edit
+    this.panelEl.querySelector('#ctx-music-source')?.addEventListener('input', (e) => {
+      if (!this.stage.layers.music.tracks?.[0]) {
+        this.stage.layers.music.tracks = [{ title: 'Soundtrack', file: '', startSec: 0, endSec: null }];
+      }
+      this.stage.layers.music.tracks[0].sourceUrl = e.target.value;
+      if (this.onSave) this.onSave(this.stage);
     });
 
     // Music Preview
@@ -374,12 +506,16 @@ export class StageInspectorModal {
       } else {
         customBox?.classList.add('hidden');
         const match = PRESET_TRACKS.ambience.find(p => p.file === val);
+        const cur = this.stage.layers.ambience.tracks?.[0] || {};
         this.stage.layers.ambience.tracks = [{
           title: match ? match.title : 'Ambience Loop',
           file: val,
+          credit: match?.credit || cur.credit || 'Tabletop Ambience',
+          sourceUrl: match?.sourceUrl || cur.sourceUrl || '',
           startSec: 0,
           endSec: null
         }];
+        this.render();
         if (this.onSave) this.onSave(this.stage);
       }
     });
@@ -388,14 +524,36 @@ export class StageInspectorModal {
     this.panelEl.querySelector('#ctx-amb-url')?.addEventListener('change', (e) => {
       const url = e.target.value.trim();
       if (url) {
+        const cur = this.stage.layers.ambience.tracks?.[0] || {};
         this.stage.layers.ambience.tracks = [{
           title: 'Custom Ambience Stream',
           file: url,
+          credit: cur.credit || 'Stream Source',
+          sourceUrl: url,
           startSec: 0,
           endSec: null
         }];
+        this.render();
         if (this.onSave) this.onSave(this.stage);
       }
+    });
+
+    // Ambience Credit Edit
+    this.panelEl.querySelector('#ctx-amb-credit')?.addEventListener('input', (e) => {
+      if (!this.stage.layers.ambience.tracks?.[0]) {
+        this.stage.layers.ambience.tracks = [{ title: 'Ambience Loop', file: '', startSec: 0, endSec: null }];
+      }
+      this.stage.layers.ambience.tracks[0].credit = e.target.value;
+      if (this.onSave) this.onSave(this.stage);
+    });
+
+    // Ambience Source URL Edit
+    this.panelEl.querySelector('#ctx-amb-source')?.addEventListener('input', (e) => {
+      if (!this.stage.layers.ambience.tracks?.[0]) {
+        this.stage.layers.ambience.tracks = [{ title: 'Ambience Loop', file: '', startSec: 0, endSec: null }];
+      }
+      this.stage.layers.ambience.tracks[0].sourceUrl = e.target.value;
+      if (this.onSave) this.onSave(this.stage);
     });
 
     // Ambience Preview
@@ -428,7 +586,9 @@ export class StageInspectorModal {
         label: formattedTitle,
         icon: '⚡',
         hotkey: '',
-        file: relPath
+        file: relPath,
+        credit: 'Custom Sound Effect',
+        sourceUrl: relPath
       });
     } else {
       if (!this.stage.layers[layerKey]) {
@@ -437,6 +597,8 @@ export class StageInspectorModal {
       this.stage.layers[layerKey].tracks = [{
         title: formattedTitle,
         file: relPath,
+        credit: 'Custom Audio Track',
+        sourceUrl: relPath,
         startSec: 0,
         endSec: null
       }];

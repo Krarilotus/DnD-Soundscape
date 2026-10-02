@@ -14,6 +14,7 @@ import { AdventureStudio } from './ui/AdventureStudio.js';
 import { CreateAdventureModal } from './ui/CreateAdventureModal.js';
 import { MobileConnectModal } from './ui/MobileConnectModal.js';
 import { SettingsModal } from './ui/SettingsModal.js';
+import { CreditsModal } from './ui/CreditsModal.js';
 import { showToast } from './utils/helpers.js';
 
 class DnDSoundscapeApp {
@@ -35,6 +36,7 @@ class DnDSoundscapeApp {
     this.createModal = null;
     this.mobileModal = null;
     this.settingsModal = null;
+    this.creditsModal = null;
 
     // DOM References
     this.mainViewContainer = null;
@@ -270,6 +272,10 @@ class DnDSoundscapeApp {
     document.getElementById('btn-nav-studio')?.addEventListener('click', () => {
       if (this.currentView !== 'stage') this.showStageView();
       if (this.currentAdventure) this.studio.toggleStudioMode(this.currentAdventure);
+    });
+
+    document.getElementById('btn-nav-credits')?.addEventListener('click', () => {
+      this.creditsModal.open();
     });
 
     document.getElementById('btn-nav-mobile')?.addEventListener('click', () => {

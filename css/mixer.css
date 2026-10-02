@@ -260,3 +260,48 @@
   background: linear-gradient(90deg, #2ecc71, #f1c40f 70%, #e74c3c);
   transition: width 0.08s ease;
 }
+
+/* ==========================================================================
+   DnD-Soundscape: Bottom HUD Live Track Credit Pills
+   ========================================================================== */
+
+.hud-track-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hud-track-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.hud-credit-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--gold-light);
+  padding: 1px 6px;
+  border-radius: 4px;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hud-credit-link {
+  color: var(--gold-light);
+  text-decoration: none;
+  font-size: 11px;
+  transition: transform var(--transition-fast);
+}
+
+.hud-credit-link:hover {
+  color: #fff;
+  transform: scale(1.15);
+}

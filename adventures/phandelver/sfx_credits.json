@@ -1,0 +1,128 @@
+{
+  "tankard_clink.wav": {
+    "id": "tankard",
+    "title": "Clinking glasses sound effect",
+    "author": "Herbert Nicolas",
+    "sourceUrl": "https://www.youtube.com/watch?v=Waljosxqz0Y",
+    "license": "Attributed Creator / CC"
+  },
+  "coin_purse.wav": {
+    "id": "coins",
+    "title": "Money Bag Drops Coins Sound Effect \ud83d\udcb0 | Clinking Cash & Gold Coin Audio",
+    "author": "Sound Around",
+    "sourceUrl": "https://www.youtube.com/watch?v=gsO7_fTbm3g",
+    "license": "Attributed Creator / CC"
+  },
+  "tavern_door.wav": {
+    "id": "door",
+    "title": "Old Wooden Doors - Open and Close - with Creaking Sound Effect",
+    "author": "Free Audio Zone",
+    "sourceUrl": "https://www.youtube.com/watch?v=D3ZuJ-I78yI",
+    "license": "Attributed Creator / CC"
+  },
+  "arrow_thunk.wav": {
+    "id": "arrow",
+    "title": "Satisfying Arrow Impact Sound Effect | High Quality \ud83c\udff9",
+    "author": "Mario Sanchez",
+    "sourceUrl": "https://www.youtube.com/watch?v=LhILCoFuy3Y",
+    "license": "Attributed Creator / CC"
+  },
+  "goblin_shriek.wav": {
+    "id": "goblin",
+    "title": "Goblin Satan's Screech",
+    "author": "Hexagon",
+    "sourceUrl": "https://www.youtube.com/watch?v=2L0F0jlu_N8",
+    "license": "Attributed Creator / CC"
+  },
+  "scimitar_clash.wav": {
+    "id": "scimitar",
+    "title": "Sekiro - Blocking and Deflecting sound effects",
+    "author": "Joseph",
+    "sourceUrl": "https://www.youtube.com/watch?v=qtNDctR2iMM",
+    "license": "Attributed Creator / CC"
+  },
+  "wolf_snarl.wav": {
+    "id": "wolf_snarl",
+    "title": "Aggressive dog growling sound effect",
+    "author": "Sound effects",
+    "sourceUrl": "https://www.youtube.com/watch?v=5Bb2DQ2H_5I",
+    "license": "Creative Commons / Royalty-Free"
+  },
+  "flood_surge.wav": {
+    "id": "flood",
+    "title": "Flood   KRLD SOUND Effect",
+    "author": "SOUND Effects Public Domain (No Copyrights)",
+    "sourceUrl": "https://www.youtube.com/watch?v=2vrwbNWrmMs",
+    "license": "Attributed Creator / CC"
+  },
+  "stealth_dagger.wav": {
+    "id": "stealth",
+    "title": "Sword Being Unsheathed SOUND Effect",
+    "author": "SOUND Effects Public Domain (No Copyrights)",
+    "sourceUrl": "https://www.youtube.com/watch?v=His6s9eZEFQ",
+    "license": "Attributed Creator / CC"
+  },
+  "nothic_whisper.wav": {
+    "id": "whisper",
+    "title": "Psy Radiation Noise and Whispers - S.T.A.L.K.E.R. 2: Heart of Chornobyl",
+    "author": "Vatislavovych",
+    "sourceUrl": "https://www.youtube.com/watch?v=DQS8Jsy7VSc",
+    "license": "Attributed Creator / CC"
+  },
+  "dice_roll.wav": {
+    "id": "dice",
+    "title": "Dice Roll Wooden Table 1 SOUND Effect",
+    "author": "SOUND Effects Public Domain (No Copyrights)",
+    "sourceUrl": "https://www.youtube.com/watch?v=UiP_6cUxRGU",
+    "license": "Attributed Creator / CC"
+  },
+  "iron_gate.wav": {
+    "id": "gate",
+    "title": "Dungeon Cell Door Slams",
+    "author": "Sound Effects Library - Topic",
+    "sourceUrl": "https://www.youtube.com/watch?v=MynlPzFRoxo",
+    "license": "Attributed Creator / CC"
+  },
+  "dragon_roar.wav": {
+    "id": "dragon",
+    "title": "Epic Fantasy Dragon Roar Sound Effect (Free Sound Effect) Free - no copyright SFX",
+    "author": "Free Video Sound Effects HD ",
+    "sourceUrl": "https://www.youtube.com/watch?v=3WJHzXGo1M8",
+    "license": "Attributed Creator / CC"
+  },
+  "poison_breath.wav": {
+    "id": "poison",
+    "title": "Gas Leak Sound Effect",
+    "author": "Free SFX",
+    "sourceUrl": "https://www.youtube.com/watch?v=gYexx2vGc_k",
+    "license": "Attributed Creator / CC"
+  },
+  "twig_blight.wav": {
+    "id": "blight",
+    "title": "Breaking a Pencil/Twig/Branch/Stick Snapping Sound Effect Free High Quality Sound FX",
+    "author": "MJL AV",
+    "sourceUrl": "https://www.youtube.com/watch?v=AVxJQSM8jxs",
+    "license": "Attributed Creator / CC"
+  },
+  "wave_boom.wav": {
+    "id": "wave_boom",
+    "title": "Cinematic Sub Bass Drop Sound Effect | SFX | Royalty Free | No Copyright",
+    "author": "as production",
+    "sourceUrl": "https://www.youtube.com/watch?v=Yzq8c2Xv5IY",
+    "license": "Creative Commons / Royalty-Free"
+  },
+  "forge_magic_burst.wav": {
+    "id": "forge",
+    "title": "Evil Magic Spell Sound Design",
+    "author": "Rayne Beckman",
+    "sourceUrl": "https://www.youtube.com/watch?v=RZtMFFudEw8",
+    "license": "Attributed Creator / CC"
+  },
+  "spider_web.wav": {
+    "id": "web",
+    "title": "Squelch Sound Effect",
+    "author": "Awesome Sounds",
+    "sourceUrl": "https://www.youtube.com/watch?v=Me6hNbTOgp0",
+    "license": "Attributed Creator / CC"
+  }
+}

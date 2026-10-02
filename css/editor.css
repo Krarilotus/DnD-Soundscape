@@ -1043,3 +1043,81 @@
   padding: 0 3px;
   border-radius: 3px;
 }
+
+/* ==========================================================================
+   DnD-Soundscape: Credit & Source Attribution UI Styles
+   ========================================================================== */
+
+.ctx-attribution-card {
+  margin-top: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+}
+
+.ctx-attr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.ctx-attr-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gold-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ctx-attr-link {
+  font-size: 11px;
+  color: var(--gold-primary);
+  text-decoration: underline;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.ctx-attr-link:hover {
+  color: #fff;
+}
+
+.ctx-attr-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ctx-attr-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ctx-attr-lbl {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  width: 55px;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.ctx-attr-input {
+  flex: 1;
+  background: rgba(14, 16, 25, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 11.5px;
+  padding: 3px 7px;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.ctx-attr-input:focus {
+  border-color: var(--gold-primary);
+}
