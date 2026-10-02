@@ -19,26 +19,26 @@ export class Crossfader {
     }
   }
 
-  crossfade(outgoingEngine, incomingEngine, durationSec = 4.0, onComplete = null) {
+  crossfade(outgoingEngine, incomingEngine, durationSec = 4.0, onComplete = null, targetGain = 1.0) {
     const now = this.ctx.currentTime;
     const dur = Math.max(0.05, durationSec);
 
-    // Fade in incoming
+    // Fade in incoming directly to targetGain (so stage keeps its configured volume)
     if (incomingEngine) {
-      incomingEngine.play(0.01);
+      incomingEngine.play(0.01, targetGain);
       incomingEngine.gainNode.gain.cancelScheduledValues(now);
       incomingEngine.gainNode.gain.setValueAtTime(0.001, now);
       
-      // Equal power curve points
+      // Equal power curve points scaled to targetGain
       const steps = 20;
       for (let i = 1; i <= steps; i++) {
         const t = i / steps;
-        const gainIn = Math.sin(t * 0.5 * Math.PI);
+        const gainIn = targetGain * Math.sin(t * 0.5 * Math.PI);
         incomingEngine.gainNode.gain.linearRampToValueAtTime(gainIn, now + t * dur);
       }
     }
 
-    // Fade out outgoing
+    // Fade out outgoing from its current gain down to 0
     if (outgoingEngine && outgoingEngine.isPlaying) {
       outgoingEngine.gainNode.gain.cancelScheduledValues(now);
       const startGain = outgoingEngine.gainNode.gain.value;

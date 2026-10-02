@@ -63,14 +63,14 @@ export class GaplessLoopEngine {
     return { success: true, mode: 'stream', duration: 0 };
   }
 
-  play(fadeDuration = 0.05) {
+  play(fadeDuration = 0.05, targetGain = 1.0) {
     if (!this.currentTrack) return;
     this.cleanupNodes();
 
     const now = this.ctx.currentTime;
     this.gainNode.gain.cancelScheduledValues(now);
     this.gainNode.gain.setValueAtTime(0.001, now);
-    this.gainNode.gain.linearRampToValueAtTime(1.0, now + Math.max(0.01, fadeDuration));
+    this.gainNode.gain.linearRampToValueAtTime(targetGain, now + Math.max(0.01, fadeDuration));
 
     let filePath = this.currentTrack.file || '';
     if (this.basePath && !filePath.startsWith('http') && !filePath.startsWith('/') && !filePath.startsWith('../../')) {

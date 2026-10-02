@@ -255,11 +255,20 @@ export class MixerHUD {
     document.getElementById('btn-hud-mixer')?.classList.toggle('active', this.isMixerOpen);
   }
 
+  setLCDText(el, text) {
+    if (!el) return;
+    el.textContent = text;
+    // Normalize speed: roughly 3 to 4 characters per second so longer titles take longer instead of speeding up!
+    const charCount = text.length;
+    const durSec = Math.max(9, Math.round(charCount * 0.28));
+    el.style.animationDuration = `${durSec}s`;
+  }
+
   updateStageInfo(stage) {
     if (!stage) {
-      if (this.lcdTexts.music) this.lcdTexts.music.textContent = '🎵 Silence';
-      if (this.lcdTexts.ambience) this.lcdTexts.ambience.textContent = '🌲 Silence';
-      if (this.lcdTexts.effects) this.lcdTexts.effects.textContent = '⚡ Silence';
+      if (this.lcdTexts.music) this.setLCDText(this.lcdTexts.music, '🎵 Silence');
+      if (this.lcdTexts.ambience) this.setLCDText(this.lcdTexts.ambience, '🌲 Silence');
+      if (this.lcdTexts.effects) this.setLCDText(this.lcdTexts.effects, '⚡ Silence');
       return;
     }
 
@@ -270,19 +279,19 @@ export class MixerHUD {
     const musicTitle = musicTrack?.title || stage.layers?.music?.name || 'No Soundtrack';
     const musicCredit = musicTrack?.credit ? ` · 👤 ${musicTrack.credit}` : '';
     if (this.lcdTexts.music) {
-      this.lcdTexts.music.textContent = `🎵 ${musicTitle}${musicCredit}`;
+      this.setLCDText(this.lcdTexts.music, `🎵 ${musicTitle}${musicCredit}`);
     }
 
     const ambTitle = ambTrack?.title || stage.layers?.ambience?.name || 'No Ambience';
     const ambCredit = ambTrack?.credit ? ` · 👤 ${ambTrack.credit}` : '';
     if (this.lcdTexts.ambience) {
-      this.lcdTexts.ambience.textContent = `🌲 ${ambTitle}${ambCredit}`;
+      this.setLCDText(this.lcdTexts.ambience, `🌲 ${ambTitle}${ambCredit}`);
     }
 
     const fxTitle = fxTrack?.title || (stage.layers?.effects?.triggers?.length ? `${stage.layers.effects.triggers.length} Stage Triggers` : 'No SFX');
     const fxCredit = fxTrack?.credit ? ` · 👤 ${fxTrack.credit}` : '';
     if (this.lcdTexts.effects) {
-      this.lcdTexts.effects.textContent = `⚡ ${fxTitle}${fxCredit}`;
+      this.setLCDText(this.lcdTexts.effects, `⚡ ${fxTitle}${fxCredit}`);
     }
 
     // Update Fader initial values

@@ -182,6 +182,7 @@ export class AudioEngine {
     const musicLayer = stage.layers?.music;
     const curMusicEngine = this.getActiveMusicEngine();
     const nextMusicEngine = this.getInactiveMusicEngine();
+    const musicTargetGain = (musicLayer && musicLayer.volume !== undefined) ? musicLayer.volume : 0.7;
 
     if (musicLayer && musicLayer.tracks && musicLayer.tracks.length > 0) {
       const track = musicLayer.tracks[0];
@@ -190,13 +191,13 @@ export class AudioEngine {
 
       if (streamType === 'youtube' || streamType === 'spotify') {
         if (curMusicEngine) curMusicEngine.stop(fadeDur);
-        const streamVol = (musicLayer.volume !== undefined ? musicLayer.volume : 0.75) * this.masterVolume;
+        const streamVol = musicTargetGain * this.masterVolume;
         this.streaming.playStream(sourceStr, streamVol, track.startSec, track.endSec);
       } else {
         if (this.streaming) this.streaming.stopAll();
         await nextMusicEngine.loadTrack(track, this.basePath);
-        this.buses.music.setVolume(musicLayer.volume !== undefined ? musicLayer.volume : 0.7);
-        this.crossfader.crossfade(curMusicEngine, nextMusicEngine, fadeDur);
+        // Crossfade engine directly to targetGain without jumping shared bus
+        this.crossfader.crossfade(curMusicEngine, nextMusicEngine, fadeDur, null, musicTargetGain);
         this.engines.activeMusic = this.engines.activeMusic === 'A' ? 'B' : 'A';
       }
     } else {
@@ -208,6 +209,7 @@ export class AudioEngine {
     const ambLayer = stage.layers?.ambience;
     const curAmbEngine = this.getActiveAmbienceEngine();
     const nextAmbEngine = this.getInactiveAmbienceEngine();
+    const ambTargetGain = (ambLayer && ambLayer.volume !== undefined) ? ambLayer.volume : 0.5;
 
     if (ambLayer && ambLayer.tracks && ambLayer.tracks.length > 0) {
       const track = ambLayer.tracks[0];
@@ -216,12 +218,12 @@ export class AudioEngine {
 
       if (streamType === 'youtube' || streamType === 'spotify') {
         if (curAmbEngine) curAmbEngine.stop(fadeDur);
-        const streamVol = (ambLayer.volume !== undefined ? ambLayer.volume : 0.5) * this.masterVolume;
+        const streamVol = ambTargetGain * this.masterVolume;
         this.streaming.playStream(sourceStr, streamVol, track.startSec, track.endSec);
       } else {
         await nextAmbEngine.loadTrack(track, this.basePath);
-        this.buses.ambience.setVolume(ambLayer.volume !== undefined ? ambLayer.volume : 0.5);
-        this.crossfader.crossfade(curAmbEngine, nextAmbEngine, fadeDur);
+        // Crossfade engine directly to targetGain without jumping shared bus
+        this.crossfader.crossfade(curAmbEngine, nextAmbEngine, fadeDur, null, ambTargetGain);
         this.engines.activeAmbience = this.engines.activeAmbience === 'A' ? 'B' : 'A';
       }
     } else {
@@ -232,19 +234,18 @@ export class AudioEngine {
     const fxLayer = stage.layers?.effects;
     const curFxEngine = this.getActiveEffectsEngine();
     const nextFxEngine = this.getInactiveEffectsEngine();
+    const fxTargetGain = (fxLayer && fxLayer.volume !== undefined) ? fxLayer.volume : 0.85;
 
     if (fxLayer && fxLayer.tracks && fxLayer.tracks.length > 0) {
       const track = fxLayer.tracks[0];
       await nextFxEngine.loadTrack(track, this.basePath);
-      this.buses.effects.setVolume(fxLayer.volume !== undefined ? fxLayer.volume : 0.85);
-      this.crossfader.crossfade(curFxEngine, nextFxEngine, fadeDur);
+      this.crossfader.crossfade(curFxEngine, nextFxEngine, fadeDur, null, fxTargetGain);
       this.engines.activeEffects = this.engines.activeEffects === 'A' ? 'B' : 'A';
     } else if (curFxEngine) {
       curFxEngine.stop(fadeDur);
     }
 
     if (fxLayer) {
-      this.buses.effects.setVolume(fxLayer.volume !== undefined ? fxLayer.volume : 0.85);
       this.sfxPad.setTriggers(fxLayer.triggers || [], this.basePath);
     }
   }

@@ -14,17 +14,17 @@
   "stages": [
     {
       "id": "stonehill_inn",
-      "label": "1. The Stonehill Inn (Phandalin)",
+      "label": "Stonehill Inn",
       "type": "roleplay",
-      "icon": "\ud83c\udf7a",
+      "icon": "🍺",
       "hotkey": "1",
       "crossfadeSec": 4,
       "hotspot": {
-        "x": 48,
-        "y": 66,
+        "x": 36.8,
+        "y": 73.0,
         "r": 6
       },
-      "description": "A roaring hearth, warm spiced ale, and lively lute music welcome travelers after a perilous journey.",
+      "description": "A cozy, bustling tavern in Phandalin with patrons gossiping around a warm stone hearthfire.",
       "layers": {
         "music": {
           "name": "Cozy Tavern Strings",
@@ -58,7 +58,7 @@
         },
         "effects": {
           "name": "Hearthfire & Tavern SFX",
-          "volume": 0.75,
+          "volume": 0.7,
           "playlistMode": "loopAll",
           "tracks": [
             {
@@ -74,7 +74,7 @@
             {
               "id": "tankard_clink",
               "label": "Tankard Cheers",
-              "icon": "\ud83c\udf7b",
+              "icon": "🍻",
               "hotkey": "Q",
               "file": "audio/effects/tankard_clink.wav",
               "credit": "Herbert Nicolas",
@@ -84,7 +84,7 @@
             {
               "id": "coin_purse",
               "label": "Coin Purse",
-              "icon": "\ud83e\ude99",
+              "icon": "🪙",
               "hotkey": "W",
               "file": "audio/effects/coin_purse.wav",
               "credit": "Sound Around",
@@ -94,7 +94,7 @@
             {
               "id": "tavern_door",
               "label": "Tavern Door",
-              "icon": "\ud83d\udeaa",
+              "icon": "🚪",
               "hotkey": "E",
               "file": "audio/effects/tavern_door.wav",
               "credit": "Free Audio Zone",
@@ -103,21 +103,22 @@
             }
           ]
         }
-      }
+      },
+      "name": "Stonehill Inn (Phandalin)"
     },
     {
       "id": "triboar_trail",
-      "label": "2. Goblin Ambush (Triboar Trail)",
+      "label": "Triboar Trail",
       "type": "combat",
-      "icon": "\u2694\ufe0f",
+      "icon": "⚔️",
       "hotkey": "2",
       "crossfadeSec": 2,
       "hotspot": {
-        "x": 68.5,
-        "y": 58.2,
+        "x": 82.0,
+        "y": 72.0,
         "r": 6
       },
-      "description": "Two dead horses block the sunken path. Goblins loose arrows from the thickets on high ground!",
+      "description": "A quiet dirt road passing through dense woodland thickets where goblins lie in wait.",
       "layers": {
         "music": {
           "name": "Goblin Ambush Battle Theme",
@@ -140,10 +141,10 @@
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Triboar Trail Howling Wind",
-              "file": "audio/ambience/pure_trail_wind.mp3",
-              "credit": "Nature Soundscapes - Pure Wind",
-              "sourceUrl": "https://www.youtube.com",
+              "title": "Triboar Trail - Peaceful Woodland & Summer Birds",
+              "file": "audio/ambience/triboar_forest_birds.mp3",
+              "credit": "TheSilentWatcher - Way of the Singing Forest",
+              "sourceUrl": "https://www.youtube.com/watch?v=EHklxmBvzwc",
               "startSec": 0,
               "endSec": null
             }
@@ -153,21 +154,12 @@
           "name": "Trail Brush Gusts & Ambush SFX",
           "volume": 0.8,
           "playlistMode": "loopAll",
-          "tracks": [
-            {
-              "title": "Dry Forest & Brush Wind",
-              "file": "audio/effects/forest_wind.wav",
-              "credit": "RPG Foliage Soundscapes",
-              "sourceUrl": "https://freesound.org",
-              "startSec": 0,
-              "endSec": null
-            }
-          ],
+          "tracks": [],
           "triggers": [
             {
               "id": "arrow_thunk",
               "label": "Goblin Arrow",
-              "icon": "\ud83c\udff9",
+              "icon": "🏹",
               "hotkey": "Q",
               "file": "audio/effects/arrow_thunk.wav",
               "credit": "Mario Sanchez",
@@ -177,7 +169,7 @@
             {
               "id": "goblin_shriek",
               "label": "Ambush Shriek",
-              "icon": "\ud83d\udc7a",
+              "icon": "👺",
               "hotkey": "W",
               "file": "audio/effects/goblin_shriek.wav",
               "credit": "Hexagon",
@@ -187,7 +179,7 @@
             {
               "id": "scimitar_clash",
               "label": "Scimitar Clash",
-              "icon": "\u2694\ufe0f",
+              "icon": "⚔️",
               "hotkey": "E",
               "file": "audio/effects/scimitar_clash.wav",
               "credit": "Joseph",
@@ -196,21 +188,22 @@
             }
           ]
         }
-      }
+      },
+      "name": "Triboar Trail (Goblin Ambush)"
     },
     {
       "id": "cragmaw_hideout",
-      "label": "3. Cragmaw Hideout",
+      "label": "Cragmaw Hideout",
       "type": "exploration",
-      "icon": "\ud83d\udd6f\ufe0f",
+      "icon": "🕯️",
       "hotkey": "3",
       "crossfadeSec": 3.5,
       "hotspot": {
-        "x": 75.7,
-        "y": 37.2,
+        "x": 39.5,
+        "y": 51.5,
         "r": 6
       },
-      "description": "A shallow stream flows out of a dark cave mouth. Cold water drips from moss-covered limestone stalactites.",
+      "description": "A dark cavern at the base of the cliffs with an underground stream, captive wolves, and ambushing goblins.",
       "layers": {
         "music": {
           "name": "D&D Cave Exploration",
@@ -234,7 +227,7 @@
           "tracks": [
             {
               "title": "Subterranean Stream & Cavern Echo",
-              "file": "audio/ambience/pure_cave_stream.mp3",
+              "file": "audio/ambience/cragmaw_stream_cavern.mp3",
               "credit": "Cave Ambience Sound Lab - Pure River",
               "sourceUrl": "https://www.youtube.com",
               "startSec": 0,
@@ -246,21 +239,12 @@
           "name": "Cavern Drops & Hideout SFX",
           "volume": 0.75,
           "playlistMode": "loopAll",
-          "tracks": [
-            {
-              "title": "Stalactite Water Drips Echo",
-              "file": "audio/effects/cave_drips.wav",
-              "credit": "Freesound Cavern Acoustics",
-              "sourceUrl": "https://freesound.org",
-              "startSec": 0,
-              "endSec": null
-            }
-          ],
+          "tracks": [],
           "triggers": [
             {
               "id": "wolf_snarl",
               "label": "Kennel Wolves",
-              "icon": "\ud83d\udc3a",
+              "icon": "🐺",
               "hotkey": "Q",
               "file": "audio/effects/wolf_snarl.wav",
               "credit": "Sound effects",
@@ -270,7 +254,7 @@
             {
               "id": "flood_surge",
               "label": "Flash Flood",
-              "icon": "\ud83c\udf0a",
+              "icon": "🌊",
               "hotkey": "W",
               "file": "audio/effects/flood_surge.wav",
               "credit": "SOUND Effects Public Domain (No Copyrights)",
@@ -280,7 +264,7 @@
             {
               "id": "stealth_dagger",
               "label": "Sneak Attack",
-              "icon": "\ud83d\udde1\ufe0f",
+              "icon": "🗡️",
               "hotkey": "E",
               "file": "audio/effects/stealth_dagger.wav",
               "credit": "SOUND Effects Public Domain (No Copyrights)",
@@ -289,21 +273,22 @@
             }
           ]
         }
-      }
+      },
+      "name": "Cragmaw Hideout (Goblin Lair)"
     },
     {
       "id": "tresendar_manor",
-      "label": "4. Tresendar Manor (Redbrands)",
+      "label": "Tresendar Manor",
       "type": "exploration",
-      "icon": "\ud83c\udff0",
+      "icon": "🏰",
       "hotkey": "4",
       "crossfadeSec": 4,
       "hotspot": {
-        "x": 30,
-        "y": 55,
+        "x": 66.5,
+        "y": 53.0,
         "r": 6
       },
-      "description": "Ruined stone walls above, cellar dungeons and illicit gambling dens below.",
+      "description": "The ruined hilltop manor over Phandalin, concealing the ancient crypts and hideout of the Redbrand ruffians.",
       "layers": {
         "music": {
           "name": "Stealth Mission Dungeon Tension",
@@ -339,21 +324,12 @@
           "name": "Crypt Drone & Cellar SFX",
           "volume": 0.75,
           "playlistMode": "loopAll",
-          "tracks": [
-            {
-              "title": "Subterranean Crypt Stone Acoustics",
-              "file": "audio/effects/dungeon_drone.wav",
-              "credit": "Dark Fantasy Soundscapes",
-              "sourceUrl": "https://freesound.org",
-              "startSec": 0,
-              "endSec": null
-            }
-          ],
+          "tracks": [],
           "triggers": [
             {
               "id": "nothic_whisper",
               "label": "Nothic Whispers",
-              "icon": "\ud83d\udc41\ufe0f",
+              "icon": "👁️",
               "hotkey": "Q",
               "file": "audio/effects/nothic_whisper.wav",
               "credit": "Vatislavovych",
@@ -363,7 +339,7 @@
             {
               "id": "dice_roll",
               "label": "Knucklebones",
-              "icon": "\ud83c\udfb2",
+              "icon": "🎲",
               "hotkey": "W",
               "file": "audio/effects/dice_roll.wav",
               "credit": "SOUND Effects Public Domain (No Copyrights)",
@@ -373,7 +349,7 @@
             {
               "id": "iron_gate",
               "label": "Cell Iron Gate",
-              "icon": "\u26d3\ufe0f",
+              "icon": "⛓️",
               "hotkey": "E",
               "file": "audio/effects/iron_gate.wav",
               "credit": "Sound Effects Library - Topic",
@@ -382,32 +358,33 @@
             }
           ]
         }
-      }
+      },
+      "name": "Tresendar Manor (Redbrand Cellars)"
     },
     {
       "id": "thundertree",
-      "label": "5. Ruins of Thundertree",
+      "label": "Ruins of Thundertree",
       "type": "atmosphere",
-      "icon": "\ud83c\udf32",
+      "icon": "🌲",
       "hotkey": "5",
       "crossfadeSec": 4,
       "hotspot": {
-        "x": 22,
-        "y": 28,
+        "x": 88.0,
+        "y": 48.0,
         "r": 6
       },
-      "description": "Overgrown ruins shrouded in gray ash and mist, claimed by cultists and the green dragon Venomfang.",
+      "description": "A ruined town choked with ash and zombie blights, dominated by the tower where the young green dragon Venomfang nests.",
       "layers": {
         "music": {
           "name": "Dragon Encounter Battle Theme",
-          "volume": 0.7,
+          "volume": 0.75,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Dragon Encounter Battle Theme",
-              "file": "audio/music/thundertree_ruins.mp3",
-              "credit": "RPG Music Maker - Travis Savoie",
-              "sourceUrl": "https://www.youtube.com/watch?v=t3B802PIuB0",
+              "title": "Venomfang Attacks (Green Dragon Battle Theme)",
+              "file": "audio/music/venomfang_dragon_battle.mp3",
+              "credit": "Lyre RPG Music - Lost Mine of Phandelver Soundtrack",
+              "sourceUrl": "https://www.youtube.com/watch?v=vfpOPpPHcpM",
               "startSec": 0,
               "endSec": null
             }
@@ -419,10 +396,10 @@
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Howling Ash Wind in Ruins",
-              "file": "audio/ambience/thundertree_ashen_winds.mp3",
-              "credit": "White Noise Jack - Howling Wind in Ruins",
-              "sourceUrl": "https://www.youtube.com/watch?v=829s22QZmgI",
+              "title": "Ruins of Thundertree - Abandoned Town Atmosphere",
+              "file": "audio/ambience/thundertree_ruins_ambience.mp3",
+              "credit": "Artificial Ambience - Abandoned Ruins Wind",
+              "sourceUrl": "https://www.youtube.com/watch?v=XyRjtAaETFI",
               "startSec": 0,
               "endSec": null
             }
@@ -432,21 +409,12 @@
           "name": "Smoldering Embers & Dragon SFX",
           "volume": 0.8,
           "playlistMode": "loopAll",
-          "tracks": [
-            {
-              "title": "Smoldering Ash & Embers",
-              "file": "audio/effects/campfire_ambience.wav",
-              "credit": "Freesound Fire Atmosphere",
-              "sourceUrl": "https://freesound.org",
-              "startSec": 0,
-              "endSec": null
-            }
-          ],
+          "tracks": [],
           "triggers": [
             {
               "id": "dragon_roar",
               "label": "Venomfang Roar",
-              "icon": "\ud83d\udc09",
+              "icon": "🐉",
               "hotkey": "Q",
               "file": "audio/effects/dragon_roar.wav",
               "credit": "Free Video Sound Effects HD ",
@@ -456,7 +424,7 @@
             {
               "id": "poison_breath",
               "label": "Poison Breath",
-              "icon": "\ud83d\udca8",
+              "icon": "💨",
               "hotkey": "W",
               "file": "audio/effects/poison_breath.wav",
               "credit": "Free SFX",
@@ -466,7 +434,7 @@
             {
               "id": "twig_blight",
               "label": "Twig Blight",
-              "icon": "\ud83e\udd40",
+              "icon": "🥀",
               "hotkey": "E",
               "file": "audio/effects/twig_blight.wav",
               "credit": "MJL AV",
@@ -475,32 +443,33 @@
             }
           ]
         }
-      }
+      },
+      "name": "Ruins of Thundertree (Venomfang Encounter)"
     },
     {
       "id": "wave_echo_cave",
-      "label": "6. Wave Echo Cave (Forge of Spells)",
+      "label": "Wave Echo Cave",
       "type": "climax",
-      "icon": "\ud83d\udc80",
+      "icon": "💀",
       "hotkey": "6",
       "crossfadeSec": 2.5,
       "hotspot": {
-        "x": 45,
-        "y": 18,
+        "x": 13.5,
+        "y": 43.5,
         "r": 6
       },
-      "description": "Rhythmic subterranean surges like distant thunder, echoing through mineral halls toward the mythical Forge of Spells.",
+      "description": "The legendary subterranean lost mine holding the Forge of Spells and the climactic showdown with Nezznar the Black Spider.",
       "layers": {
         "music": {
           "name": "Deadly Combat - Black Spider Climax",
-          "volume": 0.75,
+          "volume": 0.8,
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Deadly Combat - Climax Battle",
-              "file": "audio/music/wave_echo_climax.mp3",
-              "credit": "RPG Soundtracks - Deadly Combat",
-              "sourceUrl": "https://www.youtube.com/watch?v=m-1S1V1PZHA",
+              "title": "In the Spider's Web (Nezznar Black Spider Combat)",
+              "file": "audio/music/nezznar_boss_battle.mp3",
+              "credit": "Connor Ragas (CR Productions) - Lost Mine of Phandelver",
+              "sourceUrl": "https://www.youtube.com/watch?v=xvOg88-EGQU",
               "startSec": 0,
               "endSec": null
             }
@@ -512,10 +481,10 @@
           "playlistMode": "loopAll",
           "tracks": [
             {
-              "title": "Wave Echo Cave Subterranean Surge",
-              "file": "audio/ambience/pure_wave_echo.mp3",
-              "credit": "Epic Soundscapes - Sea Cave Surge",
-              "sourceUrl": "https://www.youtube.com",
+              "title": "Forge of Spells Arcane Resonance Hum",
+              "file": "audio/ambience/arcane_forge_hum.mp3",
+              "credit": "Soundtale RPG - Arcane Forge Hum",
+              "sourceUrl": "https://www.youtube.com/watch?v=4AyfLQ3i3V4",
               "startSec": 0,
               "endSec": null
             }
@@ -523,23 +492,14 @@
         },
         "effects": {
           "name": "Forge of Spells Arcane Hum & SFX",
-          "volume": 0.75,
+          "volume": 0.8,
           "playlistMode": "loopAll",
-          "tracks": [
-            {
-              "title": "Forge of Spells Arcane Resonance Hum",
-              "file": "audio/ambience/arcane_shrine.mp3",
-              "credit": "Soundtale RPG - Arcane Forge Hum",
-              "sourceUrl": "https://www.youtube.com/watch?v=4AyfLQ3i3V4",
-              "startSec": 0,
-              "endSec": null
-            }
-          ],
+          "tracks": [],
           "triggers": [
             {
               "id": "wave_boom",
               "label": "Wave Echo Boom",
-              "icon": "\ud83c\udf0a",
+              "icon": "🌊",
               "hotkey": "Q",
               "file": "audio/effects/wave_boom.wav",
               "credit": "as production",
@@ -549,7 +509,7 @@
             {
               "id": "forge_magic_burst",
               "label": "Forge Spellburst",
-              "icon": "\u2728",
+              "icon": "✨",
               "hotkey": "W",
               "file": "audio/effects/forge_magic_burst.wav",
               "credit": "Rayne Beckman",
@@ -559,7 +519,7 @@
             {
               "id": "spider_web",
               "label": "Web Projectile",
-              "icon": "\ud83d\udd78\ufe0f",
+              "icon": "🕸️",
               "hotkey": "E",
               "file": "audio/effects/spider_web.wav",
               "credit": "Awesome Sounds",
@@ -568,7 +528,8 @@
             }
           ]
         }
-      }
+      },
+      "name": "Wave Echo Cave (The Forge of Spells)"
     }
   ]
 }
