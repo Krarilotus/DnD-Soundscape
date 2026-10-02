@@ -71,8 +71,17 @@ export class StageView {
     this.viewportEl = document.getElementById('stage-viewport');
     this.canvasEl = document.getElementById('stage-canvas');
     this.hotspotsEl = document.getElementById('stage-hotspots');
+    this.imgEl = document.getElementById('stage-img');
 
-    this.updateLayout();
+    if (this.imgEl) {
+      if (this.imgEl.complete && this.imgEl.naturalWidth) {
+        this.updateLayout();
+      } else {
+        this.imgEl.onload = () => this.updateLayout();
+      }
+    } else {
+      this.updateLayout();
+    }
     this.renderPins();
     this.bindEvents();
     this.bindDropEvents();
@@ -84,16 +93,24 @@ export class StageView {
     const vh = this.viewportEl.clientHeight;
     if (vw === 0 || vh === 0) return;
 
-    const targetAspect = 16 / 9;
+    // Use natural aspect ratio of the image if loaded, fallback to 1376 / 768 (~1.7917)
+    let targetAspect = 1376 / 768;
+    if (this.imgEl && this.imgEl.naturalWidth && this.imgEl.naturalHeight) {
+      targetAspect = this.imgEl.naturalWidth / this.imgEl.naturalHeight;
+    }
+
     const currentAspect = vw / vh;
 
     let width, height;
+    // CONTAIN scaling: The entire image must ALWAYS be fully visible from edge to edge, never cropped!
     if (currentAspect > targetAspect) {
-      width = vw;
-      height = vw / targetAspect;
-    } else {
+      // Viewport is wider than image: height fits 100% of viewport, width scales down to fit aspect ratio
       height = vh;
-      width = vh * targetAspect;
+      width = height * targetAspect;
+    } else {
+      // Viewport is taller/narrower than image: width fits 100% of viewport, height scales down to fit aspect ratio
+      width = vw;
+      height = width / targetAspect;
     }
 
     this.canvasEl.style.width = `${Math.round(width)}px`;

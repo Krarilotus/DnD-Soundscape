@@ -89,24 +89,32 @@ html, body {
 
 /* App Container */
 #app-root {
-  display: flex;
-  flex-direction: column;
+  position: relative;
   width: 100vw;
   height: 100vh;
-  position: relative;
+  overflow: hidden;
+  background: #08090d;
 }
 
-/* Top Navigation Bar */
+/* Top Navigation Bar: Floats directly ON TOP of the image, no separate black bar! */
 .top-navbar {
-  height: 48px;
-  background: rgba(14, 16, 25, 0.96);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-gold);
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 46px;
+  background: rgba(14, 16, 25, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold);
+  border-radius: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.75), 0 0 16px var(--gold-glow);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 16px;
-  z-index: 50;
+  z-index: 60;
+  pointer-events: auto;
 }
 
 .nav-controls-center {
@@ -147,10 +155,13 @@ html, body {
 
 /* Main Content Area */
 .main-view-container {
-  flex: 1;
-  position: relative;
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   display: flex;
+  z-index: 10;
 }
 
 /* Utilities & Common Elements */
