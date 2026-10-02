@@ -1,96 +1,83 @@
 /**
- * DnD-Soundscape: Stage Inspector Modal (Popup Window)
- * Intuitive stage configuration popup with:
- * - Title, type, description, and crossfade settings
- * - Rich tabletop RPG emoji catalog picker
- * - 3-Layer volume sliders (Music, Ambience, Effects) directly in the menu
- * - Clean track list with expandable cue points (startSec & endSec) and audition player
- * - One-shot sound triggers and stage deletion
+ * DnD-Soundscape: Stage Context Menu (Minimal, Non-blocking Floating Card)
+ * High-density, intuitive tabletop audio manager anchored beside the map.
+ * Replaces bulky fullscreen modal with a clean, responsive context card.
  */
 
 import { generateId, showToast } from '../utils/helpers.js';
 
-export const RPG_EMOJI_CATALOG = [
-  // Tavern & Feast
+export const RPG_EMOJIS = [
   { icon: '🍺', label: 'Tavern' },
-  { icon: '🍻', label: 'Cheers' },
-  { icon: '🍷', label: 'Wine / Feast' },
-  { icon: '🍖', label: 'Roast / Inn' },
-  // Combat & Martial
   { icon: '⚔️', label: 'Combat' },
+  { icon: '🕯️', label: 'Cavern / Crypt' },
+  { icon: '🏰', label: 'Castle / Manor' },
+  { icon: '🌲', label: 'Forest / Wild' },
+  { icon: '💀', label: 'Boss / Danger' },
+  { icon: '🏹', label: 'Ambush' },
   { icon: '🛡️', label: 'Defense' },
-  { icon: '🏹', label: 'Archery / Ambush' },
-  { icon: '🥊', label: 'Brawl' },
-  { icon: '🗡️', label: 'Dagger / Stealth' },
-  { icon: '🩸', label: 'Danger / Wound' },
-  // Wilderness & Nature
-  { icon: '🌲', label: 'Forest' },
   { icon: '🏔️', label: 'Mountain' },
   { icon: '🏕️', label: 'Campsite' },
-  { icon: '🍂', label: 'Autumn / Trail' },
-  { icon: '❄️', label: 'Snow / Frozen' },
-  { icon: '🌋', label: 'Volcano / Fire' },
-  // Dungeons & Secrets
-  { icon: '🕯️', label: 'Candle / Crypt' },
-  { icon: '💀', label: 'Death / Boss' },
-  { icon: '🚪', label: 'Door / Passage' },
-  { icon: '🗝️', label: 'Key / Lock' },
-  { icon: '⛓️', label: 'Chains / Prison' },
-  { icon: '🕸️', label: 'Web / Spiders' },
-  // Settlements & Lore
-  { icon: '🏰', label: 'Castle' },
-  { icon: '🏛️', label: 'Temple' },
-  { icon: '🏚️', label: 'Ruins' },
-  { icon: '💎', label: 'Gems' },
-  { icon: '💰', label: 'Treasure' },
-  { icon: '👑', label: 'Throne' },
-  // Elements
-  { icon: '🌊', label: 'Ocean / Stream' },
-  { icon: '🌧️', label: 'Rainstorm' },
-  { icon: '🔥', label: 'Hearthfire' },
+  { icon: '💎', label: 'Treasure' },
   { icon: '⚡', label: 'Thunder / Magic' },
-  { icon: '💨', label: 'Wind' },
-  // Monsters & Magic
+  { icon: '🔥', label: 'Hearthfire' },
+  { icon: '🌊', label: 'Water / Echo' },
   { icon: '🐉', label: 'Dragon' },
-  { icon: '👺', label: 'Goblin / Demon' },
-  { icon: '🐺', label: 'Wolf / Beast' },
-  { icon: '🦇', label: 'Bat / Cave' },
-  { icon: '🧟', label: 'Undead' },
-  { icon: '👻', label: 'Ghost' },
+  { icon: '👺', label: 'Goblin' },
+  { icon: '🐺', label: 'Wolf' },
   { icon: '🧙', label: 'Mage' },
-  { icon: '🔮', label: 'Arcane Orb' }
+  { icon: '🔮', label: 'Arcane' },
+  { icon: '🚪', label: 'Door' }
 ];
+
+export const PRESET_TRACKS = {
+  music: [
+    { title: 'Tavern Strings & Lute', file: 'audio/music/tavern_strings.mp3' },
+    { title: 'Goblin Skirmish Battle', file: 'audio/music/ambush_combat.mp3' },
+    { title: 'Cragmaw Cavern Depths', file: 'audio/music/cragmaw_caverns.mp3' },
+    { title: 'Tresendar Manor Cellars', file: 'audio/music/tresendar_manor.mp3' },
+    { title: 'Ruins of Thundertree', file: 'audio/music/thundertree_ruins.mp3' },
+    { title: 'Forge of Spells Climax Battle', file: 'audio/music/wave_echo_climax.mp3' }
+  ],
+  ambience: [
+    { title: 'Crackling Hearthfire', file: 'audio/ambience/hearthfire_ambience.mp3' },
+    { title: 'Wilderness Mountain Wind', file: 'audio/ambience/wilderness_wind.mp3' },
+    { title: 'Subterranean Cavern Drips', file: 'audio/ambience/cavern_ambience.mp3' },
+    { title: 'Arcane Forge Hum', file: 'audio/ambience/arcane_shrine.mp3' }
+  ]
+};
 
 export class StageInspectorModal {
   constructor(options = {}) {
-    this.modalEl = null;
+    this.panelEl = null;
     this.stage = null;
     this.adventure = null;
     this.isOpen = false;
+    this.showEmojiPicker = false;
     this.onSave = options.onSave;
     this.onDelete = options.onDelete;
     this.onStageUpdated = options.onStageUpdated;
     this.previewAudioEl = null;
-    this.expandedTrackIndexes = { music: new Set(), ambience: new Set() };
+    this.activePreviewFile = null;
   }
 
   init() {
-    let el = document.getElementById('stage-inspector-modal');
+    let el = document.getElementById('stage-context-panel');
     if (!el) {
       el = document.createElement('div');
-      el.id = 'stage-inspector-modal';
-      el.className = 'modal-backdrop hidden';
-      document.body.appendChild(el);
+      el.id = 'stage-context-panel';
+      el.className = 'stage-context-panel hidden';
+      const container = document.getElementById('stage-viewport') || document.body;
+      container.appendChild(el);
     }
-    this.modalEl = el;
+    this.panelEl = el;
   }
 
   open(stage, adventure) {
-    if (!this.modalEl) this.init();
+    if (!this.panelEl) this.init();
     this.stage = stage;
     this.adventure = adventure;
     this.isOpen = true;
-    this.expandedTrackIndexes = { music: new Set(), ambience: new Set() };
+    this.showEmojiPicker = false;
 
     // Ensure 3-layer structure exists
     if (!this.stage.layers) this.stage.layers = {};
@@ -105,526 +92,328 @@ export class StageInspectorModal {
     }
 
     this.render();
-    this.modalEl.classList.remove('hidden');
+    this.panelEl.classList.remove('hidden');
   }
 
   close() {
     this.stopPreviewAudio();
     this.isOpen = false;
-    if (this.modalEl) this.modalEl.classList.add('hidden');
+    this.showEmojiPicker = false;
+    if (this.panelEl) this.panelEl.classList.add('hidden');
+    if (this.onSave && this.stage) {
+      this.onSave(this.stage);
+    }
   }
 
   stopPreviewAudio() {
     if (this.previewAudioEl) {
       this.previewAudioEl.pause();
       this.previewAudioEl = null;
+      this.activePreviewFile = null;
     }
   }
 
-  playAudioPreview(path) {
+  togglePreview(file) {
+    if (!file) return;
+    if (this.activePreviewFile === file && this.previewAudioEl && !this.previewAudioEl.paused) {
+      this.stopPreviewAudio();
+      this.render();
+      return;
+    }
     this.stopPreviewAudio();
-    if (!path) return;
+    let url = file;
+    if (this.adventure && !url.startsWith('http') && !url.startsWith('/')) {
+      url = `adventures/${this.adventure.id}/${url}`;
+    }
     try {
-      this.previewAudioEl = new Audio(path);
+      this.previewAudioEl = new Audio(url);
       this.previewAudioEl.volume = 0.8;
+      this.activePreviewFile = file;
       this.previewAudioEl.play().catch(e => console.warn('Preview blocked:', e));
+      this.previewAudioEl.onended = () => {
+        this.activePreviewFile = null;
+        this.render();
+      };
+      this.render();
     } catch (e) {
       console.warn('Audio preview error:', e);
     }
   }
 
   render() {
-    if (!this.modalEl || !this.stage) return;
+    if (!this.panelEl || !this.stage) return;
 
     const s = this.stage;
     const musicLayer = s.layers.music;
     const ambLayer = s.layers.ambience;
     const fxLayer = s.layers.effects;
 
-    const musicVolPercent = Math.round((musicLayer.volume !== undefined ? musicLayer.volume : 0.7) * 100);
-    const ambVolPercent = Math.round((ambLayer.volume !== undefined ? ambLayer.volume : 0.55) * 100);
-    const fxVolPercent = Math.round((fxLayer.volume !== undefined ? fxLayer.volume : 0.85) * 100);
+    const musicVol = musicLayer.volume !== undefined ? musicLayer.volume : 0.7;
+    const ambVol = ambLayer.volume !== undefined ? ambLayer.volume : 0.55;
+    const fxVol = fxLayer.volume !== undefined ? fxLayer.volume : 0.85;
 
-    this.modalEl.innerHTML = `
-      <div class="modal-window inspector-modal-window">
-        <!-- Header -->
-        <header class="modal-header">
-          <div class="inspector-header-title">
-            <span class="inspector-badge-icon" id="inspector-current-icon">${s.icon || '🗺️'}</span>
-            <input type="text" id="stage-input-label" class="form-input inspector-title-input" value="${s.label || ''}" placeholder="Stage Name">
-          </div>
-          <div class="inspector-header-actions">
-            <button id="btn-inspector-delete" class="btn-danger-icon" title="Delete Stage">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-              </svg>
-              <span>Delete Stage</span>
-            </button>
-            <button id="btn-inspector-close" class="btn-icon" aria-label="Close">✕</button>
-          </div>
-        </header>
+    const curMusicTrack = musicLayer.tracks?.[0] || { title: 'None', file: '' };
+    const curAmbTrack = ambLayer.tracks?.[0] || { title: 'None', file: '' };
 
-        <!-- Body -->
-        <div class="modal-body inspector-modal-body">
-          <!-- Left Column: Details & Emoji Catalog -->
-          <div class="inspector-col-left">
-            <div class="inspector-section">
-              <div class="form-row">
-                <div class="form-group" style="flex: 1;">
-                  <label class="form-label">Stage Type</label>
-                  <select id="stage-select-type" class="form-select">
-                    <option value="roleplay" ${s.type === 'roleplay' ? 'selected' : ''}>🍺 Tavern / Roleplay</option>
-                    <option value="exploration" ${s.type === 'exploration' ? 'selected' : ''}>🕯️ Exploration</option>
-                    <option value="combat" ${s.type === 'combat' ? 'selected' : ''}>⚔️ Combat</option>
-                    <option value="climax" ${s.type === 'climax' ? 'selected' : ''}>💀 Boss / Climax</option>
-                    <option value="atmosphere" ${s.type === 'atmosphere' ? 'selected' : ''}>🌲 Atmosphere</option>
-                  </select>
-                </div>
-                <div class="form-group" style="width: 100px;">
-                  <label class="form-label">Fade (sec)</label>
-                  <input type="number" id="stage-input-fade" class="form-input" min="0" max="30" step="0.5" value="${s.crossfadeSec || 4.0}">
-                </div>
-                <div class="form-group" style="width: 70px;">
-                  <label class="form-label">Hotkey</label>
-                  <input type="text" id="stage-input-hotkey" class="form-input" maxlength="2" value="${s.hotkey || ''}" placeholder="1-9" style="text-align: center; font-weight: 700;">
-                </div>
-              </div>
+    const isMusicCustom = curMusicTrack.file && !PRESET_TRACKS.music.some(p => p.file === curMusicTrack.file);
+    const isAmbCustom = curAmbTrack.file && !PRESET_TRACKS.ambience.some(p => p.file === curAmbTrack.file);
 
-              <div class="form-group">
-                <label class="form-label">Atmosphere Description</label>
-                <textarea id="stage-input-desc" class="form-textarea" rows="2" placeholder="Sensory details for the DM to narrate...">${s.description || ''}</textarea>
-              </div>
-            </div>
+    this.panelEl.innerHTML = `
+      <!-- Compact Header -->
+      <div class="ctx-header">
+        <button type="button" id="ctx-icon-badge" class="ctx-icon-badge" title="Click to change icon">
+          <span>${s.icon || '🗺️'}</span>
+        </button>
+        <input type="text" id="ctx-stage-title" class="ctx-title-input" value="${s.label || ''}" placeholder="Stage Name">
+        <div class="ctx-header-actions">
+          <button type="button" id="ctx-btn-delete" class="ctx-btn-icon ctx-btn-danger" title="Delete Stage">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+          <button type="button" id="ctx-btn-close" class="ctx-btn-icon" title="Close (Esc)">✕</button>
+        </div>
+      </div>
 
-            <!-- Emoji Catalog -->
-            <div class="inspector-section">
-              <div style="display: flex; align-items: center; justify-content: space-between;">
-                <label class="form-label" style="margin: 0;">Pin Icon</label>
-                <span style="font-size: 11px; color: var(--text-muted);">Choose Map Badge</span>
-              </div>
-              <div class="emoji-catalog-grid">
-                ${RPG_EMOJI_CATALOG.map(item => `
-                  <button type="button" class="emoji-picker-btn ${item.icon === s.icon ? 'selected' : ''}" data-icon="${item.icon}" title="${item.label}">
-                    ${item.icon}
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-          </div>
+      <!-- Quick Inline Emoji Drawer -->
+      <div id="ctx-emoji-drawer" class="ctx-emoji-drawer ${this.showEmojiPicker ? '' : 'hidden'}">
+        ${RPG_EMOJIS.map(item => `
+          <button type="button" class="ctx-emoji-chip ${item.icon === s.icon ? 'active' : ''}" data-icon="${item.icon}" title="${item.label}">
+            ${item.icon}
+          </button>
+        `).join('')}
+      </div>
 
-          <!-- Right Column: 3-Layer Audio Tracks -->
-          <div class="inspector-col-right">
-            <!-- 1. MUSIC LAYER -->
-            <div class="layer-config-box">
-              <div class="layer-config-header">
-                <div class="layer-header-title">
-                  <span class="layer-icon">🎵</span>
-                  <span class="layer-name">Music Layer</span>
-                </div>
-                <div class="layer-vol-ctrl">
-                  <span class="layer-vol-label">Default Vol:</span>
-                  <input type="range" id="vol-music" class="volume-slider" min="0" max="1" step="0.05" value="${musicLayer.volume !== undefined ? musicLayer.volume : 0.7}">
-                  <span id="vol-music-val" class="layer-vol-percent">${musicVolPercent}%</span>
-                </div>
-              </div>
-
-              <div class="layer-tracks-list">
-                ${(musicLayer.tracks || []).map((t, idx) => this.renderTrackItem('music', t, idx)).join('')}
-                ${(!musicLayer.tracks || musicLayer.tracks.length === 0) ? `
-                  <div class="empty-layer-hint">No music track assigned. Add local audio or YouTube/Spotify link below.</div>
-                ` : ''}
-              </div>
-
-              <button type="button" id="btn-add-music-track" class="btn-subtle-add">+ Add Music Track</button>
-            </div>
-
-            <!-- 2. AMBIENCE LAYER -->
-            <div class="layer-config-box">
-              <div class="layer-config-header">
-                <div class="layer-header-title">
-                  <span class="layer-icon">🌲</span>
-                  <span class="layer-name">Ambience Layer</span>
-                </div>
-                <div class="layer-vol-ctrl">
-                  <span class="layer-vol-label">Default Vol:</span>
-                  <input type="range" id="vol-ambience" class="volume-slider" min="0" max="1" step="0.05" value="${ambLayer.volume !== undefined ? ambLayer.volume : 0.55}">
-                  <span id="vol-ambience-val" class="layer-vol-percent">${ambVolPercent}%</span>
-                </div>
-              </div>
-
-              <div class="layer-tracks-list">
-                ${(ambLayer.tracks || []).map((t, idx) => this.renderTrackItem('ambience', t, idx)).join('')}
-                ${(!ambLayer.tracks || ambLayer.tracks.length === 0) ? `
-                  <div class="empty-layer-hint">No ambience loop assigned. Add local environmental loop or stream below.</div>
-                ` : ''}
-              </div>
-
-              <button type="button" id="btn-add-ambience-track" class="btn-subtle-add">+ Add Ambience Track</button>
-            </div>
-
-            <!-- 3. EFFECTS LAYER -->
-            <div class="layer-config-box">
-              <div class="layer-config-header">
-                <div class="layer-header-title">
-                  <span class="layer-icon">⚡</span>
-                  <span class="layer-name">Effects Layer (SFX)</span>
-                </div>
-                <div class="layer-vol-ctrl">
-                  <span class="layer-vol-label">Default Vol:</span>
-                  <input type="range" id="vol-effects" class="volume-slider" min="0" max="1" step="0.05" value="${fxLayer.volume !== undefined ? fxLayer.volume : 0.85}">
-                  <span id="vol-effects-val" class="layer-vol-percent">${fxVolPercent}%</span>
-                </div>
-              </div>
-
-              <div class="layer-triggers-grid">
-                ${(fxLayer.triggers || []).map((trig, idx) => `
-                  <div class="trigger-config-card" data-idx="${idx}">
-                    <div class="trigger-card-top">
-                      <span class="trigger-icon">${trig.icon || '⚔️'}</span>
-                      <input type="text" class="form-input form-input-sm trigger-label-input" value="${trig.label || ''}" placeholder="Trigger Name" data-idx="${idx}">
-                      <input type="text" class="form-input form-input-sm trigger-key-input" maxlength="1" value="${trig.hotkey || ''}" placeholder="Key" data-idx="${idx}">
-                      <button type="button" class="btn-icon-subtle btn-preview-fx" data-file="${trig.file || ''}" title="Test Sound">▶</button>
-                      <button type="button" class="btn-icon-subtle btn-del-fx" data-idx="${idx}" title="Remove">✕</button>
-                    </div>
-                    <input type="text" class="form-input form-input-sm trigger-file-input" value="${trig.file || ''}" placeholder="audio/effects/sound.wav" data-idx="${idx}">
-                  </div>
-                `).join('')}
-                ${(!fxLayer.triggers || fxLayer.triggers.length === 0) ? `
-                  <div class="empty-layer-hint">No one-shot sound effects configured. Add instant triggers below.</div>
-                ` : ''}
-              </div>
-
-              <button type="button" id="btn-add-fx-trigger" class="btn-subtle-add">+ Add One-Shot Trigger</button>
-            </div>
+      <!-- 1. MUSIC LAYER -->
+      <div class="ctx-section">
+        <div class="ctx-section-header">
+          <span class="ctx-section-title">🎵 Music</span>
+          <div class="ctx-vol-wrapper">
+            <input type="range" id="ctx-vol-music" class="ctx-slider" min="0" max="1" step="0.05" value="${musicVol}">
+            <span id="ctx-vol-music-val" class="ctx-vol-label">${Math.round(musicVol * 100)}%</span>
           </div>
         </div>
+        <div class="ctx-track-row">
+          <select id="ctx-music-select" class="ctx-select">
+            ${PRESET_TRACKS.music.map(p => `
+              <option value="${p.file}" ${curMusicTrack.file === p.file ? 'selected' : ''}>${p.title}</option>
+            `).join('')}
+            <option value="__custom__" ${isMusicCustom ? 'selected' : ''}>🔗 Custom / Stream URL...</option>
+          </select>
+          <button type="button" id="ctx-music-preview" class="ctx-preview-btn ${this.activePreviewFile === curMusicTrack.file ? 'playing' : ''}" title="Test Soundtrack">
+            ${this.activePreviewFile === curMusicTrack.file ? '⏹' : '▶'}
+          </button>
+        </div>
+        <div id="ctx-music-custom-box" class="ctx-custom-box ${isMusicCustom ? '' : 'hidden'}">
+          <input type="text" id="ctx-music-url" class="ctx-input-sm" placeholder="Paste YouTube, Spotify, or audio URL..." value="${curMusicTrack.file || ''}">
+        </div>
+      </div>
 
-        <!-- Footer -->
-        <footer class="modal-footer">
-          <button id="btn-inspector-done" class="btn-primary">Apply & Close</button>
-        </footer>
+      <!-- 2. AMBIENCE LAYER -->
+      <div class="ctx-section">
+        <div class="ctx-section-header">
+          <span class="ctx-section-title">🌲 Ambience</span>
+          <div class="ctx-vol-wrapper">
+            <input type="range" id="ctx-vol-amb" class="ctx-slider" min="0" max="1" step="0.05" value="${ambVol}">
+            <span id="ctx-vol-amb-val" class="ctx-vol-label">${Math.round(ambVol * 100)}%</span>
+          </div>
+        </div>
+        <div class="ctx-track-row">
+          <select id="ctx-amb-select" class="ctx-select">
+            ${PRESET_TRACKS.ambience.map(p => `
+              <option value="${p.file}" ${curAmbTrack.file === p.file ? 'selected' : ''}>${p.title}</option>
+            `).join('')}
+            <option value="__custom__" ${isAmbCustom ? 'selected' : ''}>🔗 Custom / Stream URL...</option>
+          </select>
+          <button type="button" id="ctx-amb-preview" class="ctx-preview-btn ${this.activePreviewFile === curAmbTrack.file ? 'playing' : ''}" title="Test Ambience">
+            ${this.activePreviewFile === curAmbTrack.file ? '⏹' : '▶'}
+          </button>
+        </div>
+        <div id="ctx-amb-custom-box" class="ctx-custom-box ${isAmbCustom ? '' : 'hidden'}">
+          <input type="text" id="ctx-amb-url" class="ctx-input-sm" placeholder="Paste YouTube, Spotify, or audio URL..." value="${curAmbTrack.file || ''}">
+        </div>
+      </div>
+
+      <!-- 3. INSTANT EFFECTS (SFX) -->
+      <div class="ctx-section">
+        <div class="ctx-section-header">
+          <span class="ctx-section-title">⚡ Soundboard SFX</span>
+          <div class="ctx-vol-wrapper">
+            <input type="range" id="ctx-vol-fx" class="ctx-slider" min="0" max="1" step="0.05" value="${fxVol}">
+            <span id="ctx-vol-fx-val" class="ctx-vol-label">${Math.round(fxVol * 100)}%</span>
+          </div>
+        </div>
+        <div class="ctx-triggers-row">
+          ${(fxLayer.triggers || []).map((trig, idx) => `
+            <button type="button" class="ctx-sfx-chip" data-idx="${idx}" title="Click to test sound">
+              <span>${trig.icon || '⚡'}</span>
+              <span class="ctx-sfx-label">${trig.label}</span>
+              ${trig.hotkey ? `<kbd class="ctx-sfx-key">${trig.hotkey}</kbd>` : ''}
+            </button>
+          `).join('')}
+        </div>
       </div>
     `;
 
     this.bindEvents();
   }
 
-  renderTrackItem(layerKey, track, idx) {
-    const isExpanded = this.expandedTrackIndexes[layerKey].has(idx);
-    const title = track.title || 'Untitled Track';
-    const file = track.file || track.source || '';
-    const startSec = track.startSec !== undefined && track.startSec !== null ? track.startSec : 0;
-    const endSec = track.endSec !== undefined && track.endSec !== null ? track.endSec : '';
-    const isStream = file.includes('youtube.com') || file.includes('youtu.be') || file.includes('spotify.com');
-
-    return `
-      <div class="track-card-clean ${isExpanded ? 'expanded' : ''}" data-layer="${layerKey}" data-idx="${idx}">
-        <div class="track-card-summary" data-layer="${layerKey}" data-idx="${idx}">
-          <div class="track-summary-left">
-            <span class="track-source-badge">${isStream ? (file.includes('spotify') ? 'Spotify' : 'YouTube') : 'Local'}</span>
-            <span class="track-title-text">${title}</span>
-            ${(startSec > 0 || endSec !== '') ? `<span class="cue-badge">${startSec}s - ${endSec || 'End'}s</span>` : ''}
-          </div>
-          <div class="track-summary-right">
-            ${!isStream ? `
-              <button type="button" class="btn-track-audition" data-file="${file}" title="Audition Track">▶</button>
-            ` : ''}
-            <span class="track-chevron">${isExpanded ? '▲' : '▼'}</span>
-          </div>
-        </div>
-
-        ${isExpanded ? `
-          <div class="track-card-details">
-            <div class="form-group">
-              <label class="form-label">Track Title</label>
-              <input type="text" class="form-input form-input-sm track-input-title" value="${title}" data-layer="${layerKey}" data-idx="${idx}">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Audio File Path or Stream URL</label>
-              <input type="text" class="form-input form-input-sm track-input-file" value="${file}" placeholder="audio/music/track.mp3 or YouTube/Spotify URL" data-layer="${layerKey}" data-idx="${idx}">
-            </div>
-            <div class="form-row" style="margin-top: 4px;">
-              <div class="form-group" style="flex: 1;">
-                <label class="form-label">Cue Start (sec)</label>
-                <input type="number" class="form-input form-input-sm track-input-start" min="0" step="1" value="${startSec}" data-layer="${layerKey}" data-idx="${idx}">
-              </div>
-              <div class="form-group" style="flex: 1;">
-                <label class="form-label">Cue End (sec)</label>
-                <input type="number" class="form-input form-input-sm track-input-end" min="0" step="1" value="${endSec}" placeholder="Full track" data-layer="${layerKey}" data-idx="${idx}">
-              </div>
-              <div style="display:flex; align-items:flex-end;">
-                <button type="button" class="btn-subtle-reset btn-reset-cue" data-layer="${layerKey}" data-idx="${idx}">Reset Cue</button>
-              </div>
-            </div>
-            <div style="display:flex; justify-content:flex-end; margin-top: 6px;">
-              <button type="button" class="btn-danger-text btn-del-track" data-layer="${layerKey}" data-idx="${idx}">Remove Track</button>
-            </div>
-          </div>
-        ` : ''}
-      </div>
-    `;
-  }
-
   bindEvents() {
-    if (!this.modalEl || !this.stage) return;
+    if (!this.panelEl || !this.stage) return;
 
-    // Close buttons
-    this.modalEl.querySelector('#btn-inspector-close')?.addEventListener('click', () => this.saveAndClose());
-    this.modalEl.querySelector('#btn-inspector-done')?.addEventListener('click', () => this.saveAndClose());
-    
-    this.modalEl.addEventListener('click', (e) => {
-      if (e.target === this.modalEl) this.saveAndClose();
-    });
+    // Close
+    this.panelEl.querySelector('#ctx-btn-close')?.addEventListener('click', () => this.close());
 
     // Delete stage
-    this.modalEl.querySelector('#btn-inspector-delete')?.addEventListener('click', () => {
-      if (confirm(`Delete stage "${this.stage.label}"?`)) {
+    this.panelEl.querySelector('#ctx-btn-delete')?.addEventListener('click', () => {
+      if (confirm(`Delete location "${this.stage.label}"?`)) {
         const id = this.stage.id;
         this.close();
         if (this.onDelete) this.onDelete(id);
       }
     });
 
-    // Live metadata inputs
-    this.modalEl.querySelector('#stage-input-label')?.addEventListener('input', (e) => {
-      this.stage.label = e.target.value;
-      if (this.onStageUpdated) this.onStageUpdated(this.stage);
+    // Icon Picker toggle
+    this.panelEl.querySelector('#ctx-icon-badge')?.addEventListener('click', () => {
+      this.showEmojiPicker = !this.showEmojiPicker;
+      this.panelEl.querySelector('#ctx-emoji-drawer')?.classList.toggle('hidden', !this.showEmojiPicker);
     });
 
-    this.modalEl.querySelector('#stage-select-type')?.addEventListener('change', (e) => {
-      this.stage.type = e.target.value;
-      if (this.onStageUpdated) this.onStageUpdated(this.stage);
-    });
-
-    this.modalEl.querySelector('#stage-input-fade')?.addEventListener('change', (e) => {
-      this.stage.crossfadeSec = parseFloat(e.target.value) || 4.0;
-    });
-
-    this.modalEl.querySelector('#stage-input-hotkey')?.addEventListener('input', (e) => {
-      this.stage.hotkey = e.target.value.trim().toUpperCase();
-      if (this.onStageUpdated) this.onStageUpdated(this.stage);
-    });
-
-    this.modalEl.querySelector('#stage-input-desc')?.addEventListener('input', (e) => {
-      this.stage.description = e.target.value;
-    });
-
-    // Emoji Catalog Picker
-    this.modalEl.querySelectorAll('.emoji-picker-btn').forEach(btn => {
+    // Emoji chip selection
+    this.panelEl.querySelectorAll('.ctx-emoji-chip').forEach(btn => {
       btn.addEventListener('click', () => {
         const icon = btn.getAttribute('data-icon');
         this.stage.icon = icon;
-        this.modalEl.querySelectorAll('.emoji-picker-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        const badge = this.modalEl.querySelector('#inspector-current-icon');
-        if (badge) badge.textContent = icon;
-        if (this.onStageUpdated) this.onStageUpdated(this.stage);
-      });
-    });
-
-    // Volume Sliders
-    const bindVol = (sliderId, labelId, layerKey) => {
-      const slider = this.modalEl.querySelector(`#${sliderId}`);
-      const valLabel = this.modalEl.querySelector(`#${labelId}`);
-      slider?.addEventListener('input', (e) => {
-        const val = parseFloat(e.target.value);
-        if (this.stage.layers[layerKey]) {
-          this.stage.layers[layerKey].volume = val;
-        }
-        if (valLabel) valLabel.textContent = `${Math.round(val * 100)}%`;
-      });
-    };
-    bindVol('vol-music', 'vol-music-val', 'music');
-    bindVol('vol-ambience', 'vol-ambience-val', 'ambience');
-    bindVol('vol-effects', 'vol-effects-val', 'effects');
-
-    // Add Track Buttons
-    this.modalEl.querySelector('#btn-add-music-track')?.addEventListener('click', () => {
-      if (!this.stage.layers.music.tracks) this.stage.layers.music.tracks = [];
-      const newIdx = this.stage.layers.music.tracks.length;
-      this.stage.layers.music.tracks.push({
-        title: 'New Music Track',
-        file: 'audio/music/tavern_strings.mp3',
-        startSec: 0,
-        endSec: null
-      });
-      this.expandedTrackIndexes.music.add(newIdx);
-      this.render();
-    });
-
-    this.modalEl.querySelector('#btn-add-ambience-track')?.addEventListener('click', () => {
-      if (!this.stage.layers.ambience.tracks) this.stage.layers.ambience.tracks = [];
-      const newIdx = this.stage.layers.ambience.tracks.length;
-      this.stage.layers.ambience.tracks.push({
-        title: 'New Ambience Track',
-        file: 'audio/ambience/hearthfire_ambience.mp3',
-        startSec: 0,
-        endSec: null
-      });
-      this.expandedTrackIndexes.ambience.add(newIdx);
-      this.render();
-    });
-
-    this.modalEl.querySelector('#btn-add-fx-trigger')?.addEventListener('click', () => {
-      if (!this.stage.layers.effects.triggers) this.stage.layers.effects.triggers = [];
-      this.stage.layers.effects.triggers.push({
-        id: generateId('sfx'),
-        label: 'New Sound Effect',
-        icon: '⚔️',
-        hotkey: '',
-        file: 'audio/effects/sword_clash.wav'
-      });
-      this.render();
-    });
-
-    // Toggle Track expansion
-    this.modalEl.querySelectorAll('.track-card-summary').forEach(el => {
-      el.addEventListener('click', (e) => {
-        if (e.target.closest('.btn-track-audition')) return;
-        const layer = el.getAttribute('data-layer');
-        const idx = parseInt(el.getAttribute('data-idx'), 10);
-        if (this.expandedTrackIndexes[layer].has(idx)) {
-          this.expandedTrackIndexes[layer].delete(idx);
-        } else {
-          this.expandedTrackIndexes[layer].add(idx);
-        }
+        this.showEmojiPicker = false;
         this.render();
+        if (this.onStageUpdated) this.onStageUpdated(this.stage);
+        if (this.onSave) this.onSave(this.stage);
       });
     });
 
-    // Audition preview buttons
-    this.modalEl.querySelectorAll('.btn-track-audition').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        let file = btn.getAttribute('data-file');
-        if (this.adventure && !file.startsWith('http') && !file.startsWith('/')) {
-          file = `adventures/${this.adventure.id}/${file}`;
-        }
-        this.playAudioPreview(file);
-      });
+    // Title input
+    this.panelEl.querySelector('#ctx-stage-title')?.addEventListener('input', (e) => {
+      this.stage.label = e.target.value;
+      if (this.onStageUpdated) this.onStageUpdated(this.stage);
+      if (this.onSave) this.onSave(this.stage);
     });
 
-    // Track editing inputs
-    this.modalEl.querySelectorAll('.track-input-title').forEach(input => {
-      input.addEventListener('input', (e) => {
-        const layer = e.target.getAttribute('data-layer');
-        const idx = parseInt(e.target.getAttribute('data-idx'), 10);
-        if (this.stage.layers[layer]?.tracks?.[idx]) {
-          this.stage.layers[layer].tracks[idx].title = e.target.value;
-        }
-      });
+    // Music Volume
+    this.panelEl.querySelector('#ctx-vol-music')?.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      this.stage.layers.music.volume = val;
+      const lbl = this.panelEl.querySelector('#ctx-vol-music-val');
+      if (lbl) lbl.textContent = `${Math.round(val * 100)}%`;
+      if (this.onSave) this.onSave(this.stage);
     });
 
-    this.modalEl.querySelectorAll('.track-input-file').forEach(input => {
-      input.addEventListener('change', (e) => {
-        const layer = e.target.getAttribute('data-layer');
-        const idx = parseInt(e.target.getAttribute('data-idx'), 10);
-        if (this.stage.layers[layer]?.tracks?.[idx]) {
-          this.stage.layers[layer].tracks[idx].file = e.target.value;
-        }
-      });
+    // Ambience Volume
+    this.panelEl.querySelector('#ctx-vol-amb')?.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      this.stage.layers.ambience.volume = val;
+      const lbl = this.panelEl.querySelector('#ctx-vol-amb-val');
+      if (lbl) lbl.textContent = `${Math.round(val * 100)}%`;
+      if (this.onSave) this.onSave(this.stage);
     });
 
-    this.modalEl.querySelectorAll('.track-input-start').forEach(input => {
-      input.addEventListener('change', (e) => {
-        const layer = e.target.getAttribute('data-layer');
-        const idx = parseInt(e.target.getAttribute('data-idx'), 10);
-        if (this.stage.layers[layer]?.tracks?.[idx]) {
-          this.stage.layers[layer].tracks[idx].startSec = parseFloat(e.target.value) || 0;
-        }
-      });
+    // FX Volume
+    this.panelEl.querySelector('#ctx-vol-fx')?.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      this.stage.layers.effects.volume = val;
+      const lbl = this.panelEl.querySelector('#ctx-vol-fx-val');
+      if (lbl) lbl.textContent = `${Math.round(val * 100)}%`;
+      if (this.onSave) this.onSave(this.stage);
     });
 
-    this.modalEl.querySelectorAll('.track-input-end').forEach(input => {
-      input.addEventListener('change', (e) => {
-        const layer = e.target.getAttribute('data-layer');
-        const idx = parseInt(e.target.getAttribute('data-idx'), 10);
-        if (this.stage.layers[layer]?.tracks?.[idx]) {
-          const val = e.target.value.trim();
-          this.stage.layers[layer].tracks[idx].endSec = val === '' ? null : parseFloat(val);
-        }
-      });
+    // Music Track Select
+    this.panelEl.querySelector('#ctx-music-select')?.addEventListener('change', (e) => {
+      const val = e.target.value;
+      const customBox = this.panelEl.querySelector('#ctx-music-custom-box');
+      if (val === '__custom__') {
+        customBox?.classList.remove('hidden');
+      } else {
+        customBox?.classList.add('hidden');
+        const match = PRESET_TRACKS.music.find(p => p.file === val);
+        this.stage.layers.music.tracks = [{
+          title: match ? match.title : 'Soundtrack',
+          file: val,
+          startSec: 0,
+          endSec: null
+        }];
+        if (this.onSave) this.onSave(this.stage);
+      }
     });
 
-    this.modalEl.querySelectorAll('.btn-reset-cue').forEach(btn => {
+    // Music Custom URL
+    this.panelEl.querySelector('#ctx-music-url')?.addEventListener('change', (e) => {
+      const url = e.target.value.trim();
+      if (url) {
+        this.stage.layers.music.tracks = [{
+          title: 'Custom Stream Track',
+          file: url,
+          startSec: 0,
+          endSec: null
+        }];
+        if (this.onSave) this.onSave(this.stage);
+      }
+    });
+
+    // Music Preview
+    this.panelEl.querySelector('#ctx-music-preview')?.addEventListener('click', () => {
+      const file = this.stage.layers.music.tracks?.[0]?.file;
+      this.togglePreview(file);
+    });
+
+    // Ambience Track Select
+    this.panelEl.querySelector('#ctx-amb-select')?.addEventListener('change', (e) => {
+      const val = e.target.value;
+      const customBox = this.panelEl.querySelector('#ctx-amb-custom-box');
+      if (val === '__custom__') {
+        customBox?.classList.remove('hidden');
+      } else {
+        customBox?.classList.add('hidden');
+        const match = PRESET_TRACKS.ambience.find(p => p.file === val);
+        this.stage.layers.ambience.tracks = [{
+          title: match ? match.title : 'Ambience Loop',
+          file: val,
+          startSec: 0,
+          endSec: null
+        }];
+        if (this.onSave) this.onSave(this.stage);
+      }
+    });
+
+    // Ambience Custom URL
+    this.panelEl.querySelector('#ctx-amb-url')?.addEventListener('change', (e) => {
+      const url = e.target.value.trim();
+      if (url) {
+        this.stage.layers.ambience.tracks = [{
+          title: 'Custom Ambience Stream',
+          file: url,
+          startSec: 0,
+          endSec: null
+        }];
+        if (this.onSave) this.onSave(this.stage);
+      }
+    });
+
+    // Ambience Preview
+    this.panelEl.querySelector('#ctx-amb-preview')?.addEventListener('click', () => {
+      const file = this.stage.layers.ambience.tracks?.[0]?.file;
+      this.togglePreview(file);
+    });
+
+    // SFX Chips Test
+    this.panelEl.querySelectorAll('.ctx-sfx-chip').forEach(btn => {
       btn.addEventListener('click', () => {
-        const layer = btn.getAttribute('data-layer');
         const idx = parseInt(btn.getAttribute('data-idx'), 10);
-        if (this.stage.layers[layer]?.tracks?.[idx]) {
-          this.stage.layers[layer].tracks[idx].startSec = 0;
-          this.stage.layers[layer].tracks[idx].endSec = null;
-          this.render();
+        const trig = this.stage.layers.effects?.triggers?.[idx];
+        if (trig && trig.file) {
+          this.togglePreview(trig.file);
         }
       });
     });
-
-    this.modalEl.querySelectorAll('.btn-del-track').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const layer = btn.getAttribute('data-layer');
-        const idx = parseInt(btn.getAttribute('data-idx'), 10);
-        if (this.stage.layers[layer]?.tracks) {
-          this.stage.layers[layer].tracks.splice(idx, 1);
-          this.expandedTrackIndexes[layer].delete(idx);
-          this.render();
-        }
-      });
-    });
-
-    // FX Triggers editing
-    this.modalEl.querySelectorAll('.trigger-label-input').forEach(input => {
-      input.addEventListener('input', (e) => {
-        const idx = parseInt(e.target.getAttribute('data-idx'), 10);
-        if (this.stage.layers.effects.triggers[idx]) {
-          this.stage.layers.effects.triggers[idx].label = e.target.value;
-        }
-      });
-    });
-
-    this.modalEl.querySelectorAll('.trigger-key-input').forEach(input => {
-      input.addEventListener('input', (e) => {
-        const idx = parseInt(e.target.getAttribute('data-idx'), 10);
-        if (this.stage.layers.effects.triggers[idx]) {
-          this.stage.layers.effects.triggers[idx].hotkey = e.target.value.trim().toUpperCase();
-        }
-      });
-    });
-
-    this.modalEl.querySelectorAll('.trigger-file-input').forEach(input => {
-      input.addEventListener('change', (e) => {
-        const idx = parseInt(e.target.getAttribute('data-idx'), 10);
-        if (this.stage.layers.effects.triggers[idx]) {
-          this.stage.layers.effects.triggers[idx].file = e.target.value;
-        }
-      });
-    });
-
-    this.modalEl.querySelectorAll('.btn-preview-fx').forEach(btn => {
-      btn.addEventListener('click', () => {
-        let file = btn.getAttribute('data-file');
-        if (this.adventure && !file.startsWith('http') && !file.startsWith('/')) {
-          file = `adventures/${this.adventure.id}/${file}`;
-        }
-        this.playAudioPreview(file);
-      });
-    });
-
-    this.modalEl.querySelectorAll('.btn-del-fx').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const idx = parseInt(btn.getAttribute('data-idx'), 10);
-        if (this.stage.layers.effects.triggers) {
-          this.stage.layers.effects.triggers.splice(idx, 1);
-          this.render();
-        }
-      });
-    });
-  }
-
-  saveAndClose() {
-    this.close();
-    if (this.onSave) {
-      this.onSave(this.stage);
-    }
   }
 
   addTrackFromDrop(layerKey, fileName, relPath) {
@@ -645,18 +434,16 @@ export class StageInspectorModal {
       if (!this.stage.layers[layerKey]) {
         this.stage.layers[layerKey] = { name: layerKey, volume: 0.7, tracks: [] };
       }
-      if (!this.stage.layers[layerKey].tracks) this.stage.layers[layerKey].tracks = [];
-      const newIdx = this.stage.layers[layerKey].tracks.length;
-      this.stage.layers[layerKey].tracks.push({
+      this.stage.layers[layerKey].tracks = [{
         title: formattedTitle,
         file: relPath,
         startSec: 0,
         endSec: null
-      });
-      this.expandedTrackIndexes[layerKey].add(newIdx);
+      }];
     }
 
     this.render();
-    showToast(`Added track "${formattedTitle}" to ${layerKey}!`, 'success');
+    if (this.onSave) this.onSave(this.stage);
+    showToast(`Added ${formattedTitle} to ${layerKey}!`, 'success');
   }
 }

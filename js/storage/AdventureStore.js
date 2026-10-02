@@ -43,12 +43,13 @@ export class AdventureStore {
   }
 
   async loadAdventure(adventureId) {
-    const path = `adventures/${adventureId}/adventure.json`;
+    const path = `adventures/${adventureId}/adventure.json?t=${Date.now()}`;
     try {
-      const resp = await fetch(path);
+      const resp = await fetch(path, { cache: 'no-cache' });
       if (resp.ok) {
         const data = await resp.json();
         this.currentAdventure = data;
+        localStorage.setItem(`adv_${adventureId}`, JSON.stringify(data));
         return data;
       }
     } catch (e) {
@@ -58,8 +59,11 @@ export class AdventureStore {
     const local = localStorage.getItem(`adv_${adventureId}`);
     if (local) {
       try {
-        this.currentAdventure = JSON.parse(local);
-        return this.currentAdventure;
+        const parsed = JSON.parse(local);
+        if (!JSON.stringify(parsed).includes('audio_presets')) {
+          this.currentAdventure = parsed;
+          return this.currentAdventure;
+        }
       } catch (e) {}
     }
 

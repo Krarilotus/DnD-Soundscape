@@ -402,6 +402,8 @@ class SoundscapeRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(total_size))
         self.send_header("Accept-Ranges", "bytes")
         self.send_header("Access-Control-Allow-Origin", "*")
+        if file_path.suffix.lower() in [".json", ".js", ".html", ".css"]:
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
         self.end_headers()
 
         if send_body:
