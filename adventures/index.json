@@ -1,0 +1,19 @@
+{
+  "defaultAdventure": "phandelver",
+  "adventures": [
+    {
+      "id": "phandelver",
+      "title": "Lost Mine of Phandelver",
+      "subtitle": "Frontier Haven, Goblin Ambushes & Wave Echo Cave",
+      "author": "Krarilotus / D&D 5e Starter Set",
+      "description": "Atmospheric tabletop soundscape with crackling hearthfire ambience, bardic melodies, combat drums, cavern drips, and one-shot effects.",
+      "stageCount": 6,
+      "previewImage": "adventures/phandelver/img/panorama.jpg",
+      "coverImage": "adventures/phandelver/img/cover.jpg",
+      "path": "adventures/phandelver/adventure.json",
+      "tags": [
+        "Custom"
+      ]
+    }
+  ]
+}

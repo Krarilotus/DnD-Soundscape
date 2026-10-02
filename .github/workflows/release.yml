@@ -1,0 +1,85 @@
+name: Build & Release DnD-Soundscape
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-test:
+    name: Validate, Test & Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate JSON configurations
+        run: |
+          python -c "import json, glob; [json.load(open(f, encoding='utf-8')) for f in glob.glob('adventures/**/*.json', recursive=True)]"
+          echo "All adventure JSON configs are valid syntax!"
+
+      - name: Generate Audio Presets & Verify Samples
+        run: |
+          python tools/generate_audio_samples.py
+          ls -la audio_presets/
+          ls -la adventures/phandelver/audio/music/
+
+      - name: Run Full Automated Validation Test Suite
+        run: |
+          python -u tools/test_soundscape.py
+
+      - name: Create Distribution Zip Archive
+        run: |
+          zip -r dnd-soundscape-v1.0.0.zip . \
+            -x ".git/*" ".github/*" "__pycache__/*" "*/__pycache__/*"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dnd-soundscape-release-package
+          path: dnd-soundscape-v1.0.0.zip
+          retention-days: 30
+
+  release:
+    name: Publish GitHub Release
+    needs: build-and-test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dnd-soundscape-release-package
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dnd-soundscape-v1.0.0.zip
+          name: DnD-Soundscape ${{ github.ref_name }}
+          body: |
+            ## DnD-Soundscape Release ${{ github.ref_name }}
+            
+            **The premier adventure audio management system, soundboard, and stage orchestrator for D&D DMs and tabletop RPGs.**
+            
+            ### ✨ Highlights:
+            - **Multi-Adventure Hub**: Manage campaigns and one-shots in dedicated project folders.
+            - **3-Layer Audio Mixer**: Simultaneous Music, Ambience, and SFX layers with live ducking and individual volume sliders.
+            - **Visual Stage Arranger**: Drag-and-drop location pins on any panorama or regional map with 16:9 responsive auto-scaling.
+            - **Smooth Crossfader Engine**: Equal-power cosine/sine crossfades, gapless loops, and instant surprise cuts.
+            - **Pre-packaged Example**: *Lost Mine of Phandelver* starter kit with generated fantasy map and royalty-free audio tracks.
+            - **Zero-Setup Quickstart**: 1-click `start.bat` (Windows) and `start.sh` (macOS/Linux).
+          draft: false
+          prerelease: false

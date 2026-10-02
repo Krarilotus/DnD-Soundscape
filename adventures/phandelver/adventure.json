@@ -1,0 +1,426 @@
+{
+  "id": "phandelver",
+  "title": "Lost Mine of Phandelver",
+  "subtitle": "Frontier Haven, Goblin Ambushes & Wave Echo Cave",
+  "author": "Krarilotus / D&D 5e Starter Set",
+  "version": "1.0.0",
+  "description": "Atmospheric tabletop soundscape with crackling hearthfire ambience, bardic melodies, combat drums, cavern drips, and one-shot effects.",
+  "previewImage": "img/panorama.jpg",
+  "coverImage": "img/cover.jpg",
+  "theme": "fantasy",
+  "defaultCrossfadeSec": 4,
+  "duckLevel": 0.35,
+  "masterVolume": 0.8,
+  "stages": [
+    {
+      "id": "stonehill_inn",
+      "label": "1. The Stonehill Inn (Phandalin)",
+      "type": "roleplay",
+      "icon": "🍺",
+      "hotkey": "1",
+      "crossfadeSec": 4,
+      "hotspot": {
+        "x": 48,
+        "y": 66,
+        "r": 6
+      },
+      "description": "A roaring hearth, warm spiced ale, and lively lute music welcome travelers after a perilous journey.",
+      "layers": {
+        "music": {
+          "name": "Tavern Bard Music",
+          "volume": 0.7,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Cozy Tavern Strings",
+              "file": "audio/music/tavern_strings.mp3",
+              "startSec": 0,
+              "endSec": null
+            },
+            {
+              "title": "Faerûn Bardic Lute (YouTube Stream)",
+              "file": "https://www.youtube.com/watch?v=kXYiU_JCYtU",
+              "startSec": 15,
+              "endSec": 300
+            }
+          ]
+        },
+        "ambience": {
+          "name": "Hearthfire & Mountain Wind",
+          "volume": 0.55,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Crackling Hearthfire Ambience",
+              "file": "audio/ambience/hearthfire_ambience.mp3",
+              "startSec": 0,
+              "endSec": null
+            },
+            {
+              "title": "Rain & Cozy Hearth (Spotify Stream)",
+              "file": "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "effects": {
+          "name": "Tavern SFX",
+          "volume": 0.85,
+          "triggers": [
+            {
+              "id": "sword",
+              "label": "Tankard Clink",
+              "icon": "⚔️",
+              "hotkey": "Q",
+              "file": "audio/effects/sword_clash.wav"
+            },
+            {
+              "id": "magic",
+              "label": "Bardic Charm",
+              "icon": "✨",
+              "hotkey": "W",
+              "file": "audio/effects/spell_surge.wav"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "triboar_trail",
+      "label": "2. Goblin Ambush (Triboar Trail)",
+      "type": "combat",
+      "icon": "⚔️",
+      "hotkey": "2",
+      "crossfadeSec": 2,
+      "hotspot": {
+        "x": 68.5,
+        "y": 58.2,
+        "r": 6
+      },
+      "description": "Two dead horses block the sunken path. Goblins loose arrows from the thickets on high ground!",
+      "layers": {
+        "music": {
+          "name": "Goblin Ambush Battle",
+          "volume": 0.8,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Goblin Skirmish Battle",
+              "file": "audio/music/ambush_combat.mp3",
+              "startSec": 0,
+              "endSec": null
+            },
+            {
+              "title": "Tabletop Combat Drums (YouTube)",
+              "file": "https://www.youtube.com/watch?v=21X5lGlDOfg",
+              "startSec": 0,
+              "endSec": 240
+            }
+          ]
+        },
+        "ambience": {
+          "name": "Triboar Trail Mountain Wind",
+          "volume": 0.5,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Wilderness Mountain Wind",
+              "file": "audio/ambience/wilderness_wind.mp3",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "effects": {
+          "name": "Combat SFX",
+          "volume": 0.9,
+          "triggers": [
+            {
+              "id": "sword",
+              "label": "Sword Clash",
+              "icon": "⚔️",
+              "hotkey": "Q",
+              "file": "audio/effects/sword_clash.wav"
+            },
+            {
+              "id": "screech",
+              "label": "Goblin Shriek",
+              "icon": "👺",
+              "hotkey": "W",
+              "file": "audio/effects/monster_roar.wav"
+            },
+            {
+              "id": "thunder",
+              "label": "Thunder",
+              "icon": "⚡",
+              "hotkey": "E",
+              "file": "audio/effects/thunderclap.wav"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cragmaw_hideout",
+      "label": "3. Cragmaw Hideout",
+      "type": "exploration",
+      "icon": "🕯️",
+      "hotkey": "3",
+      "crossfadeSec": 3.5,
+      "hotspot": {
+        "x": 75.7,
+        "y": 37.2,
+        "r": 6
+      },
+      "description": "A shallow stream flows out of a dark cave mouth. Cold water drips from moss-covered limestone stalactites.",
+      "layers": {
+        "music": {
+          "name": "Cavern Exploration",
+          "volume": 0.65,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Cragmaw Cavern Depths",
+              "file": "audio/music/cragmaw_caverns.mp3",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "ambience": {
+          "name": "Dripping Cave Stream",
+          "volume": 0.6,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Subterranean Cavern Drips",
+              "file": "audio/ambience/cavern_ambience.mp3",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "effects": {
+          "name": "Cavern SFX",
+          "volume": 0.85,
+          "triggers": [
+            {
+              "id": "blade",
+              "label": "Blade Draw",
+              "icon": "🗡️",
+              "hotkey": "Q",
+              "file": "audio/effects/sword_clash.wav"
+            },
+            {
+              "id": "growl",
+              "label": "Wolf Growl",
+              "icon": "🐺",
+              "hotkey": "W",
+              "file": "audio/effects/monster_roar.wav"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tresendar_manor",
+      "label": "4. Tresendar Manor (Redbrands)",
+      "type": "exploration",
+      "icon": "🏰",
+      "hotkey": "4",
+      "crossfadeSec": 4,
+      "hotspot": {
+        "x": 30,
+        "y": 55,
+        "r": 6
+      },
+      "description": "Ruined stone walls above, cellar dungeons and illicit gambling dens below.",
+      "layers": {
+        "music": {
+          "name": "Sinister Cellar",
+          "volume": 0.6,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Tresendar Manor Cellars",
+              "file": "audio/music/tresendar_manor.mp3",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "ambience": {
+          "name": "Cold Wind & Cellar Draught",
+          "volume": 0.5,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Cold Cellar Wind",
+              "file": "audio/ambience/wilderness_wind.mp3",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "effects": {
+          "name": "Manor SFX",
+          "volume": 0.85,
+          "triggers": [
+            {
+              "id": "brawl",
+              "label": "Brawl",
+              "icon": "⚔️",
+              "hotkey": "Q",
+              "file": "audio/effects/sword_clash.wav"
+            },
+            {
+              "id": "magic",
+              "label": "Necrotic Magic",
+              "icon": "🔮",
+              "hotkey": "W",
+              "file": "audio/effects/spell_surge.wav"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "thundertree",
+      "label": "5. Ruins of Thundertree",
+      "type": "atmosphere",
+      "icon": "🌲",
+      "hotkey": "5",
+      "crossfadeSec": 4,
+      "hotspot": {
+        "x": 22,
+        "y": 28,
+        "r": 6
+      },
+      "description": "Overgrown ruins shrouded in gray ash and mist, claimed by cultists and the green dragon Venomfang.",
+      "layers": {
+        "music": {
+          "name": "Ashen Desolation",
+          "volume": 0.6,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Ruins of Thundertree",
+              "file": "audio/music/thundertree_ruins.mp3",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "ambience": {
+          "name": "Wind & Ominous Echoes",
+          "volume": 0.5,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Ashen Forest Winds",
+              "file": "audio/ambience/wilderness_wind.mp3",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "effects": {
+          "name": "Dragon SFX",
+          "volume": 0.9,
+          "triggers": [
+            {
+              "id": "roar",
+              "label": "Dragon Roar",
+              "icon": "🐉",
+              "hotkey": "Q",
+              "file": "audio/effects/monster_roar.wav"
+            },
+            {
+              "id": "lightning",
+              "label": "Ash Storm",
+              "icon": "⚡",
+              "hotkey": "W",
+              "file": "audio/effects/thunderclap.wav"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wave_echo_cave",
+      "label": "6. Wave Echo Cave (Forge of Spells)",
+      "type": "climax",
+      "icon": "💀",
+      "hotkey": "6",
+      "crossfadeSec": 2.5,
+      "hotspot": {
+        "x": 45,
+        "y": 18,
+        "r": 6
+      },
+      "description": "Rhythmic subterranean surges like distant thunder, echoing through mineral halls toward the mythical Forge of Spells.",
+      "layers": {
+        "music": {
+          "name": "Climax Battle & Arcane Surge",
+          "volume": 0.85,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Wave Echo Climax Battle",
+              "file": "audio/music/wave_echo_climax.mp3",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "ambience": {
+          "name": "Forge Arcane Hum & Cavern Waves",
+          "volume": 0.65,
+          "playlistMode": "loopAll",
+          "tracks": [
+            {
+              "title": "Arcane Forge Hum",
+              "file": "audio/ambience/arcane_shrine.mp3",
+              "startSec": 0,
+              "endSec": null
+            },
+            {
+              "title": "Subterranean Cavern Echoes",
+              "file": "audio/ambience/cavern_ambience.mp3",
+              "startSec": 0,
+              "endSec": null
+            }
+          ]
+        },
+        "effects": {
+          "name": "Climax SFX",
+          "volume": 0.9,
+          "triggers": [
+            {
+              "id": "surge",
+              "label": "Forge Surge",
+              "icon": "🔮",
+              "hotkey": "Q",
+              "file": "audio/effects/spell_surge.wav"
+            },
+            {
+              "id": "thunder",
+              "label": "Wave Boom",
+              "icon": "⚡",
+              "hotkey": "W",
+              "file": "audio/effects/thunderclap.wav"
+            },
+            {
+              "id": "blade",
+              "label": "Spell Sword",
+              "icon": "⚔️",
+              "hotkey": "E",
+              "file": "audio/effects/sword_clash.wav"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

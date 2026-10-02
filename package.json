@@ -1,0 +1,34 @@
+{
+  "name": "dnd-soundscape",
+  "version": "1.0.0",
+  "description": "Multi-layer adventure audio manager, soundboard, and stage orchestrator for tabletop RPGs and D&D Dungeon Masters.",
+  "author": "Krarilotus",
+  "license": "MIT",
+  "main": "index.html",
+  "scripts": {
+    "start": "python tools/serve.py 8777",
+    "serve": "npx serve -l 8777 .",
+    "test": "python -u tools/test_soundscape.py",
+    "generate-audio": "python tools/generate_audio_samples.py",
+    "organize": "python tools/organize_audio.py"
+  },
+  "keywords": [
+    "dnd",
+    "dungeons-and-dragons",
+    "soundboard",
+    "audio-manager",
+    "soundscape",
+    "rpg",
+    "ttrpg",
+    "dm-tools",
+    "web-audio"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Krarilotus/DnD-Soundscape.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Krarilotus/DnD-Soundscape/issues"
+  },
+  "homepage": "https://github.com/Krarilotus/DnD-Soundscape#readme"
+}

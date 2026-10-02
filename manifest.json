@@ -1,0 +1,20 @@
+{
+  "name": "DnD-Soundscape – Adventure Audio Manager",
+  "short_name": "Soundscape",
+  "description": "Multi-layer adventure audio management system, soundboard, and stage orchestrator for tabletop RPGs and DMs.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#090a0f",
+  "theme_color": "#090a0f",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "img/icons/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["entertainment", "games", "music", "utilities"],
+  "screenshots": []
+}

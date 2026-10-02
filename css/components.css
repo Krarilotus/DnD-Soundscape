@@ -1,0 +1,201 @@
+/* ==========================================================================
+   DnD-Soundscape: Components, SFX Pad Grid, Settings & Start Overlay
+   ========================================================================== */
+
+/* Start Audio Unlock Overlay */
+.start-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(20, 24, 38, 0.95), #050609);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  transition: opacity 0.5s ease;
+}
+
+.start-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.start-card {
+  background: rgba(18, 22, 34, 0.9);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-lg);
+  padding: 40px 48px;
+  text-align: center;
+  max-width: 520px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), var(--shadow-gold);
+  animation: cardFloat 3s infinite ease-in-out;
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.start-crest {
+  font-size: 48px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 0 12px var(--gold-glow));
+}
+
+.start-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.start-subtitle {
+  color: var(--gold-primary);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.start-hints-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.start-hint-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.btn-start-action {
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  color: #0b0c10;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 14px 32px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-start-action:hover {
+  transform: scale(1.04);
+  filter: brightness(1.2);
+  box-shadow: 0 8px 28px rgba(212, 175, 55, 0.6);
+}
+
+/* ==========================================================================
+   SFX Soundboard One-Shot Trigger Pad Grid
+   ========================================================================== */
+
+.sfx-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.sfx-pad-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all var(--transition-fast);
+  position: relative;
+  user-select: none;
+}
+
+.sfx-pad-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--border-gold);
+  transform: translateY(-2px);
+}
+
+.sfx-pad-btn:active, .sfx-pad-btn.triggered {
+  background: rgba(212, 175, 55, 0.35);
+  border-color: var(--gold-light);
+  transform: scale(0.96);
+  box-shadow: 0 0 16px var(--gold-glow);
+}
+
+.sfx-pad-icon {
+  font-size: 24px;
+}
+
+.sfx-pad-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.sfx-pad-hotkey {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 10px;
+}
+
+/* ==========================================================================
+   Toast Notifications
+   ========================================================================== */
+
+.toast-container {
+  position: fixed;
+  top: 68px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 250;
+  pointer-events: none;
+}
+
+.toast {
+  background: rgba(18, 22, 34, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  color: #fff;
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.toast.toast-success { border-color: var(--accent-emerald); }
+.toast.toast-error { border-color: var(--accent-crimson); }
+.toast.toast-info { border-color: var(--accent-blue); }
