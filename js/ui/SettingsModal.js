@@ -3,7 +3,8 @@
  */
 
 export class SettingsModal {
-  constructor(audioEngine, onThemeChange) {
+  constructor(audioEngine, onThemeChange, onOpenSoundboard = null) {
+    this.onOpenSoundboard = onOpenSoundboard;
     this.audio = audioEngine;
     this.onThemeChange = onThemeChange;
     this.modalEl = null;
@@ -66,6 +67,17 @@ export class SettingsModal {
             </div>
           </div>
 
+                    <!-- Instant SFX Soundboard Launcher (Moved from bottom bar) -->
+          <div style="background: rgba(212, 175, 55, 0.08); border: 1px solid var(--border-gold); border-radius: var(--radius-md); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 600; color: #fff; font-size: 14px;">⚡ Instant SFX Soundboard Pad</div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Trigger stage combat and roleplay sound effects (Hotkey: <kbd>B</kbd>).</div>
+            </div>
+            <button type="button" id="btn-settings-soundboard" class="btn-secondary" style="border-color: var(--gold-primary); color: var(--gold-light);">
+              Open Pad
+            </button>
+          </div>
+
           <!-- Keyboard Shortcuts Cheatsheet -->
           <div>
             <label style="font-size: 12.5px; font-weight: 600; color: var(--gold-light); text-transform: uppercase;">
@@ -99,6 +111,11 @@ export class SettingsModal {
     
     this.modalEl.addEventListener('click', (e) => {
       if (e.target === this.modalEl) this.close();
+    });
+
+        this.modalEl.querySelector('#btn-settings-soundboard')?.addEventListener('click', () => {
+      this.close();
+      if (this.onOpenSoundboard) this.onOpenSoundboard();
     });
 
     const themeSelect = document.getElementById('select-theme');

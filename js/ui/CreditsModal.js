@@ -70,6 +70,7 @@ export class CreditsModal {
             ${stages.map((stage) => {
               const music = stage.layers?.music?.tracks?.[0] || {};
               const amb = stage.layers?.ambience?.tracks?.[0] || {};
+              const fxTrack = stage.layers?.effects?.tracks?.[0] || {};
               const triggers = stage.layers?.effects?.triggers || [];
 
               const matchesStage = !query || 
@@ -122,22 +123,33 @@ export class CreditsModal {
                       </div>
                     </div>
 
-                    <!-- SFX Triggers -->
-                    ${triggers.length > 0 ? `
-                      <div style="display: flex; align-items: baseline; gap: 10px; font-size: 13px; margin-top: 4px;">
-                        <span style="font-weight: 600; color: #a0aec0; width: 85px; flex-shrink: 0;">⚡ SFX:</span>
-                        <div style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px;">
-                          ${triggers.map(t => `
-                            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 4px 8px; font-size: 11.5px; display: inline-flex; align-items: center; gap: 5px;">
-                              <span>${t.icon || '⚡'}</span>
-                              <span style="color: #fff; font-weight: 500;">${t.label}</span>
-                              <span style="color: #a0aec0;">(${t.credit || 'SFX'})</span>
-                              ${t.sourceUrl ? `<a href="${t.sourceUrl}" target="_blank" rel="noopener" style="color: var(--accent-gold); margin-left: 2px;">↗</a>` : ''}
+                    <!-- Effects Loop & Triggers -->
+                    <div style="display: flex; align-items: baseline; gap: 10px; font-size: 13px;">
+                      <span style="font-weight: 600; color: #a0aec0; width: 85px; flex-shrink: 0;">⚡ Effects:</span>
+                      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                        ${fxTrack.title ? `
+                          <div>
+                            <span style="color: #edf2f7; font-weight: 500;">${fxTrack.title}</span>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                              <span style="font-size: 11.5px; color: #cbd5e0;">👤 ${fxTrack.credit || 'Atmospheric Texture'}</span>
+                              ${fxTrack.sourceUrl ? `<a href="${fxTrack.sourceUrl}" target="_blank" rel="noopener" style="font-size: 11.5px; color: var(--accent-gold); text-decoration: underline;">🔗 Source Link ↗</a>` : ''}
                             </div>
-                          `).join('')}
-                        </div>
+                          </div>
+                        ` : ''}
+                        ${triggers.length > 0 ? `
+                          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px;">
+                            ${triggers.map(t => `
+                              <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 4px 8px; font-size: 11.5px; display: inline-flex; align-items: center; gap: 5px;">
+                                <span>${t.icon || '⚡'}</span>
+                                <span style="color: #fff; font-weight: 500;">${t.label}</span>
+                                <span style="color: #a0aec0;">(${t.credit || 'SFX'})</span>
+                                ${t.sourceUrl ? `<a href="${t.sourceUrl}" target="_blank" rel="noopener" style="color: var(--accent-gold); margin-left: 2px;">↗</a>` : ''}
+                              </div>
+                            `).join('')}
+                          </div>
+                        ` : ''}
                       </div>
-                    ` : ''}
+                    </div>
                   </div>
                 </div>
               `;

@@ -30,7 +30,10 @@ export class AudioEngine {
       activeMusic: 'A',
       ambienceA: null,
       ambienceB: null,
-      activeAmbience: 'A'
+      activeAmbience: 'A',
+      effectsA: null,
+      effectsB: null,
+      activeEffects: 'A'
     };
 
     this.crossfader = null;
@@ -77,6 +80,8 @@ export class AudioEngine {
     this.engines.musicB = new GaplessLoopEngine(this.ctx, this.buses.music.inputNode);
     this.engines.ambienceA = new GaplessLoopEngine(this.ctx, this.buses.ambience.inputNode);
     this.engines.ambienceB = new GaplessLoopEngine(this.ctx, this.buses.ambience.inputNode);
+    this.engines.effectsA = new GaplessLoopEngine(this.ctx, this.buses.effects.inputNode);
+    this.engines.effectsB = new GaplessLoopEngine(this.ctx, this.buses.effects.inputNode);
 
     this.crossfader = new Crossfader(this.ctx);
     this.synth = new ProceduralSynth(this.ctx);
@@ -159,6 +164,14 @@ export class AudioEngine {
     return this.engines.activeAmbience === 'A' ? this.engines.ambienceB : this.engines.ambienceA;
   }
 
+  getActiveEffectsEngine() {
+    return this.engines.activeEffects === 'A' ? this.engines.effectsA : this.engines.effectsB;
+  }
+
+  getInactiveEffectsEngine() {
+    return this.engines.activeEffects === 'A' ? this.engines.effectsB : this.engines.effectsA;
+  }
+
   async transitionToStage(stage, crossfadeDuration = null) {
     if (!this.unlocked) await this.init();
     this.currentStage = stage;
@@ -215,8 +228,21 @@ export class AudioEngine {
       if (curAmbEngine) curAmbEngine.stop(fadeDur);
     }
 
-    // 3. Effects / SFX Layer Triggers
+    // 3. Effects / SFX Layer (Continuous Effect Loop + Triggers)
     const fxLayer = stage.layers?.effects;
+    const curFxEngine = this.getActiveEffectsEngine();
+    const nextFxEngine = this.getInactiveEffectsEngine();
+
+    if (fxLayer && fxLayer.tracks && fxLayer.tracks.length > 0) {
+      const track = fxLayer.tracks[0];
+      await nextFxEngine.loadTrack(track, this.basePath);
+      this.buses.effects.setVolume(fxLayer.volume !== undefined ? fxLayer.volume : 0.85);
+      this.crossfader.crossfade(curFxEngine, nextFxEngine, fadeDur);
+      this.engines.activeEffects = this.engines.activeEffects === 'A' ? 'B' : 'A';
+    } else if (curFxEngine) {
+      curFxEngine.stop(fadeDur);
+    }
+
     if (fxLayer) {
       this.buses.effects.setVolume(fxLayer.volume !== undefined ? fxLayer.volume : 0.85);
       this.sfxPad.setTriggers(fxLayer.triggers || [], this.basePath);

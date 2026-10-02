@@ -55,6 +55,12 @@ export class StageView {
           </div>
         ` : ''}
 
+                <!-- Transient Location Name Toast (Appears on stage change, then vanishes) -->
+        <div id="stage-transient-toast" class="stage-transient-toast hidden" aria-live="polite">
+          <span id="stage-toast-icon" class="stage-toast-icon">📍</span>
+          <span id="stage-toast-name" class="stage-toast-name">Location</span>
+        </div>
+
         <div id="stage-canvas" class="stage-canvas-container">
           <img id="stage-img" src="${previewUrl}" class="stage-panorama-img" alt="${adventure.title}" draggable="false">
           <div id="stage-hotspots" class="stage-hotspots-layer"></div>

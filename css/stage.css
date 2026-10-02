@@ -204,3 +204,51 @@
   font-size: 10.5px;
   color: var(--gold-light);
 }
+
+/* ==========================================================================
+   DnD-Soundscape: Transient Stage Location Toast (Vanishes after 2.5s)
+   ========================================================================== */
+
+.stage-transient-toast {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: rgba(14, 16, 25, 0.94);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold);
+  border-radius: 30px;
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), 0 0 16px var(--gold-glow);
+  z-index: 60;
+  pointer-events: none;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.stage-transient-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.stage-transient-toast.fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+.stage-toast-icon {
+  font-size: 20px;
+}
+
+.stage-toast-name {
+  background: linear-gradient(135deg, #fff, var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

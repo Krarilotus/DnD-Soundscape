@@ -305,3 +305,90 @@
   color: #fff;
   transform: scale(1.15);
 }
+
+/* ==========================================================================
+   DnD-Soundscape: Minimal Responsive Bottom HUD Bar & Retro MP3 LCD Strips
+   ========================================================================== */
+
+.bottom-hud-bar {
+  height: 54px;
+  background: rgba(14, 16, 25, 0.96);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border-gold);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 50;
+  gap: 16px;
+}
+
+.hud-left-group,
+.hud-center-group,
+.hud-right-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-center-group {
+  flex: 1;
+  justify-content: center;
+}
+
+/* Retro MP3 Player LCD Screen */
+.channel-lcd-screen {
+  background: #0a140d;
+  border: 1px solid #1a3820;
+  border-radius: 4px;
+  padding: 2px 6px;
+  width: 100%;
+  max-width: 140px;
+  height: 22px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(74, 222, 128, 0.15);
+  display: flex;
+  align-items: center;
+}
+
+.lcd-marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.lcd-marquee-text {
+  display: inline-block;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4ade80;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 5px rgba(74, 222, 128, 0.7);
+  animation: lcd-scroll 10s linear infinite;
+}
+
+.lcd-marquee-wrapper:hover .lcd-marquee-text {
+  animation-play-state: paused;
+}
+
+@keyframes lcd-scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@media (max-width: 600px) {
+  .bottom-hud-bar {
+    padding: 0 10px;
+    gap: 8px;
+  }
+  .hud-left-group, .hud-right-group {
+    gap: 6px;
+  }
+  .volume-slider-group input[type="range"] {
+    width: 60px;
+  }
+}

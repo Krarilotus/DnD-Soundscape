@@ -38,71 +38,109 @@ export const PRESET_TRACKS = {
       sourceUrl: 'https://www.youtube.com/watch?v=orgikrTCKTc'
     },
     {
-      title: 'Triboar Skirmish (Soundtale RPG)',
-      file: 'audio/music/ambush_combat.mp3',
-      credit: 'Soundtale RPG - A Snowy Skirmish',
-      sourceUrl: 'https://www.youtube.com/watch?v=gfKUmcAjk0k'
+      title: 'Low Level Combat: Goblin Ambush (Magalon the Wizard)',
+      file: 'audio/music/triboar_combat.mp3',
+      credit: 'Magalon the Wizard - Goblin Ambush',
+      sourceUrl: 'https://www.youtube.com/watch?v=trlkGTNuwbM'
     },
     {
-      title: 'Cragmaw Cavern Depths (Soundtale RPG)',
+      title: 'D&D Cave Exploration (YourTreasureRpg)',
       file: 'audio/music/cragmaw_caverns.mp3',
-      credit: 'Soundtale RPG - Mora the Spider (Caverns)',
-      sourceUrl: 'https://www.youtube.com/watch?v=iVQSL9Mqlpo'
+      credit: 'YourTreasureRpg - Cave Exploration',
+      sourceUrl: 'https://www.youtube.com/watch?v=a0PvlNn7B-0'
     },
     {
-      title: 'Tresendar Manor Cellars (Soundtale RPG)',
+      title: 'Stealth Mission Dungeon Tension (Enchanted Hive)',
       file: 'audio/music/tresendar_manor.mp3',
-      credit: 'Soundtale RPG - Haunted Castle Cellars',
-      sourceUrl: 'https://www.youtube.com/watch?v=4ZelokMWpCk'
+      credit: 'Enchanted Hive - Stealth Mission',
+      sourceUrl: 'https://www.youtube.com/watch?v=8yD2FXl-8f0'
     },
     {
-      title: 'Ruins of Thundertree Dread (Soundtale RPG)',
+      title: 'Dragon Encounter Battle Theme (Travis Savoie)',
       file: 'audio/music/thundertree_ruins.mp3',
-      credit: 'Soundtale RPG - Aberration Fight',
-      sourceUrl: 'https://www.youtube.com/watch?v=WahaiTaVw2k'
+      credit: 'RPG Music Maker - Travis Savoie',
+      sourceUrl: 'https://www.youtube.com/watch?v=t3B802PIuB0'
     },
     {
-      title: 'Wave Echo Cave Climax (Soundtale RPG)',
+      title: 'Deadly Combat - Climax Battle (RPG Soundtracks)',
       file: 'audio/music/wave_echo_climax.mp3',
-      credit: 'Soundtale RPG - Shriek Final Phase',
-      sourceUrl: 'https://www.youtube.com/watch?v=an-PRFDsxUA'
+      credit: 'RPG Soundtracks - Deadly Combat',
+      sourceUrl: 'https://www.youtube.com/watch?v=m-1S1V1PZHA'
     }
   ],
   ambience: [
     {
       title: 'Crowded Stonehill Tavern (Michael Ghelfi)',
       file: 'audio/ambience/stonehill_crowd.mp3',
-      credit: 'Michael Ghelfi Studios - Crowded Tavern',
+      credit: 'Michael Ghelfi Studios - Pure Tavern Murmur',
       sourceUrl: 'https://www.youtube.com/watch?v=ylj4IS7WP1o'
     },
     {
-      title: 'Triboar Trail Mountain Wind (Soundtale RPG)',
-      file: 'audio/ambience/triboar_wind.mp3',
-      credit: 'Soundtale RPG - Nordland Mountain Winds',
-      sourceUrl: 'https://www.youtube.com/watch?v=lkHiqZQilYA'
+      title: 'Triboar Trail Howling Wind (Nature Soundscapes)',
+      file: 'audio/ambience/pure_trail_wind.mp3',
+      credit: 'Nature Soundscapes - Pure Wind',
+      sourceUrl: 'https://www.youtube.com'
     },
     {
-      title: 'Subterranean Cavern Stream (Soundtale RPG)',
-      file: 'audio/ambience/cragmaw_stream_cavern.mp3',
-      credit: 'Soundtale RPG - In Wonderment of Winter (Cavern Stream)',
-      sourceUrl: 'https://www.youtube.com/watch?v=8z0FC8A3Djk'
+      title: 'Subterranean Stream & Cavern Echo (Cave Sound Lab)',
+      file: 'audio/ambience/pure_cave_stream.mp3',
+      credit: 'Cave Ambience Sound Lab - Pure River',
+      sourceUrl: 'https://www.youtube.com'
     },
     {
-      title: 'Tresendar Crypt Draught & Void (Soundtale RPG)',
-      file: 'audio/ambience/tresendar_crypt_void.mp3',
-      credit: 'Soundtale RPG - The Void (Subterranean Crypt)',
-      sourceUrl: 'https://www.youtube.com/watch?v=d3kAxuQSSdA'
+      title: 'Tresendar Crypt Room Tone Draught (Horror Ambience)',
+      file: 'audio/ambience/pure_dungeon_cellar.mp3',
+      credit: 'Horror Ambience FX - Cellar Room Tone',
+      sourceUrl: 'https://www.youtube.com'
     },
     {
-      title: 'Thundertree Ashen Howling Winds (White Noise Jack)',
+      title: 'Howling Ash Wind in Ruins (White Noise Jack)',
       file: 'audio/ambience/thundertree_ashen_winds.mp3',
       credit: 'White Noise Jack - Howling Wind in Ruins',
       sourceUrl: 'https://www.youtube.com/watch?v=829s22QZmgI'
     },
     {
-      title: 'Forge of Spells Arcane Resonance (Soundtale RPG)',
-      file: 'audio/ambience/arcane_forge_hum.mp3',
-      credit: 'Soundtale RPG - Arcane Forge Shrine Resonance',
+      title: 'Wave Echo Cave Subterranean Surge (Epic Soundscapes)',
+      file: 'audio/ambience/pure_wave_echo.mp3',
+      credit: 'Epic Soundscapes - Sea Cave Surge',
+      sourceUrl: 'https://www.youtube.com'
+    }
+  ],
+  effects: [
+    {
+      title: 'Crackling Stone Hearthfire',
+      file: 'audio/ambience/hearthfire_ambience.mp3',
+      credit: 'Clean Medieval Hearthfire',
+      sourceUrl: 'https://www.youtube.com/watch?v=ylj4IS7WP1o'
+    },
+    {
+      title: 'Dry Forest & Brush Wind',
+      file: 'audio/effects/forest_wind.wav',
+      credit: 'RPG Foliage Soundscapes',
+      sourceUrl: 'https://freesound.org'
+    },
+    {
+      title: 'Stalactite Water Drips Echo',
+      file: 'audio/effects/cave_drips.wav',
+      credit: 'Cavern Acoustic Drops',
+      sourceUrl: 'https://freesound.org'
+    },
+    {
+      title: 'Subterranean Crypt Stone Acoustics',
+      file: 'audio/effects/dungeon_drone.wav',
+      credit: 'Dark Fantasy Crypt Drone',
+      sourceUrl: 'https://freesound.org'
+    },
+    {
+      title: 'Smoldering Ash & Embers',
+      file: 'audio/effects/campfire_ambience.wav',
+      credit: 'Freesound Fire Atmosphere',
+      sourceUrl: 'https://freesound.org'
+    },
+    {
+      title: 'Forge of Spells Arcane Hum',
+      file: 'audio/ambience/arcane_shrine.mp3',
+      credit: 'Arcane Shrine Resonance',
       sourceUrl: 'https://www.youtube.com/watch?v=4AyfLQ3i3V4'
     }
   ]
