@@ -349,18 +349,160 @@ def generate_forest_wind(duration_sec=16.0):
         
     return out
 
+def generate_shield_block():
+    """Generates heavy shield deflection / block SFX."""
+    duration_sec = 1.2
+    num_samples = int(duration_sec * SAMPLE_RATE)
+    out = [0.0] * num_samples
+    
+    for i in range(num_samples):
+        t = i / SAMPLE_RATE
+        env = math.exp(-t * 9.0)
+        # Deep wood-metal resonance
+        r1 = math.sin(2.0 * math.pi * 320.0 * (1.0 + 0.8 * math.exp(-t * 40.0)) * t) * 0.5
+        r2 = math.sin(2.0 * math.pi * 780.0 * t) * 0.35 * math.exp(-t * 14.0)
+        r3 = math.sin(2.0 * math.pi * 1450.0 * t) * 0.25 * math.exp(-t * 22.0)
+        noise = (random.random() * 2.0 - 1.0) * math.exp(-t * 55.0) * 0.7
+        out[i] = (r1 + r2 + r3 + noise) * env * 0.85
+    return out
+
+def generate_fireball():
+    """Generates whooshing fireball explosion SFX."""
+    duration_sec = 2.6
+    num_samples = int(duration_sec * SAMPLE_RATE)
+    out = [0.0] * num_samples
+    
+    b0, b1 = 0.0, 0.0
+    for i in range(num_samples):
+        t = i / SAMPLE_RATE
+        noise = (random.random() * 2.0 - 1.0)
+        b0 = 0.96 * b0 + noise * 0.06
+        b1 = 0.93 * b1 + noise * 0.08
+        
+        # Explosion envelope: quick whoosh rise then rolling fiery decay
+        env = (1.0 - math.exp(-t * 25.0)) * math.exp(-t * 1.5)
+        flame = math.sin(2.0 * math.pi * (55.0 + 35.0 * math.exp(-t * 3.0)) * t) * 0.45
+        out[i] = (b0 + b1 + flame) * env * 0.9
+    return out
+
+def generate_potion_drink():
+    """Generates potion cork pop and liquid drinking SFX."""
+    duration_sec = 1.8
+    num_samples = int(duration_sec * SAMPLE_RATE)
+    out = [0.0] * num_samples
+    
+    # Cork pop at start
+    for i in range(num_samples):
+        t = i / SAMPLE_RATE
+        # Pop transient (0 to 0.15s)
+        pop = 0.0
+        if t < 0.15:
+            pop_env = math.exp(-t * 40.0)
+            pop = math.sin(2.0 * math.pi * (520.0 + 300.0 * (1.0 - t / 0.15)) * t) * pop_env * 0.8
+        
+        # 3 liquid glugs
+        glugs = 0.0
+        for g_idx, g_time in enumerate([0.35, 0.75, 1.15]):
+            if t >= g_time and t < g_time + 0.3:
+                gt = t - g_time
+                g_env = math.sin(math.pi * (gt / 0.3)) ** 2
+                g_pitch = 380.0 + (g_idx * 40.0) + 120.0 * gt
+                glugs += math.sin(2.0 * math.pi * g_pitch * gt) * g_env * 0.45
+        
+        out[i] = pop + glugs
+    return out
+
+def generate_wooden_chest():
+    """Generates heavy wooden treasure chest opening creak and thud SFX."""
+    duration_sec = 2.0
+    num_samples = int(duration_sec * SAMPLE_RATE)
+    out = [0.0] * num_samples
+    
+    for i in range(num_samples):
+        t = i / SAMPLE_RATE
+        # Wooden friction creak
+        creak_env = math.sin(math.pi * min(1.0, t / 1.4)) * 0.5
+        creak_freq = 210.0 + 80.0 * math.sin(2.0 * math.pi * 7.5 * t)
+        creak = math.sin(2.0 * math.pi * creak_freq * t) * creak_env * 0.35
+        
+        # Heavy lid thud at 1.4s
+        thud = 0.0
+        if t >= 1.3:
+            tt = t - 1.3
+            thud_env = math.exp(-tt * 8.0)
+            thud_sig = math.sin(2.0 * math.pi * 75.0 * tt) * 0.6
+            thud_noise = (random.random() * 2.0 - 1.0) * math.exp(-tt * 35.0) * 0.4
+            thud = (thud_sig + thud_noise) * thud_env
+            
+        out[i] = creak + thud
+    return out
+
+def generate_lockpick():
+    """Generates mechanical lockpick tension scrape and tumbler clicks SFX."""
+    duration_sec = 1.3
+    num_samples = int(duration_sec * SAMPLE_RATE)
+    out = [0.0] * num_samples
+    
+    for i in range(num_samples):
+        t = i / SAMPLE_RATE
+        # Scrape noise
+        scrape = (random.random() * 2.0 - 1.0) * math.exp(-t * 2.5) * 0.1
+        
+        # Click 1 at 0.35s
+        c1 = 0.0
+        if t >= 0.35 and t < 0.5:
+            ct = t - 0.35
+            c1 = math.sin(2.0 * math.pi * 3200.0 * ct) * math.exp(-ct * 70.0) * 0.7
+            
+        # Click 2 at 0.75s
+        c2 = 0.0
+        if t >= 0.75 and t < 0.95:
+            ct = t - 0.75
+            c2 = math.sin(2.0 * math.pi * 4100.0 * ct) * math.exp(-ct * 60.0) * 0.8
+            
+        out[i] = scrape + c1 + c2
+    return out
+
+def generate_temple_bell():
+    """Generates resonant cathedral / temple bronze bell chime SFX."""
+    duration_sec = 4.0
+    num_samples = int(duration_sec * SAMPLE_RATE)
+    out = [0.0] * num_samples
+    
+    # Bronze bell frequencies: fundamental 340Hz + overtones
+    partials = [
+        (340.0, 0.45, 1.2),
+        (560.0, 0.35, 1.8),
+        (840.0, 0.25, 2.5),
+        (1250.0, 0.18, 3.2),
+        (1850.0, 0.12, 4.0)
+    ]
+    
+    for i in range(num_samples):
+        t = i / SAMPLE_RATE
+        sig = 0.0
+        for freq, amp, damp in partials:
+            env = math.exp(-t * damp)
+            sig += math.sin(2.0 * math.pi * freq * t) * env * amp
+        out[i] = sig * 0.8
+    return out
+
 def main():
     root = Path(__file__).resolve().parent.parent
     presets_dir = root / "audio_presets"
+    presets_effects_dir = presets_dir / "effects"
     presets_dir.mkdir(parents=True, exist_ok=True)
+    presets_effects_dir.mkdir(parents=True, exist_ok=True)
     
     phandelver_audio = root / "adventures" / "phandelver" / "audio"
+    phandelver_effects = phandelver_audio / "effects"
     (phandelver_audio / "music").mkdir(parents=True, exist_ok=True)
     (phandelver_audio / "ambience").mkdir(parents=True, exist_ok=True)
-    (phandelver_audio / "effects").mkdir(parents=True, exist_ok=True)
+    phandelver_effects.mkdir(parents=True, exist_ok=True)
     
-    print("Generating DnD-Soundscape Audio Presets...")
+    print("Generating DnD-Soundscape Audio Presets & 30-Effect Library...")
     
+    # Music & Ambience presets
     lute = generate_tavern_lute(16.0)
     write_wav(presets_dir / "tavern_lute.wav", lute)
     write_wav(phandelver_audio / "music" / "stonehill_tavern_lute.wav", lute)
@@ -389,23 +531,60 @@ def main():
     write_wav(phandelver_audio / "ambience" / "triboar_trail_wind.wav", wind)
     write_wav(phandelver_audio / "ambience" / "thundertree_ruins_wind.wav", wind)
     
+    # Synthesized Sound Effects
     thunder = generate_thunderclap()
     write_wav(presets_dir / "thunderclap.wav", thunder)
-    write_wav(phandelver_audio / "effects" / "thunderclap.wav", thunder)
+    write_wav(phandelver_effects / "thunderclap.wav", thunder)
+    write_wav(presets_effects_dir / "thunderclap.wav", thunder)
     
     sword = generate_sword_clash()
     write_wav(presets_dir / "sword_clash.wav", sword)
-    write_wav(phandelver_audio / "effects" / "sword_clash.wav", sword)
+    write_wav(phandelver_effects / "sword_clash.wav", sword)
+    write_wav(presets_effects_dir / "sword_clash.wav", sword)
     
     magic = generate_spell_surge()
     write_wav(presets_dir / "spell_surge.wav", magic)
-    write_wav(phandelver_audio / "effects" / "spell_surge.wav", magic)
+    write_wav(phandelver_effects / "spell_surge.wav", magic)
+    write_wav(presets_effects_dir / "spell_surge.wav", magic)
     
     roar = generate_monster_roar()
     write_wav(presets_dir / "monster_roar.wav", roar)
-    write_wav(phandelver_audio / "effects" / "monster_roar.wav", roar)
+    write_wav(phandelver_effects / "monster_roar.wav", roar)
+    write_wav(presets_effects_dir / "monster_roar.wav", roar)
     
-    print("\nAll DnD-Soundscape audio presets successfully generated!")
+    shield = generate_shield_block()
+    write_wav(presets_effects_dir / "shield_block.wav", shield)
+    write_wav(phandelver_effects / "shield_block.wav", shield)
+    
+    fireball = generate_fireball()
+    write_wav(presets_effects_dir / "fireball.wav", fireball)
+    write_wav(phandelver_effects / "fireball.wav", fireball)
+    
+    potion = generate_potion_drink()
+    write_wav(presets_effects_dir / "potion_drink.wav", potion)
+    write_wav(phandelver_effects / "potion_drink.wav", potion)
+    
+    chest = generate_wooden_chest()
+    write_wav(presets_effects_dir / "wooden_chest.wav", chest)
+    write_wav(phandelver_effects / "wooden_chest.wav", chest)
+    
+    lock = generate_lockpick()
+    write_wav(presets_effects_dir / "lockpick.wav", lock)
+    write_wav(phandelver_effects / "lockpick.wav", lock)
+    
+    bell = generate_temple_bell()
+    write_wav(presets_effects_dir / "temple_bell.wav", bell)
+    write_wav(phandelver_effects / "temple_bell.wav", bell)
+    
+    # Copy all other curated adventure effects into presets_effects_dir
+    import shutil
+    for wav_file in phandelver_effects.glob("*.wav"):
+        target_preset = presets_effects_dir / wav_file.name
+        if not target_preset.exists():
+            shutil.copy2(wav_file, target_preset)
+            
+    print(f"\n30-Effect Sound Library populated in {presets_effects_dir}: {len(list(presets_effects_dir.glob('*.wav')))} WAV files.")
+    print("All DnD-Soundscape audio presets successfully generated!")
 
 if __name__ == "__main__":
     main()

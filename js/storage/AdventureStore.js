@@ -10,6 +10,10 @@ export class AdventureStore {
     this.storageKey = 'dnd_soundscape_adventures';
   }
 
+  getActiveAdventure() {
+    return this.currentAdventure;
+  }
+
   async loadAdventureList() {
     try {
       const resp = await fetch('/api/adventures');

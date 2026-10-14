@@ -99,8 +99,6 @@ export class MixerHUD {
             <div id="vu-bar-effects" class="vu-meter-bar"></div>
           </div>
           <span id="lbl-effects-vol" class="vol-readout">85%</span>
-          <!-- Stage Triggers Quick Buttons -->
-          <div id="mixer-triggers-row" class="mixer-triggers-row"></div>
         </div>
       </div>
 
@@ -119,9 +117,9 @@ export class MixerHUD {
           </button>
         </div>
 
-        <!-- Center: 3-Layer Live Mixer Toggle -->
+        <!-- Center: 3-Layer Live Volume Mixer & Scene Effect Board Toggles -->
         <div class="hud-center-group">
-          <button id="btn-hud-mixer" class="hud-action-btn" title="3-Layer Live Mixer (M)">
+          <button id="btn-hud-mixer" class="hud-action-btn" title="3-Layer Live Volume Mixer (M)">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="4" y1="21" x2="4" y2="14"/>
               <line x1="4" y1="10" x2="4" y2="3"/>
@@ -135,6 +133,14 @@ export class MixerHUD {
             </svg>
             <span>Mixer</span>
             <kbd>M</kbd>
+          </button>
+
+          <button id="btn-hud-effects" class="hud-action-btn" title="Slide out Scene Effect Board (B)">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <span>Effects</span>
+            <kbd>B</kbd>
           </button>
         </div>
 
@@ -197,6 +203,11 @@ export class MixerHUD {
 
     document.getElementById('btn-hud-mixer').addEventListener('click', () => {
       this.toggleMixerDrawer();
+    });
+
+    document.getElementById('btn-hud-effects')?.addEventListener('click', () => {
+      if (this.callbacks.onToggleEffects) this.callbacks.onToggleEffects();
+      else if (this.callbacks.onOpenSoundboard) this.callbacks.onOpenSoundboard();
     });
 
     document.getElementById('btn-hud-fullscreen').addEventListener('click', () => {
@@ -338,37 +349,12 @@ export class MixerHUD {
         this.setLCDText(this.lcdTexts.effects, `⚡ ${fxTrack.title}${fxCredit}`);
       }
     } else if (triggers.length > 0) {
-      const trigStr = triggers.map(t => `[${t.hotkey}] ${t.icon || ''} ${t.label}`).join(' · ');
       if (this.lcdTexts.effects) {
-        this.setLCDText(this.lcdTexts.effects, `⚡ One-Shot SFX: ${trigStr}`);
+        this.setLCDText(this.lcdTexts.effects, `⚡ Effect Board (${triggers.length} stage sounds)`);
       }
     } else {
       if (this.lcdTexts.effects) {
-        this.setLCDText(this.lcdTexts.effects, '⚡ No Effects Loaded');
-      }
-    }
-
-    // Populate interactive quick-fire trigger buttons in Effects channel
-    const trigRow = document.getElementById('mixer-triggers-row');
-    if (trigRow) {
-      if (triggers.length > 0) {
-        trigRow.innerHTML = triggers.map(t => `
-          <button class="btn-mixer-trig" data-id="${t.id}" title="${t.label} [${t.hotkey}]">
-            <span class="trig-icon">${t.icon || '⚡'}</span>
-            <kbd class="trig-hotkey">${t.hotkey}</kbd>
-          </button>
-        `).join('');
-
-        trigRow.querySelectorAll('.btn-mixer-trig').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-id');
-            btn.classList.add('fired');
-            setTimeout(() => btn.classList.remove('fired'), 200);
-            this.audio.playSFX(id);
-          });
-        });
-      } else {
-        trigRow.innerHTML = '';
+        this.setLCDText(this.lcdTexts.effects, '⚡ Effects Volume Bus');
       }
     }
 

@@ -15,6 +15,8 @@ import { CreateAdventureModal } from './ui/CreateAdventureModal.js';
 import { MobileConnectModal } from './ui/MobileConnectModal.js';
 import { SettingsModal } from './ui/SettingsModal.js';
 import { CreditsModal } from './ui/CreditsModal.js';
+import { QuickEffectBoard } from './ui/QuickEffectBoard.js';
+import { ConfigureEffectModal } from './ui/ConfigureEffectModal.js';
 import { showToast } from './utils/helpers.js';
 
 class DnDSoundscapeApp {
@@ -37,6 +39,8 @@ class DnDSoundscapeApp {
     this.mobileModal = null;
     this.settingsModal = null;
     this.creditsModal = null;
+    this.quickEffectBoard = null;
+    this.configureEffectModal = null;
 
     // DOM References
     this.mainViewContainer = null;
@@ -54,7 +58,31 @@ class DnDSoundscapeApp {
     this.startOverlay = document.getElementById('start-overlay');
 
     // Initialize UI sub-modules
-    this.soundboardModal = new SoundboardModal(this.audio);
+    this.configureEffectModal = new ConfigureEffectModal(this.audio, (stage, trigger, isDelete) => {
+      this.handleEffectTriggerConfigured(stage, trigger, isDelete);
+    });
+    this.configureEffectModal.init();
+
+    this.quickEffectBoard = new QuickEffectBoard(this.audio, {
+      onConfigureTrigger: (trigger, stage, adventure) => {
+        this.configureEffectModal.open(trigger, stage, adventure || this.currentAdventure);
+      },
+      onSaveStage: (updatedStage) => {
+        this.persistStageChanges(updatedStage);
+      }
+    });
+    this.quickEffectBoard.init();
+
+    this.soundboardModal = new SoundboardModal(this.audio, {
+      onSaveStage: (updatedStage) => {
+        this.persistStageChanges(updatedStage);
+      },
+      onConfigureTrigger: (trigger, stage, adventure) => {
+        this.configureEffectModal.open(trigger, stage, adventure || this.currentAdventure);
+      },
+      getAdventure: () => this.currentAdventure,
+      getCurrentStage: () => this.activeStage
+    });
     this.soundboardModal.init();
 
     this.mobileModal = new MobileConnectModal();
@@ -64,6 +92,9 @@ class DnDSoundscapeApp {
       showToast(`Switched theme to ${theme}`, 'info');
     });
     this.settingsModal.init();
+
+    this.creditsModal = new CreditsModal(this.store, () => this.currentAdventure);
+    this.creditsModal.init();
 
     this.createModal = new CreateAdventureModal(this.store, async (newAdv) => {
       const updatedList = await this.store.loadAdventureList();
@@ -86,7 +117,10 @@ class DnDSoundscapeApp {
     this.studio = new AdventureStudio(
       this.store,
       (updatedAdv) => this.onAdventureSaved(updatedAdv),
-      this.stageView
+      this.stageView,
+      (trigger, stage, adventure) => {
+        this.configureEffectModal.open(trigger, stage, adventure || this.currentAdventure);
+      }
     );
     this.studio.init();
     this.stageView.adventure = this.currentAdventure;
@@ -97,7 +131,8 @@ class DnDSoundscapeApp {
         if (this.currentView !== 'stage') this.showStageView();
         this.studio.toggleStudioMode(this.currentAdventure);
       },
-      onOpenSoundboard: () => this.soundboardModal.open()
+      onToggleEffects: () => this.quickEffectBoard.toggleExpand(),
+      onOpenSoundboard: () => this.quickEffectBoard.toggleExpand()
     });
     this.mixerHUD.render();
 
@@ -177,12 +212,14 @@ class DnDSoundscapeApp {
     this.currentView = 'stage';
     this.stageView.render(this.currentAdventure, this.activeStage?.id);
     document.getElementById('btn-nav-hub')?.classList.remove('active');
+    if (this.quickEffectBoard) this.quickEffectBoard.show();
   }
 
   showHubView() {
     this.currentView = 'hub';
     this.hubView.render(this.store.adventures);
     document.getElementById('btn-nav-hub')?.classList.add('active');
+    if (this.quickEffectBoard) this.quickEffectBoard.hide();
   }
 
   async selectStage(stage) {
@@ -191,8 +228,55 @@ class DnDSoundscapeApp {
     this.stageView.setActiveStage(stage.id);
     this.mixerHUD.updateStageInfo(stage);
     
-    this.soundboardModal.setTriggers(stage.layers?.effects?.triggers || []);
+    this.soundboardModal.setStage(stage, this.currentAdventure);
+    if (this.quickEffectBoard) {
+      this.quickEffectBoard.setStage(stage, this.currentAdventure);
+    }
     await this.audio.transitionToStage(stage);
+  }
+
+  handleEffectTriggerConfigured(stage, trigger, isDelete) {
+    if (!stage || !this.currentAdventure) return;
+    if (!stage.layers) stage.layers = {};
+    if (!stage.layers.effects) stage.layers.effects = { name: 'Effects', volume: 0.85, triggers: [] };
+    if (!stage.layers.effects.triggers) stage.layers.effects.triggers = [];
+
+    const triggers = stage.layers.effects.triggers;
+    const idx = triggers.findIndex(t => t.id === trigger.id);
+
+    if (isDelete) {
+      if (idx !== -1) {
+        triggers.splice(idx, 1);
+      }
+    } else {
+      if (idx !== -1) {
+        triggers[idx] = trigger;
+      } else {
+        triggers.push(trigger);
+      }
+    }
+
+    this.persistStageChanges(stage);
+  }
+
+  persistStageChanges(updatedStage) {
+    if (!this.currentAdventure || !updatedStage) return;
+    const idx = this.currentAdventure.stages.findIndex(s => s.id === updatedStage.id);
+    if (idx !== -1) {
+      this.currentAdventure.stages[idx] = updatedStage;
+      this.store.saveAdventure(this.currentAdventure);
+      this.mixerHUD.updateStageInfo(updatedStage);
+      if (this.audio && this.audio.sfxPad) {
+        this.audio.sfxPad.setTriggers(updatedStage.layers?.effects?.triggers || [], this.audio.basePath);
+      }
+      this.soundboardModal.setStage(updatedStage, this.currentAdventure);
+      if (this.quickEffectBoard) {
+        this.quickEffectBoard.setStage(updatedStage, this.currentAdventure);
+      }
+      if (this.studio?.inspectorModal?.isOpen) {
+        this.studio.inspectorModal.open(updatedStage, this.currentAdventure);
+      }
+    }
   }
 
   selectStageByHotkey(key) {
@@ -310,18 +394,21 @@ class DnDSoundscapeApp {
         this.mixerHUD.toggleMixerDrawer();
       } else if (key === 'b') {
         e.preventDefault();
-        this.soundboardModal.toggle();
+        this.quickEffectBoard.toggleExpand();
       } else if (key === 'n') {
         e.preventDefault();
         const musicEng = this.audio.getActiveMusicEngine();
         if (musicEng) musicEng.jumpToNext();
       } else if (key === 'escape') {
         e.preventDefault();
-        if (this.studio.inspectorModal?.isOpen) this.studio.inspectorModal.close();
+        if (this.configureEffectModal?.isOpen) this.configureEffectModal.close();
+        else if (this.quickEffectBoard?.isOpen) this.quickEffectBoard.close();
+        else if (this.studio.inspectorModal?.isOpen) this.studio.inspectorModal.close();
         else if (this.studio.isStudioActive) this.studio.exitStudioMode();
         else if (this.createModal?.isOpen) this.createModal.close();
         else if (this.mobileModal?.isOpen) this.mobileModal.close();
         else if (this.settingsModal.isOpen) this.settingsModal.close();
+        else if (this.creditsModal?.isOpen) this.creditsModal.close();
         else if (this.soundboardModal.isOpen) this.soundboardModal.close();
         else {
           this.audio.fadeToSilence(3.0);
@@ -341,10 +428,17 @@ class DnDSoundscapeApp {
         if (slider) slider.value = this.audio.masterVolume;
         const lbl = document.getElementById('lbl-master-vol');
         if (lbl) lbl.textContent = `${Math.round(this.audio.masterVolume * 100)}%`;
-      } else if (['q', 'w', 'e', 'r'].includes(key)) {
-        const trigger = this.soundboardModal.triggers.find(t => (t.hotkey || '').toLowerCase() === key);
+      } else if (['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'].includes(key)) {
+        const triggers = this.activeStage?.layers?.effects?.triggers || this.soundboardModal.triggers;
+        const trigger = triggers.find(t => (t.hotkey || '').toLowerCase() === key);
         if (trigger) {
           e.preventDefault();
+          this.audio.playSFX(trigger.id);
+          const btn = document.querySelector(`.drawer-fx-fire-btn[data-id="${trigger.id}"]`);
+          if (btn) {
+            btn.classList.add('active');
+            setTimeout(() => btn.classList.remove('active'), 250);
+          }
           this.soundboardModal.triggerEffect(trigger.id);
         }
       }

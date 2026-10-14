@@ -8,10 +8,11 @@ import { generateId, showToast } from '../utils/helpers.js';
 import { StageInspectorModal } from './StageInspectorModal.js';
 
 export class AdventureStudio {
-  constructor(adventureStore, onSaveCallback, stageViewRef = null) {
+  constructor(adventureStore, onSaveCallback, stageViewRef = null, onConfigureTriggerCallback = null) {
     this.store = adventureStore;
     this.onSaveCallback = onSaveCallback;
     this.stageView = stageViewRef;
+    this.onConfigureTrigger = onConfigureTriggerCallback;
 
     this.adventure = null;
     this.isStudioActive = false;
@@ -19,8 +20,17 @@ export class AdventureStudio {
     this.inspectorModal = new StageInspectorModal({
       onSave: (stage) => this.onStageSaved(stage),
       onDelete: (stageId) => this.deleteStage(stageId),
-      onStageUpdated: (stage) => this.onLiveStageUpdated(stage)
+      onStageUpdated: (stage) => this.onLiveStageUpdated(stage),
+      onConfigureTrigger: (trigger, stage, adventure) => {
+        if (this.onConfigureTrigger) {
+          this.onConfigureTrigger(trigger, stage, adventure || this.adventure);
+        }
+      }
     });
+  }
+
+  setOnConfigureTrigger(callback) {
+    this.onConfigureTrigger = callback;
   }
 
   init() {

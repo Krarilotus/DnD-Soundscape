@@ -5,6 +5,12 @@
  */
 
 import { generateId, showToast } from '../utils/helpers.js';
+import {
+  RPG_SFX_PRESETS,
+  RPG_SFX_CATEGORIES,
+  getAdventureEffects,
+  getNextAvailableHotkey
+} from '../audio/PresetEffects.js';
 
 export const RPG_EMOJIS = [
   { icon: '🍺', label: 'Tavern' },
@@ -105,44 +111,6 @@ export const PRESET_TRACKS = {
       credit: 'MusicByTerperial - Wave Echo Cave FX',
       sourceUrl: 'https://www.youtube.com/watch?v=chBv4M1ICTo'
     }
-  ],
-  effects: [
-    {
-      title: 'Crackling Stone Hearthfire',
-      file: 'audio/ambience/hearthfire_ambience.mp3',
-      credit: 'Clean Medieval Hearthfire',
-      sourceUrl: 'https://www.youtube.com/watch?v=ylj4IS7WP1o'
-    },
-    {
-      title: 'Dry Forest & Brush Wind',
-      file: 'audio/effects/forest_wind.wav',
-      credit: 'RPG Foliage Soundscapes',
-      sourceUrl: 'https://freesound.org'
-    },
-    {
-      title: 'Stalactite Water Drips Echo',
-      file: 'audio/effects/cave_drips.wav',
-      credit: 'Cavern Acoustic Drops',
-      sourceUrl: 'https://freesound.org'
-    },
-    {
-      title: 'Subterranean Crypt Stone Acoustics',
-      file: 'audio/effects/dungeon_drone.wav',
-      credit: 'Dark Fantasy Crypt Drone',
-      sourceUrl: 'https://freesound.org'
-    },
-    {
-      title: 'Smoldering Ash & Embers',
-      file: 'audio/effects/campfire_ambience.wav',
-      credit: 'Freesound Fire Atmosphere',
-      sourceUrl: 'https://freesound.org'
-    },
-    {
-      title: 'Forge of Spells Arcane Hum',
-      file: 'audio/ambience/arcane_shrine.mp3',
-      credit: 'Arcane Shrine Resonance',
-      sourceUrl: 'https://www.youtube.com/watch?v=4AyfLQ3i3V4'
-    }
   ]
 };
 
@@ -153,9 +121,13 @@ export class StageInspectorModal {
     this.adventure = null;
     this.isOpen = false;
     this.showEmojiPicker = false;
+    this.showAddEffectDrawer = false;
+    this.activeEffectTab = 'adventure'; // 'adventure' | 'presets' | 'custom'
+    this.activePresetCategory = 'all';
     this.onSave = options.onSave;
     this.onDelete = options.onDelete;
     this.onStageUpdated = options.onStageUpdated;
+    this.onConfigureTrigger = options.onConfigureTrigger || null;
     this.previewAudioEl = null;
     this.activePreviewFile = null;
   }
@@ -379,28 +351,217 @@ export class StageInspectorModal {
         </div>
       </div>
 
-      <!-- 3. INSTANT EFFECTS (SFX) -->
-      <div class="ctx-section">
+      <!-- 3. SCENE EFFECT BOARD (SFX TRIGGERS) -->
+      <div class="ctx-section ctx-effect-board-section">
         <div class="ctx-section-header">
-          <span class="ctx-section-title">⚡ Stage SFX Triggers</span>
+          <div class="ctx-fx-title-group">
+            <span class="ctx-section-title">⚡ Scene Effect Board</span>
+            <span class="ctx-fx-badge">${(fxLayer.triggers || []).length} sounds</span>
+          </div>
           <div class="ctx-vol-wrapper">
             <input type="range" id="ctx-vol-fx" class="ctx-slider" min="0" max="1" step="0.05" value="${fxVol}">
             <span id="ctx-vol-fx-val" class="ctx-vol-label">${Math.round(fxVol * 100)}%</span>
           </div>
         </div>
-        <div class="ctx-triggers-row">
-          ${(fxLayer.triggers || []).map((trig, idx) => `
-            <button type="button" class="ctx-sfx-chip" data-idx="${idx}" title="${trig.label} (Credit: ${trig.credit || 'RPG SFX'})">
-              <span>${trig.icon || '⚡'}</span>
-              <span class="ctx-sfx-label">${trig.label}</span>
-              ${trig.hotkey ? `<kbd class="ctx-sfx-key">${trig.hotkey}</kbd>` : ''}
-            </button>
+
+        <!-- Active Board Triggers -->
+        <div class="ctx-triggers-list">
+          ${(fxLayer.triggers || []).length === 0 ? `
+            <div class="ctx-fx-empty">
+              <span>No sound effects on this board yet. Click below to add scene-specific sounds.</span>
+            </div>
+          ` : (fxLayer.triggers || []).map((trig, idx) => `
+            <div class="ctx-fx-card" data-idx="${idx}">
+              <button type="button" class="ctx-fx-card-play ${this.activePreviewFile === trig.file ? 'playing' : ''}" data-idx="${idx}" title="Test Sound">
+                ${this.activePreviewFile === trig.file ? '⏹' : '▶'}
+              </button>
+              <span class="ctx-fx-card-icon">${trig.icon || '⚡'}</span>
+              <div class="ctx-fx-card-info">
+                <span class="ctx-fx-card-label" title="${trig.label}">${trig.label}</span>
+                <span class="ctx-fx-card-sub">${trig.credit || 'RPG SFX'}</span>
+              </div>
+              ${trig.hotkey ? `<kbd class="ctx-sfx-key" title="Keyboard trigger">${trig.hotkey}</kbd>` : ''}
+              <button type="button" class="ctx-fx-card-edit" data-idx="${idx}" title="Configure Button (Short Name, Symbol, Hotkey)">✏️</button>
+              <button type="button" class="ctx-fx-card-del" data-idx="${idx}" title="Remove sound from board">✕</button>
+            </div>
           `).join('')}
+        </div>
+
+        <!-- Add Effect Toggle Button -->
+        <button type="button" id="ctx-btn-toggle-add-fx" class="ctx-btn-add-fx ${this.showAddEffectDrawer ? 'active' : ''}">
+          <span>${this.showAddEffectDrawer ? '▲ Close Effect Selector' : '➕ Add Sound Effect to Scene'}</span>
+        </button>
+
+        <!-- Inline Effect Selector Drawer -->
+        <div id="ctx-add-fx-drawer" class="ctx-add-fx-drawer ${this.showAddEffectDrawer ? '' : 'hidden'}">
+          <!-- Drawer Tabs -->
+          <div class="ctx-fx-tabs">
+            <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'adventure' ? 'active' : ''}" data-tab="adventure" title="Sounds from other scenes in this campaign">
+              🔁 From Other Scenes (${getAdventureEffects(this.adventure, s.id).length})
+            </button>
+            <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'presets' ? 'active' : ''}" data-tab="presets" title="Curated RPG sound effect presets">
+              ⚡ Presets Library (${RPG_SFX_PRESETS.length})
+            </button>
+            <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'custom' ? 'active' : ''}" data-tab="custom" title="Enter a custom file path or URL">
+              🔗 Custom Sound
+            </button>
+          </div>
+
+          <!-- Tab 1: From Other Scenes -->
+          <div class="ctx-fx-tab-pane ${this.activeEffectTab === 'adventure' ? '' : 'hidden'}">
+            ${(() => {
+              const advEffects = getAdventureEffects(this.adventure, s.id);
+              const curFiles = new Set((fxLayer.triggers || []).map(t => t.file));
+              if (advEffects.length === 0) {
+                return `
+                  <div class="ctx-fx-empty" style="margin-top: 4px;">
+                    <span>No sound effects in other scenes yet. Check out the <strong>⚡ Presets Library</strong> tab!</span>
+                  </div>
+                `;
+              }
+              return `
+                <div class="ctx-fx-scroll-list">
+                  ${advEffects.map(item => {
+                    const isAdded = curFiles.has(item.file);
+                    return `
+                      <div class="ctx-fx-picker-row">
+                        <button type="button" class="ctx-fx-row-play ${this.activePreviewFile === item.file ? 'playing' : ''}" data-file="${item.file}" title="Preview sound">
+                          ${this.activePreviewFile === item.file ? '⏹' : '▶'}
+                        </button>
+                        <span class="ctx-fx-row-icon">${item.icon || '⚡'}</span>
+                        <div class="ctx-fx-row-info">
+                          <span class="ctx-fx-row-title">${item.label}</span>
+                          <span class="ctx-fx-row-from">Scene: ${item.fromStageLabel}</span>
+                        </div>
+                        ${isAdded ? `
+                          <span class="ctx-fx-tag-added">✓ On Board</span>
+                        ` : `
+                          <button type="button" class="ctx-fx-btn-relink" data-file="${item.file}" data-label="${item.label}" data-icon="${item.icon || '⚡'}" data-credit="${item.credit || ''}" data-source="${item.sourceUrl || ''}">
+                            ➕ Add
+                          </button>
+                        `}
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              `;
+            })()}
+          </div>
+
+          <!-- Tab 2: Presets Library -->
+          <div class="ctx-fx-tab-pane ${this.activeEffectTab === 'presets' ? '' : 'hidden'}">
+            <div class="ctx-fx-cats">
+              ${RPG_SFX_CATEGORIES.map(cat => `
+                <button type="button" class="ctx-fx-cat-btn ${this.activePresetCategory === cat.id ? 'active' : ''}" data-cat="${cat.id}">
+                  ${cat.label}
+                </button>
+              `).join('')}
+            </div>
+            <div class="ctx-fx-scroll-list">
+              ${(() => {
+                const curFiles = new Set((fxLayer.triggers || []).map(t => t.file));
+                const list = this.activePresetCategory === 'all'
+                  ? RPG_SFX_PRESETS
+                  : RPG_SFX_PRESETS.filter(p => p.category === this.activePresetCategory);
+                return list.map(p => {
+                  const isAdded = curFiles.has(p.file);
+                  return `
+                    <div class="ctx-fx-picker-row">
+                      <button type="button" class="ctx-fx-row-play ${this.activePreviewFile === p.file ? 'playing' : ''}" data-file="${p.file}" title="Preview sound">
+                        ${this.activePreviewFile === p.file ? '⏹' : '▶'}
+                      </button>
+                      <span class="ctx-fx-row-icon">${p.icon || '⚡'}</span>
+                      <div class="ctx-fx-row-info">
+                        <span class="ctx-fx-row-title">${p.label}</span>
+                        <span class="ctx-fx-row-from">${p.credit || 'RPG SFX'}</span>
+                      </div>
+                      ${isAdded ? `
+                        <span class="ctx-fx-tag-added">✓ On Board</span>
+                      ` : `
+                        <button type="button" class="ctx-fx-btn-add-preset" data-id="${p.id}">
+                          ➕ Add
+                        </button>
+                      `}
+                    </div>
+                  `;
+                }).join('');
+              })()}
+            </div>
+          </div>
+
+          <!-- Tab 3: Custom Sound -->
+          <div class="ctx-fx-tab-pane ${this.activeEffectTab === 'custom' ? '' : 'hidden'}">
+            <div class="ctx-fx-custom-form">
+              <div class="ctx-attr-grid">
+                <div class="ctx-attr-item">
+                  <span class="ctx-attr-lbl">Name:</span>
+                  <input type="text" id="ctx-custom-fx-name" class="ctx-attr-input" placeholder="e.g. Magic Missile">
+                </div>
+                <div class="ctx-attr-item" style="max-width: 70px;">
+                  <span class="ctx-attr-lbl">Icon:</span>
+                  <input type="text" id="ctx-custom-fx-icon" class="ctx-attr-input" value="⚡" style="text-align: center;">
+                </div>
+              </div>
+              <div class="ctx-attr-item" style="margin-top: 4px;">
+                <span class="ctx-attr-lbl">Audio File or URL:</span>
+                <input type="text" id="ctx-custom-fx-file" class="ctx-attr-input" placeholder="audio/effects/sound.wav or https://...">
+              </div>
+              <div class="ctx-attr-grid" style="margin-top: 4px;">
+                <div class="ctx-attr-item">
+                  <span class="ctx-attr-lbl">Credit:</span>
+                  <input type="text" id="ctx-custom-fx-credit" class="ctx-attr-input" placeholder="Author / Artist">
+                </div>
+                <div class="ctx-attr-item" style="max-width: 70px;">
+                  <span class="ctx-attr-lbl">Hotkey:</span>
+                  <input type="text" id="ctx-custom-fx-key" class="ctx-attr-input" value="${getNextAvailableHotkey(fxLayer.triggers || [])}" style="text-align: center; text-transform: uppercase;">
+                </div>
+              </div>
+              <button type="button" id="ctx-btn-add-custom-fx" class="ctx-btn-submit-fx" style="margin-top: 8px;">
+                ➕ Add to Scene Board
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     `;
 
     this.bindEvents();
+  }
+
+  addEffectToStage(effectData) {
+    if (!this.stage.layers.effects) {
+      this.stage.layers.effects = { name: 'Effects', volume: 0.85, triggers: [] };
+    }
+    if (!this.stage.layers.effects.triggers) {
+      this.stage.layers.effects.triggers = [];
+    }
+
+    const nextKey = (effectData.hotkey || getNextAvailableHotkey(this.stage.layers.effects.triggers)).toUpperCase();
+
+    const newTrigger = {
+      id: generateId('sfx'),
+      label: effectData.label || 'Sound Effect',
+      icon: effectData.icon || '⚡',
+      hotkey: nextKey,
+      file: effectData.file || '',
+      credit: effectData.credit || 'RPG SFX',
+      sourceUrl: effectData.sourceUrl || effectData.file || ''
+    };
+
+    this.stage.layers.effects.triggers.push(newTrigger);
+    this.render();
+    if (this.onStageUpdated) this.onStageUpdated(this.stage);
+    if (this.onSave) this.onSave(this.stage);
+    showToast(`Added "${newTrigger.label}" to scene board!`, 'success');
+  }
+
+  removeEffectFromStage(index) {
+    if (!this.stage?.layers?.effects?.triggers) return;
+    const removed = this.stage.layers.effects.triggers.splice(index, 1)[0];
+    this.render();
+    if (this.onStageUpdated) this.onStageUpdated(this.stage);
+    if (this.onSave) this.onSave(this.stage);
+    showToast(`Removed "${removed?.label}" from board.`, 'info');
   }
 
   bindEvents() {
@@ -600,8 +761,8 @@ export class StageInspectorModal {
       this.togglePreview(file);
     });
 
-    // SFX Chips Test
-    this.panelEl.querySelectorAll('.ctx-sfx-chip').forEach(btn => {
+    // Effect Board: Active Triggers Test Play
+    this.panelEl.querySelectorAll('.ctx-fx-card-play').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-idx'), 10);
         const trig = this.stage.layers.effects?.triggers?.[idx];
@@ -609,6 +770,100 @@ export class StageInspectorModal {
           this.togglePreview(trig.file);
         }
       });
+    });
+
+    // Effect Board: Active Triggers Configure
+    this.panelEl.querySelectorAll('.ctx-fx-card-edit').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+        const trig = this.stage.layers.effects?.triggers?.[idx];
+        if (trig && this.onConfigureTrigger) {
+          this.onConfigureTrigger(trig, this.stage, this.adventure);
+        }
+      });
+    });
+
+    // Effect Board: Active Triggers Delete
+    this.panelEl.querySelectorAll('.ctx-fx-card-del').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+        this.removeEffectFromStage(idx);
+      });
+    });
+
+    // Effect Board: Toggle Add Drawer
+    this.panelEl.querySelector('#ctx-btn-toggle-add-fx')?.addEventListener('click', () => {
+      this.showAddEffectDrawer = !this.showAddEffectDrawer;
+      this.render();
+    });
+
+    // Effect Drawer Tabs
+    this.panelEl.querySelectorAll('.ctx-fx-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.activeEffectTab = btn.getAttribute('data-tab');
+        this.render();
+      });
+    });
+
+    // Effect Drawer Category Filter
+    this.panelEl.querySelectorAll('.ctx-fx-cat-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.activePresetCategory = btn.getAttribute('data-cat');
+        this.render();
+      });
+    });
+
+    // Effect Drawer: Row Audio Preview
+    this.panelEl.querySelectorAll('.ctx-fx-row-play').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const file = btn.getAttribute('data-file');
+        this.togglePreview(file);
+      });
+    });
+
+    // Effect Drawer: Relink sound from another scene
+    this.panelEl.querySelectorAll('.ctx-fx-btn-relink').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const file = btn.getAttribute('data-file');
+        const label = btn.getAttribute('data-label');
+        const icon = btn.getAttribute('data-icon');
+        const credit = btn.getAttribute('data-credit');
+        const sourceUrl = btn.getAttribute('data-source');
+        this.addEffectToStage({ file, label, icon, credit, sourceUrl });
+      });
+    });
+
+    // Effect Drawer: Add Preset
+    this.panelEl.querySelectorAll('.ctx-fx-btn-add-preset').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const preset = RPG_SFX_PRESETS.find(p => p.id === id);
+        if (preset) {
+          this.addEffectToStage(preset);
+        }
+      });
+    });
+
+    // Effect Drawer: Submit Custom Sound
+    this.panelEl.querySelector('#ctx-btn-add-custom-fx')?.addEventListener('click', () => {
+      const nameInput = this.panelEl.querySelector('#ctx-custom-fx-name');
+      const iconInput = this.panelEl.querySelector('#ctx-custom-fx-icon');
+      const fileInput = this.panelEl.querySelector('#ctx-custom-fx-file');
+      const creditInput = this.panelEl.querySelector('#ctx-custom-fx-credit');
+      const keyInput = this.panelEl.querySelector('#ctx-custom-fx-key');
+
+      const label = nameInput?.value.trim() || 'Custom Sound';
+      const icon = iconInput?.value.trim() || '⚡';
+      const file = fileInput?.value.trim();
+      const credit = creditInput?.value.trim() || 'Custom SFX';
+      const hotkey = keyInput?.value.trim().toUpperCase() || '';
+
+      if (!file) {
+        showToast('Please enter an audio file path or URL.', 'error');
+        return;
+      }
+
+      this.addEffectToStage({ label, icon, file, credit, hotkey });
     });
   }
 

@@ -7,11 +7,24 @@
 import { showToast } from '../utils/helpers.js';
 
 export class CreditsModal {
-  constructor(adventureStore) {
+  constructor(adventureStore, getAdventureFn = null) {
     this.store = adventureStore;
+    this.getAdventureFn = getAdventureFn;
     this.modalEl = null;
     this.isOpen = false;
     this.filterQuery = '';
+  }
+
+  getAdventure() {
+    if (this.getAdventureFn) {
+      const adv = this.getAdventureFn();
+      if (adv) return adv;
+    }
+    if (typeof this.store?.getActiveAdventure === 'function') {
+      const adv = this.store.getActiveAdventure();
+      if (adv) return adv;
+    }
+    return this.store?.currentAdventure || null;
   }
 
   init() {
@@ -40,7 +53,7 @@ export class CreditsModal {
 
   render() {
     if (!this.modalEl) return;
-    const adv = this.store.getActiveAdventure();
+    const adv = this.getAdventure();
     const stages = adv?.stages || [];
 
     const query = this.filterQuery.toLowerCase().trim();
@@ -194,7 +207,7 @@ export class CreditsModal {
   }
 
   copyMarkdownCredits() {
-    const adv = this.store.getActiveAdventure();
+    const adv = this.getAdventure();
     const stages = adv?.stages || [];
     let md = `# Audio Credits & Attributions - ${adv?.title || 'Adventure'}\n\n`;
 

@@ -57,19 +57,10 @@
           ]
         },
         "effects": {
-          "name": "Hearthfire & Tavern SFX",
-          "volume": 0.7,
+          "name": "Tavern SFX Board",
+          "volume": 0.85,
           "playlistMode": "loopAll",
-          "tracks": [
-            {
-              "title": "Crackling Stone Hearthfire",
-              "file": "audio/ambience/hearthfire_ambience.mp3",
-              "credit": "Medieval Campfire Ambience",
-              "sourceUrl": "https://www.youtube.com/watch?v=ylj4IS7WP1o",
-              "startSec": 0,
-              "endSec": null
-            }
-          ],
+          "tracks": [],
           "triggers": [
             {
               "id": "tankard_clink",

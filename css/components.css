@@ -160,6 +160,639 @@
   font-size: 10px;
 }
 
+.sfx-pad-del-btn {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--text-muted);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  z-index: 5;
+}
+
+.sfx-pad-btn:hover .sfx-pad-del-btn {
+  opacity: 1;
+}
+
+.sfx-pad-del-btn:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #fff;
+  transform: scale(1.15);
+}
+
+.soundboard-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.soundboard-stage-badge {
+  font-size: 12px;
+  color: var(--gold-light);
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-full);
+  padding: 3px 10px;
+  font-weight: 600;
+}
+
+.soundboard-btn-add {
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-sm);
+  color: var(--gold-light);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.soundboard-btn-add:hover, .soundboard-btn-add.active {
+  background: var(--gold-light);
+  color: #000;
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.sfx-pad-cfg-btn {
+  position: absolute;
+  top: 4px;
+  right: 28px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--gold-light);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  z-index: 5;
+}
+
+.sfx-pad-btn:hover .sfx-pad-cfg-btn {
+  opacity: 1;
+}
+
+.sfx-pad-cfg-btn:hover {
+  background: var(--gold-light);
+  color: #000;
+  transform: scale(1.15);
+}
+
+/* ==========================================================================
+   Slide-Out Scene Effect Board Drawer (Right-Side Submenu)
+   ========================================================================== */
+
+.quick-effect-board-container {
+  pointer-events: none;
+  z-index: 65;
+}
+
+.effect-board-drawer {
+  position: fixed;
+  top: 54px;
+  bottom: 54px;
+  right: 0;
+  width: 440px;
+  max-width: calc(100vw - 20px);
+  background: rgba(12, 14, 22, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid var(--border-gold);
+  box-shadow: -16px 0 48px rgba(0, 0, 0, 0.85), 0 0 24px rgba(212, 175, 55, 0.15);
+  z-index: 65;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+.effect-board-drawer.open {
+  transform: translateX(0);
+}
+
+/* Attached Right-Edge Handle (Pill Tab) */
+.effect-drawer-handle {
+  position: absolute;
+  top: 100px;
+  left: -44px;
+  width: 44px;
+  height: 135px;
+  background: rgba(14, 16, 25, 0.96);
+  border: 1px solid var(--border-gold);
+  border-right: none;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  box-shadow: -6px 4px 18px rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--gold-light);
+  font-size: 11px;
+  font-weight: 700;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  padding: 8px 0;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.effect-drawer-handle:hover {
+  background: rgba(212, 175, 55, 0.2);
+  color: #fff;
+  box-shadow: -8px 4px 24px var(--gold-glow);
+  transform: rotate(180deg) translateX(2px);
+}
+
+.handle-icon {
+  font-size: 14px;
+}
+
+.handle-text {
+  letter-spacing: 0.5px;
+}
+
+.handle-badge {
+  background: var(--gold-light);
+  color: #000;
+  font-size: 9px;
+  font-weight: 800;
+  border-radius: var(--radius-full);
+  padding: 2px 5px;
+  writing-mode: horizontal-tb;
+  transform: rotate(180deg);
+}
+
+/* Drawer Header */
+.effect-drawer-header {
+  padding: 14px 16px 12px;
+  background: rgba(18, 22, 34, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.effect-drawer-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.effect-drawer-badge {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.effect-drawer-titles {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.effect-drawer-scene-name {
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.effect-drawer-subtitle {
+  font-size: 11px;
+  color: var(--gold-light);
+  opacity: 0.85;
+}
+
+.effect-drawer-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.effect-drawer-hbtn {
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-sm);
+  color: var(--gold-light);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--transition-fast);
+}
+
+.effect-drawer-hbtn:hover, .effect-drawer-hbtn.active {
+  background: var(--gold-light);
+  color: #000;
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.effect-drawer-close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.effect-drawer-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Inline Add Accordion */
+.drawer-add-fx-accordion {
+  background: rgba(14, 17, 27, 0.9);
+  border-bottom: 1px solid var(--border-gold);
+  padding: 12px 14px;
+  animation: contextFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Filter & Search Toolbar */
+.effect-drawer-toolbar {
+  padding: 10px 14px;
+  background: rgba(10, 12, 18, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.effect-drawer-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.drawer-search-input {
+  width: 100%;
+  padding: 6px 28px 6px 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: 11.5px;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.drawer-search-input:focus {
+  border-color: var(--gold-light);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.search-clear-btn:hover {
+  color: #fff;
+}
+
+.effect-drawer-cat-chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.drawer-cat-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.drawer-cat-chip:hover {
+  border-color: var(--border-gold);
+  color: #fff;
+}
+
+.drawer-cat-chip.active {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--gold-light);
+  color: var(--gold-light);
+}
+
+/* Sound Grid Area */
+.effect-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.effect-drawer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.drawer-fx-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.drawer-fx-card:hover .drawer-fx-cfg-btn,
+.drawer-fx-card:hover .drawer-fx-del-btn {
+  opacity: 1;
+}
+
+.drawer-fx-fire-btn {
+  width: 100%;
+  min-height: 74px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  color: var(--text-main);
+  position: relative;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.drawer-fx-fire-btn:hover {
+  background: rgba(212, 175, 55, 0.16);
+  border-color: var(--border-gold);
+  transform: translateY(-2px);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.drawer-fx-fire-btn:active, .drawer-fx-fire-btn.active {
+  background: rgba(212, 175, 55, 0.4);
+  border-color: var(--gold-light);
+  transform: scale(0.96);
+  box-shadow: 0 0 16px var(--gold-glow);
+}
+
+.drawer-fx-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.drawer-fx-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.drawer-fx-credit {
+  font-size: 9.5px;
+  color: var(--text-muted);
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.drawer-fx-hotkey {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  font-size: 9px;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--border-gold);
+  color: var(--gold-light);
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+.drawer-fx-cfg-btn {
+  position: absolute;
+  top: 4px;
+  right: 28px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--gold-light);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  z-index: 5;
+}
+
+.drawer-fx-cfg-btn:hover {
+  background: var(--gold-light);
+  color: #000;
+  transform: scale(1.15);
+}
+
+.drawer-fx-del-btn {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-muted);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  z-index: 5;
+}
+
+.drawer-fx-del-btn:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #fff;
+  transform: scale(1.15);
+}
+
+/* Empty State */
+.effect-drawer-empty {
+  padding: 36px 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.effect-drawer-empty .empty-icon {
+  font-size: 36px;
+  opacity: 0.8;
+}
+
+.effect-drawer-empty h4 {
+  margin: 0;
+  font-size: 14.5px;
+  color: #fff;
+  font-family: var(--font-serif);
+}
+
+.effect-drawer-empty p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 280px;
+}
+
+.drawer-empty-action-btn {
+  margin-top: 6px;
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-sm);
+  color: var(--gold-light);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.drawer-empty-action-btn:hover {
+  background: var(--gold-light);
+  color: #000;
+  box-shadow: 0 0 14px var(--gold-glow);
+}
+
+.drawer-empty-link {
+  background: transparent;
+  border: none;
+  color: var(--gold-light);
+  font-size: 11.5px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Drawer Footer */
+.effect-drawer-footer {
+  padding: 10px 14px;
+  background: rgba(14, 17, 27, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+.drawer-footer-hint {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.drawer-footer-hint kbd {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-gold);
+  color: var(--gold-light);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.quick-fx-link-add {
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-sm);
+  color: var(--gold-light);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.quick-fx-link-add:hover {
+  background: var(--gold-light);
+  color: #000;
+}
+
 /* ==========================================================================
    Toast Notifications
    ========================================================================== */
