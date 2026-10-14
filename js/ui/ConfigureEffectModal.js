@@ -5,6 +5,7 @@
 
 import { showToast } from '../utils/helpers.js';
 import { HOTKEY_SEQUENCE } from '../audio/PresetEffects.js';
+import { FantasyIcons } from './FantasyIcons.js';
 
 export const QUICK_SYMBOLS = [
   '⚔️', '🛡️', '🏹', '🗡️', '⚡', '🔥', '🔮', '⛈️', '☠️', '🧪',
@@ -94,29 +95,29 @@ export class ConfigureEffectModal {
     const isPlaying = this.previewAudioEl && !this.previewAudioEl.paused;
 
     this.modalEl.innerHTML = `
-      <div class="modal-window" style="max-width: 500px;">
+      <div class="modal-window theme-card" style="max-width: 500px;">
         <header class="modal-header">
           <h2>
-            <span>⚙️</span>
+            <span>${FantasyIcons.get('gear', { size: 18 })}</span>
             <span>Configure Effect Button</span>
           </h2>
-          <button id="btn-close-cfg-fx" class="btn-icon" aria-label="Close">✕</button>
+          <button id="btn-close-cfg-fx" class="btn-icon" aria-label="Close">${FantasyIcons.get('close', { size: 16 })}</button>
         </header>
 
         <div class="modal-body" style="flex-direction: column; gap: 14px;">
           <!-- Symbol / Icon Picker -->
           <div>
-            <label class="modal-label" style="font-size: 12px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px; display: block;">
+            <label class="modal-label" style="font-size: 12px; font-weight: 700; color: var(--theme-primary-light); margin-bottom: 6px; display: block;">
               Button Symbol / Icon:
             </label>
             <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
               <input type="text" id="cfg-fx-icon" class="ctx-attr-input" value="${t.icon || '⚡'}" style="width: 50px; text-align: center; font-size: 20px; padding: 4px;">
-              <span style="font-size: 11.5px; color: var(--text-muted);">Pick from palette or type any emoji</span>
+              <span style="font-size: 11.5px; color: var(--theme-text-muted);">Pick from palette or type any symbol</span>
             </div>
-            <div class="quick-symbols-grid" style="display: flex; flex-wrap: wrap; gap: 5px; max-height: 90px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 6px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <div class="quick-symbols-grid" style="display: flex; flex-wrap: wrap; gap: 5px; max-height: 90px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 6px; border-radius: var(--theme-radius-sm); border: 1px solid var(--theme-border-base);">
               ${QUICK_SYMBOLS.map(sym => `
                 <button type="button" class="cfg-sym-btn ${sym === t.icon ? 'active' : ''}" data-sym="${sym}" style="width: 28px; height: 28px; background: rgba(255,255,255,0.06); border: 1px solid transparent; border-radius: 4px; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
-                  ${sym}
+                  ${FantasyIcons.render(sym, { size: 16 })}
                 </button>
               `).join('')}
             </div>
@@ -126,7 +127,7 @@ export class ConfigureEffectModal {
           <div class="ctx-attr-grid">
             <div class="ctx-attr-item">
               <span class="ctx-attr-lbl">Short Name (on Button):</span>
-              <input type="text" id="cfg-fx-shortname" class="ctx-attr-input" placeholder="e.g. Clash, Fire, Door" value="${t.shortName || t.label || ''}" maxlength="12">
+              <input type="text" id="cfg-fx-shortname" class="ctx-attr-input" placeholder="e.g. Slash, Fire, Door" value="${t.shortName || t.label || ''}" maxlength="12">
             </div>
             <div class="ctx-attr-item">
               <span class="ctx-attr-lbl">Full Description / Name:</span>
@@ -157,15 +158,15 @@ export class ConfigureEffectModal {
             <div style="display: flex; gap: 8px; align-items: center;">
               <input type="text" id="cfg-fx-file" class="ctx-attr-input" placeholder="audio_presets/effects/sound.wav" value="${t.file || ''}" style="flex: 1;">
               <button type="button" id="cfg-btn-test-sound" class="ctx-fx-card-play ${isPlaying ? 'playing' : ''}" title="Test Sound" style="width: 32px; height: 32px; font-size: 12px;">
-                ${isPlaying ? '⏹' : '▶'}
+                ${isPlaying ? FantasyIcons.get('stop', { size: 12 }) : FantasyIcons.get('play', { size: 12 })}
               </button>
             </div>
           </div>
         </div>
 
         <footer class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
-          <button type="button" id="cfg-btn-delete-fx" class="btn-danger" style="padding: 6px 12px; font-size: 12px;">
-            🗑️ Delete Button
+          <button type="button" id="cfg-btn-delete-fx" class="btn-danger" style="padding: 6px 12px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+            ${FantasyIcons.get('close', { size: 14 })} Delete Button
           </button>
           <div style="display: flex; gap: 8px;">
             <button type="button" id="cfg-btn-cancel" class="btn-secondary">Cancel</button>

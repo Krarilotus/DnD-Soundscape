@@ -2,6 +2,8 @@
  * DnD-Soundscape: Hub View (Adventure Browser & Selector)
  */
 
+import { FantasyIcons } from './FantasyIcons.js';
+
 export class HubView {
   constructor(containerEl, onSelectAdventure, onOpenStudio, onNewAdventure, onExportAdventure, onDeleteAdventure) {
     this.container = containerEl;
@@ -87,7 +89,7 @@ export class HubView {
             ${tags.map(t => `<span class="badge">${t}</span>`).join('')}
           </div>
           <div class="adventure-stage-pill">
-            <span>📍</span>
+            <span>${FantasyIcons.get('pin', { size: 13 })}</span>
             <span>${adv.stageCount || 1} Stages</span>
           </div>
         </div>

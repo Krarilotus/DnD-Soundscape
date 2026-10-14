@@ -1,0 +1,88 @@
+/* ==========================================================================
+   DnD-Soundscape Theme: The Hearthside Tavern
+   Aesthetic: Warm aged oak timbers, forged brass rivets, crackling hearth glow,
+   leather textures, wrought-iron signposts, and rustic medieval atmosphere.
+   ========================================================================== */
+
+[data-theme="tavern"],
+:root:not([data-theme]) {
+  /* Surfaces & Canvas */
+  --theme-bg-base: #140d08;
+  --theme-bg-surface: rgba(28, 18, 12, 0.90);
+  --theme-bg-card: rgba(38, 25, 16, 0.94);
+  --theme-bg-card-hover: rgba(52, 35, 23, 0.96);
+  --theme-bg-input: rgba(20, 13, 8, 0.92);
+  --theme-bg-overlay: rgba(12, 8, 5, 0.88);
+  --theme-bg-drawer: #1d130c;
+  --theme-bg-pattern: radial-gradient(ellipse at 50% 10%, rgba(245, 158, 11, 0.12) 0%, rgba(120, 53, 15, 0.05) 50%, transparent 80%);
+
+  /* Borders & Dividers */
+  --theme-border-base: rgba(217, 119, 6, 0.32);
+  --theme-border-highlight: #d97706;
+  --theme-border-accent: #f59e0b;
+  --theme-border-inner: rgba(245, 158, 11, 0.2);
+  
+  /* Illumination & Glow */
+  --theme-glow: rgba(245, 158, 11, 0.35);
+  --theme-glow-strong: rgba(245, 158, 11, 0.7);
+  --theme-shadow-card: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 28px rgba(217, 119, 6, 0.22);
+
+  /* Primary Accent & Hues */
+  --theme-primary: #f59e0b;
+  --theme-primary-light: #fef08a;
+  --theme-primary-dark: #92400e;
+  --theme-secondary: #d97706;
+
+  /* Typography Colors */
+  --theme-text-main: #fbf3ea;
+  --theme-text-muted: #ad9684;
+  --theme-text-title: #fef3c7;
+  --theme-text-accent: #f59e0b;
+
+  /* Fonts */
+  --theme-font-title: 'MedievalSharp', 'Cinzel', serif;
+  --theme-font-display: 'MedievalSharp', 'Cinzel', serif;
+  --theme-font-body: 'Outfit', sans-serif;
+
+  /* Radii - Rustic wooden softened corners */
+  --theme-radius-sm: 4px;
+  --theme-radius-md: 8px;
+  --theme-radius-lg: 14px;
+
+  /* Interactive Elements */
+  --theme-button-bg: linear-gradient(135deg, #b45309 0%, #78350f 100%);
+  --theme-button-bg-hover: linear-gradient(135deg, #d97706 0%, #92400e 100%);
+  --theme-button-border: #fcd34d;
+  --theme-button-text: #fffbeb;
+  --theme-button-shadow: 0 4px 18px rgba(180, 83, 9, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  --theme-secondary-btn-bg: rgba(245, 158, 11, 0.08);
+  --theme-secondary-btn-hover: rgba(245, 158, 11, 0.22);
+  --theme-secondary-btn-border: rgba(217, 119, 6, 0.45);
+
+  --theme-slider-track: #29180d;
+  --theme-slider-fill: #f59e0b;
+  --theme-slider-thumb: #fef08a;
+  --theme-slider-thumb-border: #92400e;
+
+  --theme-kbd-bg: rgba(26, 17, 10, 0.85);
+  --theme-kbd-border: rgba(245, 158, 11, 0.45);
+  --theme-kbd-text: #fde047;
+
+  /* Corner Ornament: Brass rivet diamond */
+  --theme-corner-ornament: '❖';
+}
+
+/* Specific Tavern Accents */
+[data-theme="tavern"] .top-navbar,
+:root:not([data-theme]) .top-navbar {
+  background: rgba(28, 18, 12, 0.90) !important;
+  border: 1px solid #d97706 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.85), 0 0 20px rgba(245, 158, 11, 0.25) !important;
+}
+
+[data-theme="tavern"] .start-card,
+:root:not([data-theme]) .start-card {
+  border: 2px solid #d97706 !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(245, 158, 11, 0.3) !important;
+}

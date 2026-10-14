@@ -11,6 +11,7 @@ import {
   getAdventureEffects,
   getNextAvailableHotkey
 } from '../audio/PresetEffects.js';
+import { FantasyIcons } from './FantasyIcons.js';
 
 export class SoundboardModal {
   constructor(audioEngine, options = {}) {
@@ -181,24 +182,24 @@ export class SoundboardModal {
     const nextKey = getNextAvailableHotkey(this.triggers);
 
     this.modalEl.innerHTML = `
-      <div class="modal-window" style="max-width: 720px;">
+      <div class="modal-window theme-card" style="max-width: 720px;">
         <header class="modal-header">
           <h2>
-            <span>⚡</span>
+            <span>${FantasyIcons.get('lightning', { size: 20 })}</span>
             <span>Scene Effect Board</span>
           </h2>
-          <button id="btn-close-soundboard" class="btn-icon" aria-label="Close">✕</button>
+          <button id="btn-close-soundboard" class="btn-icon" aria-label="Close">${FantasyIcons.get('close', { size: 16 })}</button>
         </header>
 
         <div class="modal-body" style="flex-direction: column;">
           <!-- Top Row with Stage Badge & Add Button -->
           <div class="soundboard-header-row">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="soundboard-stage-badge">📍 ${stageName}</span>
-              <span style="font-size: 12px; color: var(--text-muted);">${this.triggers.length} sound${this.triggers.length === 1 ? '' : 's'} on board</span>
+              <span class="soundboard-stage-badge">${FantasyIcons.get('pin', { size: 13 })} ${stageName}</span>
+              <span style="font-size: 12px; color: var(--theme-text-muted);">${this.triggers.length} sound${this.triggers.length === 1 ? '' : 's'} on board</span>
             </div>
             <button type="button" id="btn-sb-toggle-add" class="soundboard-btn-add ${this.showAddDrawer ? 'active' : ''}">
-              <span>${this.showAddDrawer ? '▲ Close Picker' : '➕ Add Effect to Scene'}</span>
+              <span>${this.showAddDrawer ? '▲ Close Picker' : `${FantasyIcons.get('plus', { size: 14 })} Add Effect to Scene`}</span>
             </button>
           </div>
 
@@ -207,13 +208,13 @@ export class SoundboardModal {
             <div class="ctx-add-fx-drawer" style="margin-bottom: 16px;">
               <div class="ctx-fx-tabs">
                 <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'adventure' ? 'active' : ''}" data-tab="adventure">
-                  🔁 From Other Scenes (${advEffects.length})
+                  ${FantasyIcons.get('reload', { size: 13 })} From Other Scenes (${advEffects.length})
                 </button>
                 <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'presets' ? 'active' : ''}" data-tab="presets">
-                  ⚡ Presets Library (${RPG_SFX_PRESETS.length})
+                  ${FantasyIcons.get('lightning', { size: 13 })} Presets Library (${RPG_SFX_PRESETS.length})
                 </button>
                 <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'custom' ? 'active' : ''}" data-tab="custom">
-                  🔗 Custom Sound
+                  ${FantasyIcons.get('spark', { size: 13 })} Custom Sound
                 </button>
               </div>
 
@@ -221,7 +222,7 @@ export class SoundboardModal {
               <div class="ctx-fx-tab-pane ${this.activeEffectTab === 'adventure' ? '' : 'hidden'}">
                 ${advEffects.length === 0 ? `
                   <div class="ctx-fx-empty">
-                    <span>No sound effects found in other scenes yet. Check out the <strong>⚡ Presets Library</strong>!</span>
+                    <span>No sound effects found in other scenes yet. Check out the <strong>Presets Library</strong>!</span>
                   </div>
                 ` : `
                   <div class="ctx-fx-scroll-list" style="max-height: 180px;">
@@ -230,9 +231,9 @@ export class SoundboardModal {
                       return `
                         <div class="ctx-fx-picker-row">
                           <button type="button" class="ctx-fx-row-play ${this.activePreviewFile === item.file ? 'playing' : ''}" data-file="${item.file}" title="Preview sound">
-                            ${this.activePreviewFile === item.file ? '⏹' : '▶'}
+                            ${this.activePreviewFile === item.file ? FantasyIcons.get('stop', { size: 12 }) : FantasyIcons.get('play', { size: 12 })}
                           </button>
-                          <span class="ctx-fx-row-icon">${item.icon || '⚡'}</span>
+                          <span class="ctx-fx-row-icon">${FantasyIcons.render(item.icon, { size: 18 })}</span>
                           <div class="ctx-fx-row-info">
                             <span class="ctx-fx-row-title">${item.label}</span>
                             <span class="ctx-fx-row-from">Scene: ${item.fromStageLabel}</span>
@@ -241,7 +242,7 @@ export class SoundboardModal {
                             <span class="ctx-fx-tag-added">✓ On Board</span>
                           ` : `
                             <button type="button" class="ctx-fx-btn-relink" data-file="${item.file}" data-label="${item.label}" data-icon="${item.icon || '⚡'}" data-credit="${item.credit || ''}" data-source="${item.sourceUrl || ''}">
-                              ➕ Add
+                              ${FantasyIcons.get('plus', { size: 12 })} Add
                             </button>
                           `}
                         </div>
@@ -314,7 +315,7 @@ export class SoundboardModal {
                     </div>
                   </div>
                   <button type="button" id="sb-btn-add-custom-fx" class="ctx-btn-submit-fx" style="margin-top: 8px;">
-                    ➕ Add to Scene Board
+                    ${FantasyIcons.get('plus', { size: 14 })} Add to Scene Board
                   </button>
                 </div>
               </div>
@@ -324,23 +325,23 @@ export class SoundboardModal {
           <!-- Soundboard Pads Grid -->
           ${this.triggers.length === 0 ? `
             <div class="ctx-fx-empty" style="padding: 24px; text-align: center;">
-              <span style="font-size: 24px; display: block; margin-bottom: 6px;">⚡</span>
+              <span style="display: flex; justify-content: center; margin-bottom: 8px;">${FantasyIcons.get('lightning', { size: 36 })}</span>
               <p style="margin: 0; font-size: 13.5px; color: #fff;">No sound effects configured for this scene yet.</p>
-              <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">
-                Click <strong>"➕ Add Effect to Scene"</strong> above to pick sounds from other scenes or the RPG library.
+              <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--theme-text-muted);">
+                Click <strong>"Add Effect to Scene"</strong> above to pick sounds from other scenes or the RPG library.
               </p>
             </div>
           ` : `
             <div class="sfx-grid">
               ${this.triggers.map(t => `
                 <button class="sfx-pad-btn" data-id="${t.id}" title="${t.label} (Credit: ${t.credit || 'Tabletop SFX'})">
-                  <span class="sfx-pad-cfg-btn" data-id="${t.id}" title="Configure Button (Name, Symbol, Hotkey)">✏️</span>
-                  <span class="sfx-pad-del-btn" data-id="${t.id}" title="Remove effect from this scene">✕</span>
+                  <span class="sfx-pad-cfg-btn" data-id="${t.id}" title="Configure Button (Name, Symbol, Hotkey)">${FantasyIcons.get('feather', { size: 12 })}</span>
+                  <span class="sfx-pad-del-btn" data-id="${t.id}" title="Remove effect from this scene">${FantasyIcons.get('close', { size: 12 })}</span>
                   ${t.hotkey ? `<kbd class="sfx-pad-hotkey">${t.hotkey}</kbd>` : ''}
-                  <span class="sfx-pad-icon">${t.icon || '⚡'}</span>
+                  <span class="sfx-pad-icon">${FantasyIcons.render(t.icon, { size: 24 })}</span>
                   <span class="sfx-pad-label">${t.shortName || t.label}</span>
-                  <span style="font-size: 10px; color: var(--gold-light); opacity: 0.85; margin-top: 2px;">
-                    👤 ${t.credit || 'SFX'}
+                  <span style="font-size: 10px; color: var(--theme-primary-light); opacity: 0.85; margin-top: 2px;">
+                    ${t.credit || 'SFX'}
                   </span>
                 </button>
               `).join('')}

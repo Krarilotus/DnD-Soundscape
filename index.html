@@ -15,6 +15,10 @@
   <link rel="apple-touch-icon" href="img/icons/icon.svg">
   <link rel="icon" type="image/svg+xml" href="img/icons/icon.svg">
 
+  <link rel="stylesheet" href="css/themes/theme-tokens.css">
+  <link rel="stylesheet" href="css/themes/theme-tavern.css">
+  <link rel="stylesheet" href="css/themes/theme-dungeon.css">
+  <link rel="stylesheet" href="css/themes/theme-elven.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/hub.css">
   <link rel="stylesheet" href="css/stage.css">
@@ -83,9 +87,24 @@
   <!-- Start Web Audio Overlay (Browser Gesture Unlock) -->
   <div id="start-overlay" class="start-overlay">
     <div class="start-card">
-      <div class="start-crest">🎲</div>
+      <div class="start-crest" style="color: var(--theme-primary); display: flex; justify-content: center; margin-bottom: 12px;">
+        <svg class="fantasy-icon icon-d20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 54px; height: 54px; filter: drop-shadow(0 0 16px var(--theme-glow));">
+          <polygon points="12 2 21 7.5 21 16.5 12 22 3 16.5 3 7.5 12 2"/>
+          <polygon points="12 2 12 22 3 16.5 12 2" fill="currentColor" fill-opacity="0.2"/>
+          <polyline points="3 7.5 12 12 21 7.5"/>
+          <polyline points="3 16.5 12 12 21 16.5"/>
+          <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+        </svg>
+      </div>
       <h1 class="start-title">DnD-Soundscape</h1>
       <p class="start-subtitle">Adventure Audio Management & DM Soundboard</p>
+      <div class="theme-divider">
+        <span class="theme-divider-icon">
+          <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/>
+          </svg>
+        </span>
+      </div>
 
       <div class="start-hints-grid">
         <div class="start-hint-item"><kbd>1</kbd>–<kbd>9</kbd> <span>Switch Stages</span></div>

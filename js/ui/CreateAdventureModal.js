@@ -3,6 +3,8 @@
  */
 
 import { generateId, showToast } from '../utils/helpers.js';
+import { FantasyIcons } from './FantasyIcons.js';
+import { THEME_CATALOG } from './ThemeCatalog.js';
 
 export class CreateAdventureModal {
   constructor(adventureStore, onCreatedCallback) {
@@ -28,13 +30,13 @@ export class CreateAdventureModal {
     if (!this.modalEl) return;
 
     this.modalEl.innerHTML = `
-      <div class="modal-window" style="max-width: 680px;">
+      <div class="modal-window theme-card" style="max-width: 680px;">
         <header class="modal-header">
           <h2>
-            <span>✨</span>
+            <span>${FantasyIcons.get('spark', { size: 20 })}</span>
             <span>Create New Adventure Soundscape</span>
           </h2>
-          <button id="btn-create-adv-close" class="btn-icon" aria-label="Close">✕</button>
+          <button id="btn-create-adv-close" class="btn-icon" aria-label="Close">${FantasyIcons.get('close', { size: 16 })}</button>
         </header>
 
         <div class="modal-body" style="flex-direction: column; gap: 18px;">
@@ -65,16 +67,16 @@ export class CreateAdventureModal {
             <div class="form-group">
               <label>Starter Regional Map</label>
               <select id="select-new-map" class="form-select">
-                <option value="../../adventures/phandelver/img/panorama.jpg">🌄 Sword Mountains & Phandalin Panorama</option>
-                <option value="../../adventures/hochsattel/img/panorama.png">🏔️ Alpine Mountain Panorama (Hochsattel)</option>
+                <option value="../../adventures/phandelver/img/panorama.jpg">Sword Mountains & Phandalin Panorama</option>
+                <option value="../../adventures/hochsattel/img/panorama.png">Alpine Mountain Panorama (Hochsattel)</option>
               </select>
             </div>
             <div class="form-group">
               <label>Visual UI Theme</label>
               <select id="select-new-theme" class="form-select">
-                <option value="fantasy">✨ Luminous Fantasy Obsidian & Gold</option>
-                <option value="parchment">📜 Classic D&D Parchment</option>
-                <option value="cyber-slate">🛡️ Modern Slate Steel</option>
+                ${THEME_CATALOG.map(t => `
+                  <option value="${t.id}">${t.name} (${t.subtitle})</option>
+                `).join('')}
               </select>
             </div>
           </div>
@@ -83,7 +85,7 @@ export class CreateAdventureModal {
           <div class="form-group">
             <label>Starter Stages Template</label>
             <select id="select-new-template" class="form-select">
-              <option value="3stage">3 Stages (Tavern 🍺, Dungeon 🕯️, Boss Fight 💀)</option>
+              <option value="3stage">3 Stages (Tavern, Dungeon, Boss Fight)</option>
               <option value="6stage">6 Stages (Full Campaign Arc)</option>
               <option value="blank">1 Blank Stage (Fresh Canvas)</option>
             </select>
@@ -93,10 +95,7 @@ export class CreateAdventureModal {
         <footer class="modal-footer">
           <button id="btn-create-adv-cancel" class="btn-secondary">Cancel</button>
           <button id="btn-create-adv-submit" class="btn-primary">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
+            ${FantasyIcons.get('plus', { size: 16 })}
             <span>Create Adventure</span>
           </button>
         </footer>

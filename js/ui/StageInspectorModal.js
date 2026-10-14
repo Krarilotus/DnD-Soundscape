@@ -11,6 +11,7 @@ import {
   getAdventureEffects,
   getNextAvailableHotkey
 } from '../audio/PresetEffects.js';
+import { FantasyIcons } from './FantasyIcons.js';
 
 export const RPG_EMOJIS = [
   { icon: '🍺', label: 'Tavern' },
@@ -244,7 +245,7 @@ export class StageInspectorModal {
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
             </svg>
           </button>
-          <button type="button" id="ctx-btn-close" class="ctx-btn-icon" title="Close (Esc)">✕</button>
+          <button type="button" id="ctx-btn-close" class="ctx-btn-icon" title="Close (Esc)">${FantasyIcons.get('close', { size: 16 })}</button>
         </div>
       </div>
 
@@ -252,7 +253,7 @@ export class StageInspectorModal {
       <div id="ctx-emoji-drawer" class="ctx-emoji-drawer ${this.showEmojiPicker ? '' : 'hidden'}">
         ${RPG_EMOJIS.map(item => `
           <button type="button" class="ctx-emoji-chip ${item.icon === s.icon ? 'active' : ''}" data-icon="${item.icon}" title="${item.label}">
-            ${item.icon}
+            ${FantasyIcons.render(item.icon, { size: 18 })}
           </button>
         `).join('')}
       </div>
@@ -260,7 +261,7 @@ export class StageInspectorModal {
       <!-- 1. MUSIC LAYER -->
       <div class="ctx-section">
         <div class="ctx-section-header">
-          <span class="ctx-section-title">🎵 Music Soundtrack</span>
+          <span class="ctx-section-title">${FantasyIcons.get('d20', { size: 14 })} Music Soundtrack</span>
           <div class="ctx-vol-wrapper">
             <input type="range" id="ctx-vol-music" class="ctx-slider" min="0" max="1" step="0.05" value="${musicVol}">
             <span id="ctx-vol-music-val" class="ctx-vol-label">${Math.round(musicVol * 100)}%</span>
@@ -274,7 +275,7 @@ export class StageInspectorModal {
             <option value="__custom__" ${isMusicCustom ? 'selected' : ''}>🔗 Custom / Stream URL...</option>
           </select>
           <button type="button" id="ctx-music-preview" class="ctx-preview-btn ${this.activePreviewFile === curMusicTrack.file ? 'playing' : ''}" title="Test Soundtrack">
-            ${this.activePreviewFile === curMusicTrack.file ? '⏹' : '▶'}
+            ${this.activePreviewFile === curMusicTrack.file ? FantasyIcons.get('stop', { size: 12 }) : FantasyIcons.get('play', { size: 12 })}
           </button>
         </div>
         <div id="ctx-music-custom-box" class="ctx-custom-box ${isMusicCustom ? '' : 'hidden'}">
@@ -284,7 +285,7 @@ export class StageInspectorModal {
         <!-- Obvious Music Credit & Attribution Field -->
         <div class="ctx-attribution-card">
           <div class="ctx-attr-header">
-            <span class="ctx-attr-badge">📜 Music Attribution</span>
+            <span class="ctx-attr-badge">${FantasyIcons.get('scroll', { size: 12 })} Music Attribution</span>
             ${curMusicTrack.sourceUrl ? `
               <a href="${curMusicTrack.sourceUrl}" target="_blank" rel="noopener" class="ctx-attr-link" title="Open source URL">
                 🔗 View Source ↗
@@ -307,7 +308,7 @@ export class StageInspectorModal {
       <!-- 2. AMBIENCE LAYER -->
       <div class="ctx-section">
         <div class="ctx-section-header">
-          <span class="ctx-section-title">🌲 Ambient Atmosphere</span>
+          <span class="ctx-section-title">${FantasyIcons.get('tree', { size: 14 })} Ambient Atmosphere</span>
           <div class="ctx-vol-wrapper">
             <input type="range" id="ctx-vol-amb" class="ctx-slider" min="0" max="1" step="0.05" value="${ambVol}">
             <span id="ctx-vol-amb-val" class="ctx-vol-label">${Math.round(ambVol * 100)}%</span>
@@ -321,7 +322,7 @@ export class StageInspectorModal {
             <option value="__custom__" ${isAmbCustom ? 'selected' : ''}>🔗 Custom / Stream URL...</option>
           </select>
           <button type="button" id="ctx-amb-preview" class="ctx-preview-btn ${this.activePreviewFile === curAmbTrack.file ? 'playing' : ''}" title="Test Ambience">
-            ${this.activePreviewFile === curAmbTrack.file ? '⏹' : '▶'}
+            ${this.activePreviewFile === curAmbTrack.file ? FantasyIcons.get('stop', { size: 12 }) : FantasyIcons.get('play', { size: 12 })}
           </button>
         </div>
         <div id="ctx-amb-custom-box" class="ctx-custom-box ${isAmbCustom ? '' : 'hidden'}">
@@ -331,7 +332,7 @@ export class StageInspectorModal {
         <!-- Obvious Ambience Credit & Attribution Field -->
         <div class="ctx-attribution-card">
           <div class="ctx-attr-header">
-            <span class="ctx-attr-badge">📜 Ambience Attribution</span>
+            <span class="ctx-attr-badge">${FantasyIcons.get('scroll', { size: 12 })} Ambience Attribution</span>
             ${curAmbTrack.sourceUrl ? `
               <a href="${curAmbTrack.sourceUrl}" target="_blank" rel="noopener" class="ctx-attr-link" title="Open source URL">
                 🔗 View Source ↗
@@ -355,7 +356,7 @@ export class StageInspectorModal {
       <div class="ctx-section ctx-effect-board-section">
         <div class="ctx-section-header">
           <div class="ctx-fx-title-group">
-            <span class="ctx-section-title">⚡ Scene Effect Board</span>
+            <span class="ctx-section-title">${FantasyIcons.get('lightning', { size: 14 })} Scene Effect Board</span>
             <span class="ctx-fx-badge">${(fxLayer.triggers || []).length} sounds</span>
           </div>
           <div class="ctx-vol-wrapper">
@@ -373,23 +374,23 @@ export class StageInspectorModal {
           ` : (fxLayer.triggers || []).map((trig, idx) => `
             <div class="ctx-fx-card" data-idx="${idx}">
               <button type="button" class="ctx-fx-card-play ${this.activePreviewFile === trig.file ? 'playing' : ''}" data-idx="${idx}" title="Test Sound">
-                ${this.activePreviewFile === trig.file ? '⏹' : '▶'}
+                ${this.activePreviewFile === trig.file ? FantasyIcons.get('stop', { size: 12 }) : FantasyIcons.get('play', { size: 12 })}
               </button>
-              <span class="ctx-fx-card-icon">${trig.icon || '⚡'}</span>
+              <span class="ctx-fx-card-icon">${FantasyIcons.render(trig.icon, { size: 18 })}</span>
               <div class="ctx-fx-card-info">
                 <span class="ctx-fx-card-label" title="${trig.label}">${trig.label}</span>
                 <span class="ctx-fx-card-sub">${trig.credit || 'RPG SFX'}</span>
               </div>
               ${trig.hotkey ? `<kbd class="ctx-sfx-key" title="Keyboard trigger">${trig.hotkey}</kbd>` : ''}
-              <button type="button" class="ctx-fx-card-edit" data-idx="${idx}" title="Configure Button (Short Name, Symbol, Hotkey)">✏️</button>
-              <button type="button" class="ctx-fx-card-del" data-idx="${idx}" title="Remove sound from board">✕</button>
+              <button type="button" class="ctx-fx-card-edit" data-idx="${idx}" title="Configure Button (Short Name, Symbol, Hotkey)">${FantasyIcons.get('feather', { size: 12 })}</button>
+              <button type="button" class="ctx-fx-card-del" data-idx="${idx}" title="Remove sound from board">${FantasyIcons.get('close', { size: 12 })}</button>
             </div>
           `).join('')}
         </div>
 
         <!-- Add Effect Toggle Button -->
         <button type="button" id="ctx-btn-toggle-add-fx" class="ctx-btn-add-fx ${this.showAddEffectDrawer ? 'active' : ''}">
-          <span>${this.showAddEffectDrawer ? '▲ Close Effect Selector' : '➕ Add Sound Effect to Scene'}</span>
+          <span>${this.showAddEffectDrawer ? '▲ Close Effect Selector' : `${FantasyIcons.get('plus', { size: 14 })} Add Sound Effect to Scene`}</span>
         </button>
 
         <!-- Inline Effect Selector Drawer -->
@@ -397,13 +398,13 @@ export class StageInspectorModal {
           <!-- Drawer Tabs -->
           <div class="ctx-fx-tabs">
             <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'adventure' ? 'active' : ''}" data-tab="adventure" title="Sounds from other scenes in this campaign">
-              🔁 From Other Scenes (${getAdventureEffects(this.adventure, s.id).length})
+              ${FantasyIcons.get('reload', { size: 13 })} From Other Scenes (${getAdventureEffects(this.adventure, s.id).length})
             </button>
             <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'presets' ? 'active' : ''}" data-tab="presets" title="Curated RPG sound effect presets">
-              ⚡ Presets Library (${RPG_SFX_PRESETS.length})
+              ${FantasyIcons.get('lightning', { size: 13 })} Presets Library (${RPG_SFX_PRESETS.length})
             </button>
             <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'custom' ? 'active' : ''}" data-tab="custom" title="Enter a custom file path or URL">
-              🔗 Custom Sound
+              ${FantasyIcons.get('spark', { size: 13 })} Custom Sound
             </button>
           </div>
 

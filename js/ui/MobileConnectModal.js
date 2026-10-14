@@ -3,6 +3,8 @@
  * Displays local network URL and dynamic QR Code for instant phone connection and installation.
  */
 
+import { FantasyIcons } from './FantasyIcons.js';
+
 export class MobileConnectModal {
   constructor() {
     this.modalEl = null;
@@ -29,31 +31,31 @@ export class MobileConnectModal {
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(currentOrigin)}&bgcolor=14-16-25&color=212-175-55`;
 
     this.modalEl.innerHTML = `
-      <div class="modal-window" style="max-width: 620px;">
+      <div class="modal-window theme-card" style="max-width: 620px;">
         <header class="modal-header">
           <h2>
-            <span>📱</span>
+            <span>${FantasyIcons.get('spark', { size: 20 })}</span>
             <span>Mobile Remote & Phone App Setup</span>
           </h2>
-          <button id="btn-mobile-modal-close" class="btn-icon" aria-label="Close">✕</button>
+          <button id="btn-mobile-modal-close" class="btn-icon" aria-label="Close">${FantasyIcons.get('close', { size: 16 })}</button>
         </header>
 
         <div class="modal-body" style="flex-direction: column; gap: 20px; align-items: center; text-align: center;">
-          <p style="color: var(--text-muted); font-size: 14px; max-width: 480px;">
+          <p style="color: var(--theme-text-muted); font-size: 14px; max-width: 480px;">
             Run your prepared soundboard directly from your <strong>iPhone</strong> or <strong>Android</strong> phone during your D&D session.
           </p>
 
-          <div style="display: flex; gap: 24px; align-items: center; background: rgba(0,0,0,0.4); padding: 18px 24px; border-radius: var(--radius-lg); border: 1px solid var(--border-gold);">
-            <div id="qr-container" style="width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; background: #0e1019; border-radius: 8px; border: 1px solid var(--border-subtle); overflow: hidden;">
-              <img id="qr-img" src="${qrUrl}" alt="Scan QR Code" style="width: 140px; height: 140px; display: block;" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\\'padding:12px;font-size:11px;color:var(--gold-light);text-align:center;\\'>📲 Open Link<br>on Phone</div>';">
+          <div style="display: flex; gap: 24px; align-items: center; background: rgba(0,0,0,0.4); padding: 18px 24px; border-radius: var(--theme-radius-lg); border: 1px solid var(--theme-border-highlight);">
+            <div id="qr-container" style="width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; background: var(--theme-bg-input); border-radius: 8px; border: 1px solid var(--theme-border-base); overflow: hidden;">
+              <img id="qr-img" src="${qrUrl}" alt="Scan QR Code" style="width: 140px; height: 140px; display: block;" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\\'padding:12px;font-size:11px;color:var(--theme-primary);text-align:center;\\'>Open Link<br>on Phone</div>';">
             </div>
             <div style="text-align: left; max-width: 280px;">
-              <span class="ip-badge" style="font-size: 12px; color: var(--gold-light); font-weight: 700; text-transform: uppercase;">1. Scan or Open URL</span>
+              <span class="ip-badge" style="font-size: 12px; color: var(--theme-primary-light); font-weight: 700; text-transform: uppercase;">1. Scan or Open URL</span>
               <div class="qr-url" style="background: rgba(0,0,0,0.6); padding: 6px 10px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #fff; margin: 6px 0; word-break: break-all;">
                 ${currentOrigin}
               </div>
-              <span style="font-size: 12px; color: var(--text-muted);">
-                ${isLocalhost ? '💡 For phones on your Wi-Fi, open your PC\'s Wi-Fi IP (e.g. <code>http://192.168.x.x:8777</code>).' : 'Ensure phone and PC are on the same Wi-Fi network.'}
+              <span style="font-size: 12px; color: var(--theme-text-muted);">
+                ${isLocalhost ? 'For phones on your Wi-Fi, open your PC\'s Wi-Fi IP (e.g. <code>http://192.168.x.x:8777</code>).' : 'Ensure phone and PC are on the same Wi-Fi network.'}
               </span>
             </div>
           </div>

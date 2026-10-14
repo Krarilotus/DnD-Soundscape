@@ -4,6 +4,8 @@
  * Track titles and credits display in retro MP3 LCD marquee inside the Mixer drawer.
  */
 
+import { FantasyIcons } from './FantasyIcons.js';
+
 export class MixerHUD {
   constructor(containerEl, audioEngine, callbacks = {}) {
     this.container = containerEl;
@@ -44,12 +46,12 @@ export class MixerHUD {
         <!-- Music Channel -->
         <div class="mixer-channel">
           <div class="mixer-channel-header">
-            <span>🎵 Music</span>
+            <span>${FantasyIcons.get('d20', { size: 14 })} Music</span>
           </div>
           <!-- Retro MP3 LCD Display -->
           <div class="channel-lcd-screen">
             <div class="lcd-marquee-wrapper">
-              <span id="lcd-music-text" class="lcd-marquee-text">🎵 No Track Loaded</span>
+              <span id="lcd-music-text" class="lcd-marquee-text">No Track Loaded</span>
             </div>
           </div>
           <div class="mixer-fader-container">
@@ -64,12 +66,12 @@ export class MixerHUD {
         <!-- Ambience Channel -->
         <div class="mixer-channel">
           <div class="mixer-channel-header">
-            <span>🌲 Ambience</span>
+            <span>${FantasyIcons.get('tree', { size: 14 })} Ambience</span>
           </div>
           <!-- Retro MP3 LCD Display -->
           <div class="channel-lcd-screen">
             <div class="lcd-marquee-wrapper">
-              <span id="lcd-ambience-text" class="lcd-marquee-text">🌲 No Ambience Loaded</span>
+              <span id="lcd-ambience-text" class="lcd-marquee-text">No Ambience Loaded</span>
             </div>
           </div>
           <div class="mixer-fader-container">
@@ -84,12 +86,12 @@ export class MixerHUD {
         <!-- Effects Channel -->
         <div class="mixer-channel">
           <div class="mixer-channel-header">
-            <span>⚡ Effects</span>
+            <span>${FantasyIcons.get('lightning', { size: 14 })} Effects</span>
           </div>
           <!-- Retro MP3 LCD Display -->
           <div class="channel-lcd-screen">
             <div class="lcd-marquee-wrapper">
-              <span id="lcd-effects-text" class="lcd-marquee-text">⚡ No Effects Loaded</span>
+              <span id="lcd-effects-text" class="lcd-marquee-text">No Effects Loaded</span>
             </div>
           </div>
           <div class="mixer-fader-container">

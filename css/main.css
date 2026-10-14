@@ -1,24 +1,27 @@
 /* ==========================================================================
    DnD-Soundscape: Core Design System & Global Styles
-   Fantasy Dark / Gold Theme with Glassmorphism & High-Contrast Typography
+   Centralized Fantasy Theme System with Bespoke Styling
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('themes/theme-tokens.css');
+@import url('themes/theme-tavern.css');
+@import url('themes/theme-dungeon.css');
+@import url('themes/theme-elven.css');
 
 :root {
-  /* Color Palette - Luminous Fantasy Obsidian & Gold */
-  --bg-dark: #090a0f;
-  --bg-panel: rgba(18, 20, 29, 0.85);
-  --bg-card: rgba(26, 30, 44, 0.75);
-  --bg-input: rgba(12, 14, 22, 0.85);
+  /* Color Palette - Bridges to Active Theme Tokens */
+  --bg-dark: var(--theme-bg-base);
+  --bg-panel: var(--theme-bg-surface);
+  --bg-card: var(--theme-bg-card);
+  --bg-input: var(--theme-bg-input);
   
-  --border-subtle: rgba(212, 175, 55, 0.15);
-  --border-gold: rgba(212, 175, 55, 0.4);
-  --border-gold-bright: #d4af37;
+  --border-subtle: var(--theme-border-base);
+  --border-gold: var(--theme-border-highlight);
+  --border-gold-bright: var(--theme-primary-light);
   
-  --gold-primary: #d4af37;
-  --gold-glow: rgba(212, 175, 55, 0.35);
-  --gold-light: #f7e089;
+  --gold-primary: var(--theme-primary);
+  --gold-glow: var(--theme-glow);
+  --gold-light: var(--theme-primary-light);
   
   --accent-amber: #e67e22;
   --accent-blue: #3498db;
@@ -27,44 +30,25 @@
   --accent-purple: #9b59b6;
   --accent-emerald: #2ecc71;
   
-  --text-main: #f0f3f8;
-  --text-muted: #8e9aaf;
-  --text-gold: #f4d06f;
+  --text-main: var(--theme-text-main);
+  --text-muted: var(--theme-text-muted);
+  --text-gold: var(--theme-text-accent);
   
-  --font-serif: 'Cinzel', 'Trajan Pro', 'Georgia', serif;
-  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: var(--theme-font-title);
+  --font-sans: var(--theme-font-body);
   
   --shadow-hud: 0 -8px 32px rgba(0, 0, 0, 0.75);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-gold: 0 0 20px rgba(212, 175, 55, 0.25);
+  --shadow-card: var(--theme-shadow-card);
+  --shadow-gold: 0 0 20px var(--theme-glow);
   
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-sm: var(--theme-radius-sm);
+  --radius-md: var(--theme-radius-md);
+  --radius-lg: var(--theme-radius-lg);
   --radius-full: 9999px;
   
   --transition-fast: 0.15s ease;
   --transition-normal: 0.25s ease;
   --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Theme Variations */
-[data-theme="parchment"] {
-  --bg-dark: #1b1713;
-  --bg-panel: rgba(36, 31, 24, 0.9);
-  --bg-card: rgba(48, 41, 32, 0.85);
-  --gold-primary: #c99738;
-  --text-main: #f8f1e5;
-  --text-muted: #b5a48b;
-}
-
-[data-theme="cyber-slate"] {
-  --bg-dark: #080c14;
-  --bg-panel: rgba(13, 20, 34, 0.9);
-  --bg-card: rgba(20, 30, 50, 0.8);
-  --gold-primary: #00d2d3;
-  --gold-light: #54a0ff;
-  --border-gold: rgba(0, 210, 211, 0.4);
 }
 
 /* CSS Reset & Box Sizing */

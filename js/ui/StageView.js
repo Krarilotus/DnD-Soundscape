@@ -3,6 +3,8 @@
  * Clean, minimal Studio Mode with round icon action buttons and seamless drag-and-drop.
  */
 
+import { FantasyIcons } from './FantasyIcons.js';
+
 export class StageView {
   constructor(containerEl, onStageClick, onPinMoved, onStageEdit, onAddStage, onFileDropOnCanvas, onFileDropOnPin, onExitStudio = null) {
     this.container = containerEl;
@@ -57,7 +59,7 @@ export class StageView {
 
                 <!-- Transient Location Name Toast (Appears on stage change, then vanishes) -->
         <div id="stage-transient-toast" class="stage-transient-toast hidden" aria-live="polite">
-          <span id="stage-toast-icon" class="stage-toast-icon">📍</span>
+          <span id="stage-toast-icon" class="stage-toast-icon">${FantasyIcons.get('pin', { size: 18 })}</span>
           <span id="stage-toast-name" class="stage-toast-name">Location</span>
         </div>
 
@@ -143,18 +145,18 @@ export class StageView {
       pin.innerHTML = `
         <div class="stage-pin-pulse"></div>
         <div class="stage-pin-badge">
-          <span class="stage-pin-icon">${stage.icon || '🗺️'}</span>
+          <span class="stage-pin-icon">${FantasyIcons.render(stage.icon || 'pin', { size: 18 })}</span>
           ${stage.hotkey ? `<span class="stage-pin-hotkey">${stage.hotkey}</span>` : ''}
-          ${this.isEditMode ? `<span class="stage-pin-edit-tag">✏️</span>` : ''}
+          ${this.isEditMode ? `<span class="stage-pin-edit-tag">${FantasyIcons.get('feather', { size: 12 })}</span>` : ''}
         </div>
         ${!this.isEditMode ? `
         <div class="stage-pin-tooltip">
           <div class="tooltip-stage-title">${stage.label}</div>
           <div class="tooltip-stage-desc">${stage.description || ''}</div>
           <div class="tooltip-layers-summary">
-            <span>🎵 ${musicTitle}</span>
+            <span>${FantasyIcons.get('d20', { size: 12 })} ${musicTitle}</span>
             <span>•</span>
-            <span>🌲 ${ambTitle}</span>
+            <span>${FantasyIcons.get('tree', { size: 12 })} ${ambTitle}</span>
           </div>
         </div>
         ` : ''}

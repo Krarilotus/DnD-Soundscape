@@ -1,0 +1,91 @@
+/* ==========================================================================
+   DnD-Soundscape Theme: Lothlórien Canopy & Silverleaf Spire
+   Aesthetic: Sun-dappled high elven spires, twilight emerald groves,
+   luminous solar gold filigree, polished silver curves, and botanical elegance.
+   ========================================================================== */
+
+[data-theme="elven"] {
+  /* Surfaces & Canvas */
+  --theme-bg-base: #04120d;
+  --theme-bg-surface: rgba(8, 28, 20, 0.90);
+  --theme-bg-card: rgba(12, 38, 27, 0.94);
+  --theme-bg-card-hover: rgba(18, 54, 38, 0.96);
+  --theme-bg-input: rgba(6, 20, 14, 0.95);
+  --theme-bg-overlay: rgba(3, 10, 7, 0.88);
+  --theme-bg-drawer: #092419;
+  --theme-bg-pattern: radial-gradient(ellipse at 50% 12%, rgba(251, 191, 36, 0.12) 0%, rgba(16, 185, 129, 0.08) 50%, transparent 80%);
+
+  /* Borders & Dividers - Graceful curved filigree borders */
+  --theme-border-base: rgba(251, 191, 36, 0.28);
+  --theme-border-highlight: #fbbf24;
+  --theme-border-accent: #10b981;
+  --theme-border-inner: rgba(16, 185, 129, 0.2);
+  
+  /* Illumination & Glow - Solar Gold & Emerald Leaf Shimmer */
+  --theme-glow: rgba(251, 191, 36, 0.35);
+  --theme-glow-strong: rgba(251, 191, 36, 0.7);
+  --theme-shadow-card: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 28px rgba(16, 185, 129, 0.25), inset 0 0 16px rgba(251, 191, 36, 0.08);
+
+  /* Primary Accent & Hues */
+  --theme-primary: #fbbf24;
+  --theme-primary-light: #fef3c7;
+  --theme-primary-dark: #b45309;
+  --theme-secondary: #10b981;
+
+  /* Typography Colors */
+  --theme-text-main: #f0fdf4;
+  --theme-text-muted: #86bfa3;
+  --theme-text-title: #fef9c3;
+  --theme-text-accent: #34d399;
+
+  /* Fonts - High-Elven Serif & Ornate Script */
+  --theme-font-title: 'Cinzel Decorative', 'Marcellus SC', serif;
+  --theme-font-display: 'Marcellus SC', 'Cinzel', serif;
+  --theme-font-body: 'Outfit', sans-serif;
+
+  /* Radii - Graceful curved botanical filigree */
+  --theme-radius-sm: 6px;
+  --theme-radius-md: 12px;
+  --theme-radius-lg: 20px;
+
+  /* Interactive Elements */
+  --theme-button-bg: linear-gradient(135deg, #059669 0%, #064e3b 60%, #b45309 100%);
+  --theme-button-bg-hover: linear-gradient(135deg, #10b981 0%, #047857 60%, #d97706 100%);
+  --theme-button-border: #fcd34d;
+  --theme-button-text: #ffffff;
+  --theme-button-shadow: 0 4px 20px rgba(16, 185, 129, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  --theme-secondary-btn-bg: rgba(16, 185, 129, 0.08);
+  --theme-secondary-btn-hover: rgba(251, 191, 36, 0.18);
+  --theme-secondary-btn-border: rgba(251, 191, 36, 0.4);
+
+  --theme-slider-track: #071f15;
+  --theme-slider-fill: #10b981;
+  --theme-slider-thumb: #fbbf24;
+  --theme-slider-thumb-border: #065f46;
+
+  --theme-kbd-bg: rgba(7, 26, 18, 0.88);
+  --theme-kbd-border: rgba(251, 191, 36, 0.45);
+  --theme-kbd-text: #fde68a;
+
+  /* Corner Ornament: Golden elven fleur-de-lis / leaf */
+  --theme-corner-ornament: '⚜';
+}
+
+/* Specific Elven Visual Enhancements */
+[data-theme="elven"] .top-navbar {
+  background: rgba(8, 28, 20, 0.90) !important;
+  border: 1px solid #fbbf24 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.85), 0 0 20px rgba(16, 185, 129, 0.3) !important;
+}
+
+[data-theme="elven"] .start-card {
+  border: 1px solid #fbbf24 !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.92), 0 0 40px rgba(16, 185, 129, 0.35) !important;
+}
+
+[data-theme="elven"] .theme-card,
+[data-theme="elven"] .modal-window {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.88), 0 0 28px rgba(16, 185, 129, 0.22) !important;
+}

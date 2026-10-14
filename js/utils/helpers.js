@@ -2,6 +2,8 @@
  * DnD-Soundscape: Utility & Helper Functions
  */
 
+import { FantasyIcons } from '../ui/FantasyIcons.js';
+
 export function formatTime(seconds) {
   if (isNaN(seconds) || seconds < 0) return '00:00';
   const mins = Math.floor(seconds / 60);
@@ -19,15 +21,15 @@ export function showToast(message, type = 'info', durationMs = 3500) {
   }
 
   const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
+  toast.className = `toast toast-${type} theme-card`;
   
   const iconMap = {
-    success: '✨',
-    error: '⚠️',
-    info: '🎲'
+    success: FantasyIcons.get('spark', { size: 16 }),
+    error: FantasyIcons.get('close', { size: 16 }),
+    info: FantasyIcons.get('d20', { size: 16 })
   };
 
-  toast.innerHTML = `<span>${iconMap[type] || '✨'}</span> <span>${message}</span>`;
+  toast.innerHTML = `<span style="color: var(--theme-primary);">${iconMap[type] || FantasyIcons.get('spark', { size: 16 })}</span> <span>${message}</span>`;
   container.appendChild(toast);
 
   setTimeout(() => {

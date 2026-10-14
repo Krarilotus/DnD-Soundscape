@@ -17,10 +17,14 @@ import { SettingsModal } from './ui/SettingsModal.js';
 import { CreditsModal } from './ui/CreditsModal.js';
 import { QuickEffectBoard } from './ui/QuickEffectBoard.js';
 import { ConfigureEffectModal } from './ui/ConfigureEffectModal.js';
+import { ThemeCatalog } from './ui/ThemeCatalog.js';
 import { showToast } from './utils/helpers.js';
 
 class DnDSoundscapeApp {
   constructor() {
+    // Initialize Theme immediately to prevent theme flashing
+    ThemeCatalog.applyTheme(ThemeCatalog.getCurrentTheme());
+
     this.audio = new AudioEngine();
     this.store = new AdventureStore();
 

@@ -12,6 +12,7 @@ import {
   getNextAvailableHotkey
 } from '../audio/PresetEffects.js';
 import { generateId, showToast } from '../utils/helpers.js';
+import { FantasyIcons } from './FantasyIcons.js';
 
 function detectEffectCategory(trigger) {
   if (trigger.category) return trigger.category;
@@ -214,7 +215,7 @@ export class QuickEffectBoard {
       <aside class="effect-board-drawer ${this.isOpen ? 'open' : ''}" role="complementary" aria-label="Scene Effect Board">
         <!-- Attached Right-Edge Toggle Handle (Always accessible) -->
         <button type="button" id="effect-drawer-handle" class="effect-drawer-handle" title="${this.isOpen ? 'Close Effect Board (B)' : 'Slide out Scene Effect Board (B)'}">
-          <span class="handle-icon">⚡</span>
+          <span class="handle-icon">${FantasyIcons.get('lightning', { size: 16 })}</span>
           <span class="handle-text">Effect Board</span>
           <span class="handle-badge" id="handle-effect-count">${count}</span>
         </button>
@@ -222,18 +223,18 @@ export class QuickEffectBoard {
         <!-- Drawer Header -->
         <div class="effect-drawer-header">
           <div class="effect-drawer-title-group">
-            <span class="effect-drawer-badge">⚡</span>
+            <span class="effect-drawer-badge">${FantasyIcons.get('lightning', { size: 20 })}</span>
             <div class="effect-drawer-titles">
-              <span class="effect-drawer-scene-name" title="${this.stage.label}">📍 ${this.stage.label}</span>
+              <span class="effect-drawer-scene-name" title="${this.stage.label}">${FantasyIcons.get('pin', { size: 14 })} ${this.stage.label}</span>
               <span class="effect-drawer-subtitle">Scene Effect Board (${count} sound${count === 1 ? '' : 's'})</span>
             </div>
           </div>
           <div class="effect-drawer-header-actions">
             <button type="button" id="btn-drawer-add-fx" class="effect-drawer-hbtn ${this.showAddDrawer ? 'active' : ''}" title="Add New Sound Effect to this Scene">
-              <span>${this.showAddDrawer ? '▲ Close' : '➕ Add Sound'}</span>
+              <span>${this.showAddDrawer ? '▲ Close' : `${FantasyIcons.get('plus', { size: 14 })} Add Sound`}</span>
             </button>
             <button type="button" id="btn-drawer-close" class="effect-drawer-close-btn" title="Slide Drawer In (Esc / B)" aria-label="Close">
-              ✕
+              ${FantasyIcons.get('close', { size: 16 })}
             </button>
           </div>
         </div>
@@ -243,13 +244,13 @@ export class QuickEffectBoard {
           <div class="drawer-add-fx-accordion">
             <div class="ctx-fx-tabs">
               <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'adventure' ? 'active' : ''}" data-tab="adventure">
-                🔁 Other Scenes (${advEffects.length})
+                ${FantasyIcons.get('reload', { size: 13 })} Other Scenes (${advEffects.length})
               </button>
               <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'presets' ? 'active' : ''}" data-tab="presets">
-                ⚡ Presets (${RPG_SFX_PRESETS.length})
+                ${FantasyIcons.get('lightning', { size: 13 })} Presets (${RPG_SFX_PRESETS.length})
               </button>
               <button type="button" class="ctx-fx-tab-btn ${this.activeEffectTab === 'custom' ? 'active' : ''}" data-tab="custom">
-                🔗 Custom
+                ${FantasyIcons.get('spark', { size: 13 })} Custom
               </button>
             </div>
 
@@ -257,7 +258,7 @@ export class QuickEffectBoard {
             <div class="ctx-fx-tab-pane ${this.activeEffectTab === 'adventure' ? '' : 'hidden'}">
               ${advEffects.length === 0 ? `
                 <div class="ctx-fx-empty">
-                  <span>No effects in other scenes yet. Try the <strong>⚡ Presets</strong> tab!</span>
+                  <span>No effects in other scenes yet. Try the <strong>Presets</strong> tab!</span>
                 </div>
               ` : `
                 <div class="ctx-fx-scroll-list" style="max-height: 160px;">
@@ -266,9 +267,9 @@ export class QuickEffectBoard {
                     return `
                       <div class="ctx-fx-picker-row">
                         <button type="button" class="ctx-fx-row-play ${this.activePreviewFile === item.file ? 'playing' : ''}" data-file="${item.file}" title="Preview sound">
-                          ${this.activePreviewFile === item.file ? '⏹' : '▶'}
+                          ${this.activePreviewFile === item.file ? FantasyIcons.get('stop', { size: 12 }) : FantasyIcons.get('play', { size: 12 })}
                         </button>
-                        <span class="ctx-fx-row-icon">${item.icon || '⚡'}</span>
+                        <span class="ctx-fx-row-icon">${FantasyIcons.render(item.icon, { size: 18 })}</span>
                         <div class="ctx-fx-row-info">
                           <span class="ctx-fx-row-title">${item.label}</span>
                           <span class="ctx-fx-row-from">Scene: ${item.fromStageLabel}</span>
@@ -277,7 +278,7 @@ export class QuickEffectBoard {
                           <span class="ctx-fx-tag-added">✓ Added</span>
                         ` : `
                           <button type="button" class="ctx-fx-btn-relink" data-file="${item.file}" data-label="${item.label}" data-icon="${item.icon || '⚡'}" data-credit="${item.credit || ''}" data-source="${item.sourceUrl || ''}">
-                            ➕ Add
+                            ${FantasyIcons.get('plus', { size: 12 })} Add
                           </button>
                         `}
                       </div>
@@ -302,9 +303,9 @@ export class QuickEffectBoard {
                   return `
                     <div class="ctx-fx-picker-row">
                       <button type="button" class="ctx-fx-row-play ${this.activePreviewFile === p.file ? 'playing' : ''}" data-file="${p.file}" title="Preview sound">
-                        ${this.activePreviewFile === p.file ? '⏹' : '▶'}
+                        ${this.activePreviewFile === p.file ? FantasyIcons.get('stop', { size: 12 }) : FantasyIcons.get('play', { size: 12 })}
                       </button>
-                      <span class="ctx-fx-row-icon">${p.icon || '⚡'}</span>
+                      <span class="ctx-fx-row-icon">${FantasyIcons.render(p.icon, { size: 18 })}</span>
                       <div class="ctx-fx-row-info">
                         <span class="ctx-fx-row-title">${p.label}</span>
                         <span class="ctx-fx-row-from">${p.credit || 'RPG SFX'}</span>
@@ -313,7 +314,7 @@ export class QuickEffectBoard {
                         <span class="ctx-fx-tag-added">✓ Added</span>
                       ` : `
                         <button type="button" class="ctx-fx-btn-add-preset" data-id="${p.id}">
-                          ➕ Add
+                          ${FantasyIcons.get('plus', { size: 12 })} Add
                         </button>
                       `}
                     </div>
@@ -350,7 +351,7 @@ export class QuickEffectBoard {
                   </div>
                 </div>
                 <button type="button" id="drawer-btn-add-custom" class="ctx-btn-submit-fx" style="margin-top: 8px;">
-                  ➕ Add to Scene Board
+                  ${FantasyIcons.get('plus', { size: 14 })} Add to Scene Board
                 </button>
               </div>
             </div>
@@ -361,17 +362,17 @@ export class QuickEffectBoard {
         ${count > 0 ? `
           <div class="effect-drawer-toolbar">
             <div class="effect-drawer-search-box">
-              <span class="search-icon">🔍</span>
+              <span class="search-icon">${FantasyIcons.get('spark', { size: 14 })}</span>
               <input type="text" id="drawer-fx-search" class="drawer-search-input" placeholder="Filter sounds..." value="${this.searchQuery}">
-              ${this.searchQuery ? `<button type="button" id="btn-clear-fx-search" class="search-clear-btn">✕</button>` : ''}
+              ${this.searchQuery ? `<button type="button" id="btn-clear-fx-search" class="search-clear-btn">${FantasyIcons.get('close', { size: 12 })}</button>` : ''}
             </div>
 
             <div class="effect-drawer-cat-chips">
               <button type="button" class="drawer-cat-chip ${this.filterCategory === 'all' ? 'active' : ''}" data-cat="all">All (${count})</button>
-              <button type="button" class="drawer-cat-chip ${this.filterCategory === 'combat' ? 'active' : ''}" data-cat="combat">⚔️ Combat</button>
-              <button type="button" class="drawer-cat-chip ${this.filterCategory === 'magic' ? 'active' : ''}" data-cat="magic">🔮 Magic</button>
-              <button type="button" class="drawer-cat-chip ${this.filterCategory === 'items' ? 'active' : ''}" data-cat="items">🗝️ Items</button>
-              <button type="button" class="drawer-cat-chip ${this.filterCategory === 'ambient' ? 'active' : ''}" data-cat="ambient">🌲 Ambient</button>
+              <button type="button" class="drawer-cat-chip ${this.filterCategory === 'combat' ? 'active' : ''}" data-cat="combat">${FantasyIcons.get('sword', { size: 13 })} Combat</button>
+              <button type="button" class="drawer-cat-chip ${this.filterCategory === 'magic' ? 'active' : ''}" data-cat="magic">${FantasyIcons.get('rune', { size: 13 })} Magic</button>
+              <button type="button" class="drawer-cat-chip ${this.filterCategory === 'items' ? 'active' : ''}" data-cat="items">${FantasyIcons.get('key', { size: 13 })} Items</button>
+              <button type="button" class="drawer-cat-chip ${this.filterCategory === 'ambient' ? 'active' : ''}" data-cat="ambient">${FantasyIcons.get('tree', { size: 13 })} Ambient</button>
             </div>
           </div>
         ` : ''}
@@ -380,11 +381,11 @@ export class QuickEffectBoard {
         <div class="effect-drawer-body">
           ${count === 0 ? `
             <div class="effect-drawer-empty">
-              <span class="empty-icon">⚡</span>
+              <span class="empty-icon">${FantasyIcons.get('lightning', { size: 36 })}</span>
               <h4>No sound effects on this scene yet</h4>
               <p>Add fitting sound effects for <strong>${this.stage.label}</strong> to trigger them instantly during your game.</p>
               <button type="button" id="btn-drawer-empty-add" class="drawer-empty-action-btn">
-                ➕ Add Sounds to Scene
+                ${FantasyIcons.get('plus', { size: 16 })} Add Sounds to Scene
               </button>
             </div>
           ` : filteredTriggers.length === 0 ? `
@@ -398,20 +399,21 @@ export class QuickEffectBoard {
                 <div class="drawer-fx-card" data-id="${t.id}" data-idx="${idx}">
                   <button type="button" class="drawer-fx-fire-btn" data-id="${t.id}" title="${t.label} (Press ${t.hotkey || 'click'} to play)">
                     ${t.hotkey ? `<kbd class="drawer-fx-hotkey">${t.hotkey}</kbd>` : ''}
-                    <span class="drawer-fx-icon">${t.icon || '⚡'}</span>
+                    <span class="drawer-fx-icon">${FantasyIcons.render(t.icon, { size: 26 })}</span>
                     <span class="drawer-fx-name">${t.shortName || t.label}</span>
                     <span class="drawer-fx-credit">${t.credit || 'RPG SFX'}</span>
                   </button>
                   <button type="button" class="drawer-fx-cfg-btn" data-id="${t.id}" title="Configure Button (Short Name, Symbol, Hotkey)">
-                    ✏️
+                    ${FantasyIcons.get('feather', { size: 13 })}
                   </button>
                   <button type="button" class="drawer-fx-del-btn" data-id="${t.id}" title="Remove sound from scene">
-                    ✕
+                    ${FantasyIcons.get('close', { size: 13 })}
                   </button>
                 </div>
               `).join('')}
             </div>
           `}
+        </div>
         </div>
 
         <!-- Drawer Footer Hints -->

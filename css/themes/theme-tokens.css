@@ -1,0 +1,374 @@
+/* ==========================================================================
+   DnD-Soundscape: Centralized Design System & Theme Token Interface
+   Comprehensive, extensible token contract for high-fantasy themes.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,600&family=Marcellus+SC&family=MedievalSharp&family=Outfit:wght@300;400;500;600;700&family=Uncial+Antiqua&display=swap');
+
+:root {
+  /* ========================================================================
+     1. Semantic Theme Tokens Interface (Default: Tavern Hearth & Oak)
+     ======================================================================== */
+  
+  /* Surfaces & Canvas */
+  --theme-bg-base: #110d0a;
+  --theme-bg-surface: rgba(26, 19, 14, 0.88);
+  --theme-bg-card: rgba(36, 26, 19, 0.92);
+  --theme-bg-card-hover: rgba(48, 35, 25, 0.95);
+  --theme-bg-input: rgba(18, 13, 9, 0.9);
+  --theme-bg-overlay: rgba(10, 7, 5, 0.85);
+  --theme-bg-drawer: #1a130e;
+  --theme-bg-pattern: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+
+  /* Borders & Dividers */
+  --theme-border-base: rgba(217, 119, 6, 0.25);
+  --theme-border-highlight: #d97706;
+  --theme-border-accent: #f59e0b;
+  --theme-border-inner: rgba(245, 158, 11, 0.15);
+  --theme-border-style: solid;
+  
+  /* Illumination & Glow */
+  --theme-glow: rgba(245, 158, 11, 0.35);
+  --theme-glow-strong: rgba(245, 158, 11, 0.65);
+  --theme-shadow-card: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 24px var(--theme-glow);
+  --theme-shadow-btn: 0 4px 14px rgba(0, 0, 0, 0.6);
+
+  /* Primary Accent & Hues */
+  --theme-primary: #f59e0b;
+  --theme-primary-light: #fcd34d;
+  --theme-primary-dark: #b45309;
+  --theme-secondary: #d97706;
+  --theme-accent-combat: #ef4444;
+  --theme-accent-magic: #8b5cf6;
+  --theme-accent-nature: #10b981;
+
+  /* Typography Colors */
+  --theme-text-main: #f5ede4;
+  --theme-text-muted: #a89485;
+  --theme-text-title: #fffbeb;
+  --theme-text-accent: #fbbf24;
+  --theme-text-inv: #160e08;
+
+  /* Fonts */
+  --theme-font-title: 'MedievalSharp', 'Cinzel', serif;
+  --theme-font-display: 'Cinzel', 'Trajan Pro', serif;
+  --theme-font-body: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --theme-font-ornate: 'Cinzel Decorative', serif;
+
+  /* Radii & Sharpness */
+  --theme-radius-sm: 4px;
+  --theme-radius-md: 8px;
+  --theme-radius-lg: 14px;
+  --theme-radius-pill: 9999px;
+
+  /* Interactive Elements */
+  --theme-button-bg: linear-gradient(135deg, #d97706, #92400e);
+  --theme-button-bg-hover: linear-gradient(135deg, #f59e0b, #b45309);
+  --theme-button-border: #fcd34d;
+  --theme-button-text: #fff;
+  --theme-button-shadow: 0 4px 18px rgba(217, 119, 6, 0.45);
+
+  --theme-secondary-btn-bg: rgba(255, 255, 255, 0.05);
+  --theme-secondary-btn-hover: rgba(245, 158, 11, 0.15);
+  --theme-secondary-btn-border: rgba(217, 119, 6, 0.35);
+
+  --theme-slider-track: #2a1e17;
+  --theme-slider-fill: #f59e0b;
+  --theme-slider-thumb: #fcd34d;
+  --theme-slider-thumb-border: #78350f;
+
+  --theme-kbd-bg: rgba(0, 0, 0, 0.5);
+  --theme-kbd-border: rgba(245, 158, 11, 0.35);
+  --theme-kbd-text: #fcd34d;
+
+  /* Atmospheric Badge & Corner Accents */
+  --theme-corner-ornament: '◆';
+  --theme-texture-overlay: none;
+
+  /* Backward Compatibility Bridges for existing classes */
+  --bg-dark: var(--theme-bg-base);
+  --bg-panel: var(--theme-bg-surface);
+  --bg-card: var(--theme-bg-card);
+  --bg-input: var(--theme-bg-input);
+  --border-gold: var(--theme-border-highlight);
+  --border-gold-bright: var(--theme-primary-light);
+  --border-subtle: var(--theme-border-base);
+  --gold-primary: var(--theme-primary);
+  --gold-glow: var(--theme-glow);
+  --gold-light: var(--theme-primary-light);
+  --text-main: var(--theme-text-main);
+  --text-muted: var(--theme-text-muted);
+  --text-gold: var(--theme-text-accent);
+  --font-serif: var(--theme-font-title);
+  --font-sans: var(--theme-font-body);
+}
+
+/* ==========================================================================
+   2. Centralized Themed Components & UI Building Blocks
+   ========================================================================== */
+
+/* Typography Rules */
+h1, h2, h3, .rpg-title, .modal-header h2, .brand-title, .start-title {
+  font-family: var(--theme-font-title);
+  letter-spacing: 0.04em;
+  color: var(--theme-text-title);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+}
+
+.brand-title {
+  font-family: var(--theme-font-display);
+}
+
+/* Custom Vector Fantasy Icons */
+.fantasy-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(0 0 4px var(--theme-glow));
+}
+
+button:hover .fantasy-icon {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 8px var(--theme-primary));
+}
+
+/* Themed Cards & Windows */
+.theme-card,
+.modal-window,
+.start-card,
+.stage-inspector-window,
+.hub-card {
+  background: var(--theme-bg-card);
+  border: 1px solid var(--theme-border-highlight);
+  border-radius: var(--theme-radius-lg);
+  box-shadow: var(--theme-shadow-card);
+  position: relative;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Corner Ornaments on Themed Windows */
+.modal-window::before,
+.modal-window::after,
+.start-card::before,
+.start-card::after {
+  content: var(--theme-corner-ornament);
+  position: absolute;
+  color: var(--theme-primary-light);
+  font-size: 11px;
+  line-height: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px var(--theme-glow));
+}
+.modal-window::before, .start-card::before { top: 7px; left: 9px; }
+.modal-window::after, .start-card::after { top: 7px; right: 9px; }
+
+/* Themed Architectural Dividers */
+.theme-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 18px 0;
+  width: 100%;
+}
+
+.theme-divider::before,
+.theme-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--theme-border-highlight), transparent);
+}
+
+.theme-divider-icon {
+  color: var(--theme-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  background: var(--theme-bg-card);
+  border: 1px solid var(--theme-border-base);
+  border-radius: var(--theme-radius-sm);
+  filter: drop-shadow(0 0 6px var(--theme-glow));
+}
+
+/* Primary Themed Buttons */
+.btn-primary,
+.btn-start-action {
+  background: var(--theme-button-bg) !important;
+  color: var(--theme-button-text) !important;
+  border: 1px solid var(--theme-button-border) !important;
+  border-radius: var(--theme-radius-md) !important;
+  font-family: var(--theme-font-title) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  padding: 10px 22px !important;
+  box-shadow: var(--theme-button-shadow) !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-start-action:hover {
+  background: var(--theme-button-bg-hover) !important;
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.15);
+  box-shadow: 0 6px 24px var(--theme-glow-strong) !important;
+}
+
+.btn-primary:active,
+.btn-start-action:active {
+  transform: translateY(1px);
+  filter: brightness(0.95);
+}
+
+/* Secondary Themed Buttons */
+.btn-secondary {
+  background: var(--theme-secondary-btn-bg) !important;
+  color: var(--theme-text-main) !important;
+  border: 1px solid var(--theme-secondary-btn-border) !important;
+  border-radius: var(--theme-radius-md) !important;
+  font-family: var(--theme-font-body);
+  font-weight: 500;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--theme-secondary-btn-hover) !important;
+  border-color: var(--theme-primary) !important;
+  color: var(--theme-text-title) !important;
+  box-shadow: 0 0 12px var(--theme-glow);
+}
+
+/* Icon Buttons */
+.btn-icon {
+  background: var(--theme-secondary-btn-bg);
+  border: 1px solid var(--theme-secondary-btn-border);
+  color: var(--theme-text-main);
+  border-radius: var(--theme-radius-md);
+  padding: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: var(--theme-secondary-btn-hover);
+  border-color: var(--theme-primary);
+  color: var(--theme-primary-light);
+  box-shadow: 0 0 10px var(--theme-glow);
+  transform: scale(1.08);
+}
+
+/* Themed Range Sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--theme-slider-track);
+  height: 6px;
+  border-radius: var(--theme-radius-pill);
+  outline: none;
+  border: 1px solid var(--theme-border-base);
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-slider-thumb);
+  border: 2px solid var(--theme-slider-thumb-border);
+  box-shadow: 0 0 8px var(--theme-glow);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 14px var(--theme-glow-strong);
+}
+
+/* Themed Hotkey & Attribution Badges */
+kbd {
+  display: inline-block;
+  background: var(--theme-kbd-bg);
+  border: 1px solid var(--theme-kbd-border);
+  border-radius: var(--theme-radius-sm);
+  color: var(--theme-kbd-text);
+  font-family: var(--theme-font-body);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Themed Select & Inputs */
+.form-select,
+.form-input,
+.ctx-attr-input {
+  background: var(--theme-bg-input) !important;
+  border: 1px solid var(--theme-border-base) !important;
+  color: var(--theme-text-main) !important;
+  border-radius: var(--theme-radius-md) !important;
+  padding: 8px 12px;
+  font-family: var(--theme-font-body);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-select:focus,
+.form-input:focus,
+.ctx-attr-input:focus {
+  outline: none;
+  border-color: var(--theme-primary) !important;
+  box-shadow: 0 0 12px var(--theme-glow) !important;
+}
+
+/* Themed Drawers & Sidebars */
+.effect-board-drawer {
+  background: var(--theme-bg-drawer) !important;
+  border-left: 2px solid var(--theme-border-highlight) !important;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.8), 0 0 20px var(--theme-glow) !important;
+}
+
+.effect-drawer-handle {
+  background: var(--theme-bg-card) !important;
+  border-color: var(--theme-border-highlight) !important;
+  color: var(--theme-primary) !important;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.7), 0 0 10px var(--theme-glow) !important;
+}
+
+.effect-drawer-header {
+  border-bottom: 1px solid var(--theme-border-base) !important;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.sfx-pad-btn,
+.drawer-fx-fire-btn {
+  background: var(--theme-bg-card) !important;
+  border: 1px solid var(--theme-border-base) !important;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+.sfx-pad-btn:hover,
+.drawer-fx-fire-btn:hover {
+  border-color: var(--theme-primary) !important;
+  box-shadow: 0 0 14px var(--theme-glow), inset 0 0 14px var(--theme-glow) !important;
+}

@@ -5,6 +5,7 @@
  */
 
 import { showToast } from '../utils/helpers.js';
+import { FantasyIcons } from './FantasyIcons.js';
 
 export class CreditsModal {
   constructor(adventureStore, getAdventureFn = null) {
@@ -59,22 +60,22 @@ export class CreditsModal {
     const query = this.filterQuery.toLowerCase().trim();
 
     this.modalEl.innerHTML = `
-      <div class="modal-window credits-modal-window" style="max-width: 780px; max-height: 85vh; display: flex; flex-direction: column;">
+      <div class="modal-window theme-card credits-modal-window" style="max-width: 780px; max-height: 85vh; display: flex; flex-direction: column;">
         <header class="modal-header" style="flex-shrink: 0;">
           <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 24px;">📜</span>
+            <span style="color: var(--theme-primary);">${FantasyIcons.get('scroll', { size: 24 })}</span>
             <div>
               <h2 style="font-size: 18px; margin: 0; font-weight: 700;">Audio Credits & Attributions</h2>
-              <p style="margin: 2px 0 0; font-size: 12.5px; color: var(--text-muted);">${adv?.title || 'Adventure'} · Complete Audio Registry</p>
+              <p style="margin: 2px 0 0; font-size: 12.5px; color: var(--theme-text-muted);">${adv?.title || 'Adventure'} · Complete Audio Registry</p>
             </div>
           </div>
-          <button type="button" id="btn-credits-close" class="btn-icon" aria-label="Close">✕</button>
+          <button type="button" id="btn-credits-close" class="btn-icon" aria-label="Close">${FantasyIcons.get('close', { size: 16 })}</button>
         </header>
 
-        <div style="padding: 12px 20px; background: rgba(0,0,0,0.25); border-bottom: 1px solid var(--border-color); display: flex; gap: 12px; align-items: center; flex-shrink: 0;">
+        <div style="padding: 12px 20px; background: rgba(0,0,0,0.25); border-bottom: 1px solid var(--theme-border-base); display: flex; gap: 12px; align-items: center; flex-shrink: 0;">
           <input type="text" id="credits-search" class="form-input" style="flex: 1; padding: 6px 12px; font-size: 13px;" placeholder="Search tracks, artists, or sources..." value="${this.filterQuery}">
           <button type="button" id="btn-copy-credits-md" class="btn-secondary" style="font-size: 12.5px; padding: 6px 12px; white-space: nowrap;" title="Copy formatted markdown list for YouTube or Stream description">
-            📋 Copy Markdown
+            ${FantasyIcons.get('scroll', { size: 14 })} Copy Markdown
           </button>
         </div>
 
@@ -97,70 +98,82 @@ export class CreditsModal {
               if (!matchesStage) return '';
 
               return `
-                <div class="credits-stage-card" style="background: rgba(255,255,255,0.025); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
-                  <div style="display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
-                    <span style="font-size: 18px;">${stage.icon || '📍'}</span>
-                    <h3 style="margin: 0; font-size: 15px; font-weight: 600; color: #fff;">${stage.label}</h3>
+                <div class="credits-stage-card" style="background: var(--theme-bg-card); border: 1px solid var(--theme-border-base); border-radius: var(--theme-radius-md); padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--theme-border-base); padding-bottom: 8px;">
+                    <span style="color: var(--theme-primary);">${FantasyIcons.render(stage.icon || 'pin', { size: 18 })}</span>
+                    <h3 style="margin: 0; font-size: 15px; font-weight: 600; color: var(--theme-text-title);">${stage.label}</h3>
                   </div>
 
                   <div style="display: flex; flex-direction: column; gap: 8px;">
                     <!-- Music -->
                     <div style="display: flex; align-items: baseline; gap: 10px; font-size: 13px;">
-                      <span style="font-weight: 600; color: #a0aec0; width: 85px; flex-shrink: 0;">🎵 Music:</span>
+                      <span style="font-weight: 600; color: var(--theme-text-muted); width: 85px; flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px;">
+                        ${FantasyIcons.get('d20', { size: 13 })} Music:
+                      </span>
                       <div style="flex: 1;">
-                        <span style="color: #edf2f7; font-weight: 500;">${music.title || 'None'}</span>
+                        <span style="color: var(--theme-text-main); font-weight: 500;">${music.title || 'None'}</span>
                         <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
-                          <span style="font-size: 11.5px; color: #cbd5e0;">👤 ${music.credit || 'Standard Tabletop Audio'}</span>
+                          <span style="font-size: 11.5px; color: var(--theme-text-muted);">${music.credit || 'Standard Tabletop Audio'}</span>
                           ${music.sourceUrl ? `
-                            <a href="${music.sourceUrl}" target="_blank" rel="noopener" style="font-size: 11.5px; color: var(--accent-gold); text-decoration: underline;">
-                              🔗 Source Link ↗
+                            <a href="${music.sourceUrl}" target="_blank" rel="noopener" style="font-size: 11.5px; color: var(--theme-primary); text-decoration: underline;">
+                              Source Link ↗
                             </a>
-                          ` : '<span style="font-size: 11px; color: #718096;">Local Soundscape Audio</span>'}
+                          ` : '<span style="font-size: 11px; color: var(--theme-text-muted);">Local Soundscape Audio</span>'}
                         </div>
                       </div>
                     </div>
 
                     <!-- Ambience -->
                     <div style="display: flex; align-items: baseline; gap: 10px; font-size: 13px;">
-                      <span style="font-weight: 600; color: #a0aec0; width: 85px; flex-shrink: 0;">🌲 Ambience:</span>
+                      <span style="font-weight: 600; color: var(--theme-text-muted); width: 85px; flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px;">
+                        ${FantasyIcons.get('tree', { size: 13 })} Ambience:
+                      </span>
                       <div style="flex: 1;">
-                        <span style="color: #edf2f7; font-weight: 500;">${amb.title || 'None'}</span>
+                        <span style="color: var(--theme-text-main); font-weight: 500;">${amb.title || 'None'}</span>
                         <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
-                          <span style="font-size: 11.5px; color: #cbd5e0;">👤 ${amb.credit || 'Standard Tabletop Ambience'}</span>
+                          <span style="font-size: 11.5px; color: var(--theme-text-muted);">${amb.credit || 'Standard Tabletop Ambience'}</span>
                           ${amb.sourceUrl ? `
-                            <a href="${amb.sourceUrl}" target="_blank" rel="noopener" style="font-size: 11.5px; color: var(--accent-gold); text-decoration: underline;">
-                              🔗 Source Link ↗
+                            <a href="${amb.sourceUrl}" target="_blank" rel="noopener" style="font-size: 11.5px; color: var(--theme-primary); text-decoration: underline;">
+                              Source Link ↗
                             </a>
-                          ` : '<span style="font-size: 11px; color: #718096;">Local Soundscape Audio</span>'}
+                          ` : '<span style="font-size: 11px; color: var(--theme-text-muted);">Local Soundscape Audio</span>'}
                         </div>
                       </div>
                     </div>
 
                     <!-- Effects Loop & Triggers -->
                     <div style="display: flex; align-items: baseline; gap: 10px; font-size: 13px;">
-                      <span style="font-weight: 600; color: #a0aec0; width: 85px; flex-shrink: 0;">⚡ Effects:</span>
+                      <span style="font-weight: 600; color: var(--theme-text-muted); width: 85px; flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px;">
+                        ${FantasyIcons.get('lightning', { size: 13 })} Effects:
+                      </span>
                       <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
                         ${fxTrack.title ? `
                           <div>
-                            <span style="color: #edf2f7; font-weight: 500;">${fxTrack.title}</span>
+                            <span style="color: var(--theme-text-main); font-weight: 500;">${fxTrack.title}</span>
                             <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
-                              <span style="font-size: 11.5px; color: #cbd5e0;">👤 ${fxTrack.credit || 'Atmospheric Texture'}</span>
-                              ${fxTrack.sourceUrl ? `<a href="${fxTrack.sourceUrl}" target="_blank" rel="noopener" style="font-size: 11.5px; color: var(--accent-gold); text-decoration: underline;">🔗 Source Link ↗</a>` : ''}
+                              <span style="font-size: 11.5px; color: var(--theme-text-muted);">${fxTrack.credit || 'Atmospheric Texture'}</span>
+                              ${fxTrack.sourceUrl ? `<a href="${fxTrack.sourceUrl}" target="_blank" rel="noopener" style="font-size: 11.5px; color: var(--theme-primary); text-decoration: underline;">Source Link ↗</a>` : ''}
                             </div>
                           </div>
                         ` : ''}
                         ${triggers.length > 0 ? `
                           <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px;">
                             ${triggers.map(t => `
-                              <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 4px 8px; font-size: 11.5px; display: inline-flex; align-items: center; gap: 5px;">
-                                <span>${t.icon || '⚡'}</span>
+                              <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--theme-border-base); border-radius: var(--theme-radius-sm); padding: 4px 8px; font-size: 11.5px; display: inline-flex; align-items: center; gap: 5px;">
+                                <span>${FantasyIcons.render(t.icon, { size: 14 })}</span>
                                 <span style="color: #fff; font-weight: 500;">${t.label}</span>
-                                <span style="color: #a0aec0;">(${t.credit || 'SFX'})</span>
-                                ${t.sourceUrl ? `<a href="${t.sourceUrl}" target="_blank" rel="noopener" style="color: var(--accent-gold); margin-left: 2px;">↗</a>` : ''}
+                                <span style="color: var(--theme-text-muted);">(${t.credit || 'SFX'})</span>
+                                ${t.sourceUrl ? `<a href="${t.sourceUrl}" target="_blank" rel="noopener" style="color: var(--theme-primary); margin-left: 2px;">↗</a>` : ''}
                               </div>
                             `).join('')}
                           </div>
                         ` : ''}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
                       </div>
                     </div>
                   </div>
